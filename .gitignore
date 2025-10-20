@@ -1,0 +1,30 @@
+# Logs
+logs/
+*.log
+
+# Dependency directories
+node_modules/
+bower_components/
+
+# Environment & config
+.env
+.env.*
+
+# OS / Editor files
+.DS_Store
+Thumbs.db
+*.swp
+
+# Build artifacts
+dist/
+build/
+*.tmp
+
+# Local archives
+*.zip
+*.tar
+*.tar.gz
+
+# Custom directories
+other/
+docs/

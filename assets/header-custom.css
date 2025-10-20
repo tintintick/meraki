@@ -1,0 +1,181 @@
+/* Custom Header Styles */
+
+/* ===== Base Styles ===== */
+.header-custom {
+  background-color: #ffffff;
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+}
+
+.header-custom-wrapper {
+  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+}
+
+/* Mobile: Force logo to left alignment */
+@media screen and (max-width: 989px) {
+  .header-custom.header--mobile-left {
+    grid-template-columns: auto 1fr auto;
+  }
+
+  .header-custom.header--mobile-left .header__heading,
+  .header-custom.header--mobile-left .header__heading-link {
+    text-align: left;
+    justify-self: start;
+  }
+}
+
+/* ===== Order Now Button Styles ===== */
+.header__order-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 60px;
+  padding: 13px 24px;
+  border: 2px solid #000000;
+  border-radius: 4px;
+  font-size: 24px;
+  font-weight: 600;
+  font-family: 'Manrope', sans-serif;
+  color: #000000;
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.3s ease;
+  margin: 0 10px;
+}
+
+.header__order-button:hover {
+  opacity: 0.8;
+}
+
+/* ===== Hide Search and Cart Icons on Mobile ===== */
+.header-custom .header__search,
+.header-custom .header__icon--cart {
+  display: none;
+}
+
+/* ===== Top State: White Background + Black Text/Icons ===== */
+.header-custom {
+  color: #000000;
+}
+
+.header-custom .header__icon {
+  color: #000000;
+}
+
+.header-custom .header__icon .icon {
+  color: #000000;
+  stroke: #000000;
+  fill: #000000;
+}
+
+.header-custom .header__icon svg {
+  color: #000000;
+  stroke: #000000;
+  fill: #000000;
+}
+
+.header-custom .header__icon--menu .icon,
+.header-custom .header__icon--menu svg {
+  color: #000000;
+  stroke: #000000;
+}
+
+.header-custom .header__heading-logo {
+  filter: none;
+}
+
+/* ===== Scrolled State: Transparent + Blur + White Text/Icons ===== */
+.scrolled-past-header .header-custom {
+  background-color: transparent;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  color: #ffffff;
+}
+
+.scrolled-past-header .header-custom .header__order-button {
+  border-color: #ffffff;
+  color: #ffffff;
+}
+
+.scrolled-past-header .header-custom .header__icon {
+  color: #ffffff;
+}
+
+.scrolled-past-header .header-custom .header__icon .icon {
+  color: #ffffff;
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+
+.scrolled-past-header .header-custom .header__icon svg {
+  color: #ffffff;
+  stroke: #ffffff;
+  fill: #ffffff;
+}
+
+.scrolled-past-header .header-custom .header__icon--menu .icon,
+.scrolled-past-header .header-custom .header__icon--menu svg {
+  color: #ffffff;
+  stroke: #ffffff;
+}
+
+/* ===== Logo Color Management ===== */
+.header-custom-logo {
+  transition: filter 0.3s ease;
+}
+
+/* Keep logo color consistent with header state */
+.header-custom .header-custom-logo {
+  filter: none;
+}
+
+/* ===== Responsive Adjustments ===== */
+@media screen and (max-width: 749px) {
+  .header__order-button {
+    font-size: 18px;
+    height: 50px;
+    padding: 10px 20px;
+    margin: 0 8px;
+  }
+
+  .header-custom {
+    grid-template-columns: auto 1fr auto;
+  }
+}
+
+@media screen and (min-width: 750px) {
+  .header__order-button {
+    margin: 0 10px;
+  }
+
+  .header-custom .header__search {
+    display: none;
+  }
+}
+
+/* ===== Desktop Adjustments ===== */
+@media screen and (min-width: 990px) {
+  .header-custom .header__icon--account {
+    display: none;
+  }
+
+  .header-custom .header__search {
+    display: none;
+  }
+
+  .header__order-button {
+    margin: 0 10px;
+  }
+}
+
+/* ===== Accessibility ===== */
+.header__order-button:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.scrolled-past-header .header-custom .header__order-button:focus {
+  outline-color: #ffffff;
+}
