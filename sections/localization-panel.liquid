@@ -72,8 +72,16 @@
             </button>
             <div class="localization-panel__forms">
               {%- liquid
-                assign show_country_selector = localization.available_countries.size > 1 and localization.available_countries != blank
-                assign show_language_selector = localization.available_languages.size > 1 and localization.available_languages != blank
+                assign show_country_selector = false
+                assign show_language_selector = false
+
+                if localization.available_countries != blank and localization.available_countries.size > 1
+                  assign show_country_selector = true
+                endif
+
+                if localization.available_languages != blank and localization.available_languages.size > 1
+                  assign show_language_selector = true
+                endif
               -%}
 
               {%- if show_country_selector -%}

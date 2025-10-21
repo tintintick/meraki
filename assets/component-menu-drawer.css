@@ -27,10 +27,10 @@ menu-drawer > details[open] > summary::before {
 
 .menu-drawer {
   position: absolute;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   visibility: hidden;
   z-index: 3;
-  left: 0;
+  right: 0;
   top: 100%;
   width: 100%;
   padding: 0;
@@ -65,7 +65,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 @media screen and (min-width: 750px) {
   .menu-drawer {
     width: 40rem;
-    border-width: 0 var(--drawer-border-width) 0 0;
+    border-width: 0 0 0 var(--drawer-border-width);
     border-style: solid;
     border-color: rgba(var(--color-foreground), var(--drawer-border-opacity));
   }

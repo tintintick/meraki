@@ -20,21 +20,13 @@
 
 <style>
   header-drawer {
-    justify-self: start;
-    margin-left: -1.2rem;
+    justify-self: end;
+    margin-right: 0;
   }
 
   {%- if section.settings.sticky_header_type == 'reduce-logo-size' -%}
     .scrolled-past-header .header__heading-logo-wrapper {
       width: 75%;
-    }
-  {%- endif -%}
-
-  {%- if section.settings.menu_type_desktop != "drawer" -%}
-    @media screen and (min-width: 990px) {
-      header-drawer {
-        display: none;
-      }
     }
   {%- endif -%}
 
@@ -80,24 +72,17 @@
 
 {%- style -%}
   .header {
-    padding: {{ section.settings.padding_top | times: 0.5 | round: 0 }}px 3rem {{ section.settings.padding_bottom | times: 0.5 | round: 0 }}px 3rem;
+    padding: 0;
   }
 
   .section-header {
-    position: sticky; /* This is for fixing a Safari z-index issue. PR #2147 */
+    position: sticky;
     margin-bottom: {{ section.settings.margin_bottom | times: 0.75 | round: 0 }}px;
   }
 
   @media screen and (min-width: 750px) {
     .section-header {
       margin-bottom: {{ section.settings.margin_bottom }}px;
-    }
-  }
-
-  @media screen and (min-width: 990px) {
-    .header {
-      padding-top: {{ section.settings.padding_top }}px;
-      padding-bottom: {{ section.settings.padding_bottom }}px;
     }
   }
 {%- endstyle -%}
@@ -138,177 +123,144 @@
       assign localization_forms = true
     endif
   -%}
-  <header class="header header-custom header--{{ section.settings.logo_position }} header--mobile-{{ section.settings.mobile_logo_position }} page-width{% if section.settings.menu_type_desktop == 'drawer' %} drawer-menu{% endif %}{% if section.settings.menu != blank %} header--has-menu{% endif %}{% if has_app_block %} header--has-app{% endif %}{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
-    {%- liquid
-      if section.settings.menu != blank
-        render 'header-drawer'
-      endif
+  <header class="header header-custom page-width{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
 
-      if section.settings.logo_position == 'top-center' or section.settings.menu == blank
-        render 'header-search', input_id: 'Search-In-Modal-1'
-      endif
-    -%}
-
-    {%- if section.settings.logo_position != 'middle-center' -%}
+    {%- comment -%} Logo - Shared across mobile and desktop {%- endcomment -%}
+    <div class="header__logo">
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-            {% capture sizes %}(max-width: {{ settings.logo_width | times: 2 }}px) 50vw, {{ settings.logo_width }}px{% endcapture %}
-            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-            {{
-              settings.logo
-              | image_url: width: 600
-              | image_tag:
-                class: 'header__heading-logo motion-reduce header-custom-logo',
-                widths: widths,
-                height: logo_height,
-                width: settings.logo_width,
-                alt: logo_alt,
-                sizes: sizes,
-                preload: true
-            }}
-          </div>
-        {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
-        {%- endif -%}
+        <img
+          src="{{ 'logo_black.svg' | asset_url }}"
+          alt="{{ shop.name | escape }}"
+          class="header-custom-logo"
+          width="133"
+          height="52"
+        >
       </a>
       {%- if request.page_type == 'index' -%}
         </h1>
       {%- endif -%}
-    {%- endif -%}
+    </div>
 
-    {%- liquid
-      if section.settings.menu != blank
-        if section.settings.menu_type_desktop == 'dropdown'
-          render 'header-dropdown-menu'
-        elsif section.settings.menu_type_desktop != 'drawer'
-          render 'header-mega-menu'
-        endif
-      endif
-    %}
-
-    {%- if section.settings.logo_position == 'middle-center' -%}
-      {%- if request.page_type == 'index' -%}
-        <h1 class="header__heading">
-      {%- endif -%}
-      <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- if settings.logo != blank -%}
-          <div class="header__heading-logo-wrapper">
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-            {% capture sizes %}(min-width: 750px) {{ settings.logo_width }}px, 50vw{% endcapture %}
-            {% capture widths %}{{ settings.logo_width }}, {{ settings.logo_width | times: 1.5 | round }}, {{ settings.logo_width | times: 2 }}{% endcapture %}
-            {{
-              settings.logo
-              | image_url: width: 600
-              | image_tag:
-                class: 'header__heading-logo header-custom-logo',
-                widths: widths,
-                height: logo_height,
-                width: settings.logo_width,
-                alt: logo_alt,
-                sizes: sizes,
-                preload: true
-            }}
-          </div>
-        {%- else -%}
-          <span class="h2">{{ shop.name }}</span>
-        {%- endif -%}
-      </a>
-      {%- if request.page_type == 'index' -%}
-        </h1>
-      {%- endif -%}
-    {%- endif -%}
-
-    <div class="header__icons{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header__icons--localization header-localization{% endif %}">
-      <div class="desktop-localization-wrapper">
-        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
-          <localization-form class="small-hide medium-hide" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderCountryForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderCountryLabel">{{ 'localization.country_label' | t }}</h2>
-                {%- render 'country-localization', localPosition: 'HeaderCountry' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {% endif %}
-
-        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
-          <localization-form class="small-hide medium-hide" data-prevent-hide>
-            {%- form 'localization', id: 'HeaderLanguageForm', class: 'localization-form' -%}
-              <div>
-                <h2 class="visually-hidden" id="HeaderLanguageLabel">{{ 'localization.language_label' | t }}</h2>
-                {%- render 'language-localization', localPosition: 'HeaderLanguage' -%}
-              </div>
-            {%- endform -%}
-          </localization-form>
-        {%- endif -%}
-      </div>
-
-      {%- comment -%} Order Now Button {%- endcomment -%}
+    {%- comment -%} Mobile-only elements (< 990px) {%- endcomment -%}
+    <div class="header__mobile-elements">
       <a href="/collections/all" class="header__order-button">
         Order now
       </a>
 
-      {% render 'header-search', input_id: 'Search-In-Modal' %}
+      {%- if section.settings.menu != blank -%}
+        {% render 'header-drawer' %}
+      {%- endif -%}
+    </div>
 
-      {%- if shop.customer_accounts_enabled -%}
-        <a
-          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-          class="header__icon header__icon--account link focus-inset small-hide{% if section.settings.menu != blank %} small-hide{% endif %}"
-          rel="nofollow"
-        >
-          {%- if section.settings.enable_customer_avatar -%}
-            <account-icon>
-              {%- if customer and customer.has_avatar? -%}
-                {{ customer | avatar }}
-              {%- else -%}
-                <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
-              {%- endif -%}
-            </account-icon>
-          {%- else -%}
-            <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
-          {%- endif -%}
-          <span class="visually-hidden">
-            {%- liquid
-              if customer
-                echo 'customer.account_fallback' | t
-              else
-                echo 'customer.log_in' | t
-              endif
-            -%}
-          </span>
-        </a>
+    {%- comment -%} Desktop-only elements (≥ 990px) {%- endcomment -%}
+    <div class="header__desktop-elements">
+      {%- comment -%} Desktop Navigation Menu {%- endcomment -%}
+      {%- if section.settings.menu != blank -%}
+        <nav class="header__desktop-nav">
+          <ul class="header__desktop-menu list-menu" role="list">
+            {%- for link in section.settings.menu.links -%}
+              <li class="header__desktop-menu-item">
+                <a
+                  href="{{ link.url }}"
+                  class="header__desktop-menu-link{% if link.current %} header__desktop-menu-link--active{% endif %}"
+                  {% if link.current %}aria-current="page"{% endif %}
+                >
+                  {{ link.title | escape }}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
       {%- endif -%}
 
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-          {%- when '@app' -%}
-            {% render block %}
-        {%- endcase -%}
-      {%- endfor -%}
-
-      <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset small-hide" id="cart-icon-bubble">
-        {% if cart == empty %}
-          <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
-        {% else %}
-          <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+      {%- comment -%} Desktop Icons {%- endcomment -%}
+      <div class="header__desktop-icons">
+        {%- comment -%} Country Selector {%- endcomment -%}
+        {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
+          <localization-form data-prevent-hide>
+            {%- form 'localization', id: 'HeaderCountryFormDesktop', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderCountryLabelDesktop">{{ 'localization.country_label' | t }}</h2>
+                {%- render 'country-localization', localPosition: 'HeaderCountryDesktop' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
         {% endif %}
-        <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
-        {%- if cart != empty -%}
-          <div class="cart-count-bubble">
-            {%- if cart.item_count < 100 -%}
-              <span aria-hidden="true">{{ cart.item_count }}</span>
-            {%- endif -%}
-            <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
-          </div>
+
+        {%- comment -%} Language Selector {%- endcomment -%}
+        {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
+          <localization-form data-prevent-hide>
+            {%- form 'localization', id: 'HeaderLanguageFormDesktop', class: 'localization-form' -%}
+              <div>
+                <h2 class="visually-hidden" id="HeaderLanguageLabelDesktop">{{ 'localization.language_label' | t }}</h2>
+                {%- render 'language-localization', localPosition: 'HeaderLanguageDesktop' -%}
+              </div>
+            {%- endform -%}
+          </localization-form>
         {%- endif -%}
-      </a>
+
+        {%- comment -%} Search Icon {%- endcomment -%}
+        {% render 'header-search', input_id: 'Search-In-Modal-Desktop' %}
+
+        {%- comment -%} Account/Login Icon {%- endcomment -%}
+        {%- if shop.customer_accounts_enabled -%}
+          <a
+            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+            class="header__icon header__icon--account link focus-inset"
+            rel="nofollow"
+          >
+            {%- if section.settings.enable_customer_avatar -%}
+              <account-icon>
+                {%- if customer and customer.has_avatar? -%}
+                  {{ customer | avatar }}
+                {%- else -%}
+                  <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+                {%- endif -%}
+              </account-icon>
+            {%- else -%}
+              <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+            {%- endif -%}
+            <span class="visually-hidden">
+              {%- liquid
+                if customer
+                  echo 'customer.account_fallback' | t
+                else
+                  echo 'customer.log_in' | t
+                endif
+              -%}
+            </span>
+          </a>
+        {%- endif -%}
+
+        {%- comment -%} App Blocks {%- endcomment -%}
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              {% render block %}
+          {%- endcase -%}
+        {%- endfor -%}
+
+        {%- comment -%} Cart Icon {%- endcomment -%}
+        <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
+          {% if cart == empty %}
+            <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+          {% else %}
+            <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+          {% endif %}
+          <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
+          {%- if cart != empty -%}
+            <div class="cart-count-bubble">
+              {%- if cart.item_count < 100 -%}
+                <span aria-hidden="true">{{ cart.item_count }}</span>
+              {%- endif -%}
+              <span class="visually-hidden">{{ 'sections.header.cart_count' | t: count: cart.item_count }}</span>
+            </div>
+          {%- endif -%}
+        </a>
+      </div>
     </div>
   </header>
 </{{ header_tag }}>
@@ -354,6 +306,10 @@
       this.createObserver();
       this.initializeLogo();
       this.setupLogoWatcher();
+
+      // Handle logo on window resize for desktop/mobile switching
+      window.addEventListener('resize', () => this.updateLogoForViewport());
+      this.updateLogoForViewport();
     }
 
     setHeaderHeight() {
@@ -378,9 +334,42 @@
       const logoImg = document.querySelector('.header-custom-logo');
       if (logoImg && logoImg.src) {
         const currentSrc = logoImg.src;
-        // Initialize with black logo (顶部状态)
-        if (currentSrc.includes('logo_white')) {
-          logoImg.src = logoImg.src.replace('logo_white', 'logo_black');
+        const isMobile = window.innerWidth < 990;
+        const isScrolled = this.header.classList.contains('scrolled-past-header');
+
+        // Mobile: black at top, white when scrolled
+        // Desktop: always white
+        if (isMobile) {
+          if (!isScrolled && currentSrc.includes('logo_white')) {
+            logoImg.src = currentSrc.replace('logo_white', 'logo_black');
+          }
+        } else {
+          if (currentSrc.includes('logo_black')) {
+            logoImg.src = currentSrc.replace('logo_black', 'logo_white');
+          }
+        }
+      }
+    }
+
+    updateLogoForViewport() {
+      const logoImg = document.querySelector('.header-custom-logo');
+      if (!logoImg) return;
+
+      const isMobile = window.innerWidth < 990;
+      const isScrolled = this.header.classList.contains('scrolled-past-header');
+      const currentSrc = logoImg.src;
+
+      if (isMobile) {
+        // Mobile: black at top, white when scrolled
+        if (isScrolled && currentSrc.includes('logo_black')) {
+          logoImg.src = currentSrc.replace('logo_black', 'logo_white');
+        } else if (!isScrolled && currentSrc.includes('logo_white')) {
+          logoImg.src = currentSrc.replace('logo_white', 'logo_black');
+        }
+      } else {
+        // Desktop: always white
+        if (currentSrc.includes('logo_black')) {
+          logoImg.src = currentSrc.replace('logo_black', 'logo_white');
         }
       }
     }
@@ -390,16 +379,7 @@
       if (!logoImg) return;
 
       const observer = new MutationObserver(() => {
-        const isScrolled = this.header.classList.contains('scrolled-past-header');
-        const currentSrc = logoImg.src;
-
-        if (isScrolled && currentSrc.includes('logo_black')) {
-          // Switch to white logo
-          logoImg.src = currentSrc.replace('logo_black', 'logo_white');
-        } else if (!isScrolled && currentSrc.includes('logo_white')) {
-          // Switch to black logo
-          logoImg.src = currentSrc.replace('logo_white', 'logo_black');
-        }
+        this.updateLogoForViewport();
       });
 
       observer.observe(this.header, { attributes: true, attributeFilter: ['class'] });
@@ -464,7 +444,7 @@
     }
   }
 
-  customElements.define('sticky-header-custom', StickyHeaderCustom);
+  customElements.define('sticky-header', StickyHeaderCustom);
 {% endjavascript %}
 
 <script type="application/ld+json">
@@ -601,7 +581,7 @@
           "label": "t:sections.header.settings.sticky_header_type.options__4.label"
         }
       ],
-      "default": "on-scroll-up",
+      "default": "always",
       "label": "t:sections.header.settings.sticky_header_type.label"
     },
     {
@@ -693,6 +673,11 @@
   "blocks": [
     {
       "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header (Custom)"
     }
   ]
 }
