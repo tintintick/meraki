@@ -1,5 +1,25 @@
 {
   "sections": {
+    "custom_banner": {
+      "type": "custom-banner",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Redefining Espresso\nat home",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "slide_1"
+      ],
+      "settings": {
+        "auto_rotate": true,
+        "rotation_speed": 5000
+      }
+    },
     "image_banner": {
       "type": "image-banner",
       "blocks": {
@@ -69,6 +89,7 @@
     }
   },
   "order": [
+    "custom_banner",
     "image_banner",
     "featured_collection"
   ]
