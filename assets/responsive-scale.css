@@ -1,0 +1,28 @@
+/* ===== 响应式缩放系统 ===== */
+/* 基准：Mobile 750px, Desktop 1920px */
+/*
+ * 说明：
+ * - .design-scale 定义两个缩放因子
+ * - 在 750px 和 1920px 时精确匹配设计稿（factor = 1）
+ * - 其他宽度自动按比例缩放
+ */
+
+.design-scale {
+  /* 尺寸缩放因子 */
+  --scale-factor-mobile: clamp(0.5, calc(100vw / 750px), 1);
+  --scale-factor-desktop: clamp(0.516, calc(100vw / 1920px), 1);
+}
+
+/* 移动端：750-989.98px 固定为 100% */
+@media (min-width: 750px) and (max-width: 989.98px) {
+  .design-scale {
+    --scale-factor-mobile: 1;
+  }
+}
+
+/* 桌面端：≥ 1920px 固定为 100% */
+@media (min-width: 1920px) {
+  .design-scale {
+    --scale-factor-desktop: 1;
+  }
+}
