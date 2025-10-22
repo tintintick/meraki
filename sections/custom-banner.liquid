@@ -1,0 +1,193 @@
+{{ 'responsive-scale.css' | asset_url | stylesheet_tag }}
+{{ 'custom-banner.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-banner design-scale" data-banner-section>
+  {%- if section.blocks.size > 0 -%}
+    <div class="banner-slides">
+      {%- for block in section.blocks -%}
+        {%- assign slide_index = forloop.index -%}
+        <div
+          class="banner-slide {% if forloop.first %}active{% endif %}"
+          data-slide="{{ slide_index }}"
+          {{ block.shopify_attributes }}
+        >
+          <!-- Image Container -->
+          <div class="banner-image-wrapper">
+                {%- if block.settings.mobile_image != blank -%}
+              <img
+                class="banner-image banner-image-mobile"
+                src="{{ block.settings.mobile_image | image_url: width: 917 }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <img
+                class="banner-image banner-image-mobile"
+                src="{{ 'banner-mobile.jpg' | asset_url }}"
+                alt="{{ block.settings.heading | default: 'Banner' }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+
+            {%- if block.settings.desktop_image != blank -%}
+              <img
+                class="banner-image banner-image-desktop"
+                src="{{ block.settings.desktop_image | image_url: width: 1920 }}"
+                alt="{{ block.settings.heading | escape }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <img
+                class="banner-image banner-image-desktop"
+                src="{{ 'banner-pc.jpeg' | asset_url }}"
+                alt="{{ block.settings.heading | default: 'Banner' }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+
+          <!-- Content Container -->
+          <div class="banner-content">
+            {%- if block.settings.heading -%}
+              <div class="banner-heading">
+                {{ block.settings.heading }}
+              </div>
+            {%- endif -%}
+
+            {%- if block.settings.button_text or block.settings.button_link -%}
+              <a href="{{ block.settings.button_link }}" class="banner-button">
+                {{ block.settings.button_text }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+
+    <!-- Dots Navigation -->
+    {%- if section.blocks.size > 1 -%}
+      <div class="banner-dots">
+        {%- for block in section.blocks -%}
+          <button
+            class="banner-dot {% if forloop.first %}active{% endif %}"
+            data-slide="{{ forloop.index }}"
+            aria-label="Go to slide {{ forloop.index }}"
+          >
+          </button>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const bannerSection = document.querySelector('[data-banner-section]');
+    if (!bannerSection) return;
+
+    const slides = bannerSection.querySelectorAll('.banner-slide');
+    const dots = bannerSection.querySelectorAll('.banner-dot');
+    let currentIndex = 0;
+
+    function goToSlide(index) {
+      // Handle wraparound
+      if (index < 0) index = slides.length - 1;
+      if (index >= slides.length) index = 0;
+
+      // Remove active class from all slides and dots
+      slides.forEach(slide => slide.classList.remove('active'));
+      dots.forEach(dot => dot.classList.remove('active'));
+
+      // Add active class to current slide and dot
+      slides[index].classList.add('active');
+      dots[index]?.classList.add('active');
+
+      currentIndex = index;
+    }
+
+    // Dot click handlers
+    dots.forEach((dot, index) => {
+      dot.addEventListener('click', () => goToSlide(index));
+    });
+
+    // Auto-rotate if enabled
+    {%- if section.settings.auto_rotate -%}
+      setInterval(() => {
+        goToSlide(currentIndex + 1);
+      }, {{ section.settings.rotation_speed | default: 5000 }});
+    {%- endif -%}
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Custom Banner",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "Auto-rotate slides",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "rotation_speed",
+      "min": 2000,
+      "max": 10000,
+      "step": 500,
+      "unit": "ms",
+      "label": "Rotation speed",
+      "default": 5000
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image (750px)"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image (1920px)"
+        },
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading text",
+          "default": "Redefining Espresso\nat home"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Banner",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "heading": "Redefining Espresso\nat home",
+            "button_text": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
