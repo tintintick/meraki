@@ -1,5 +1,5 @@
 {{ 'responsive-scale.css' | asset_url | stylesheet_tag }}
-{{ 'custom-banner.css' | asset_url | stylesheet_tag }}
+{{ 'custom-banner-new.css' | asset_url | stylesheet_tag }}
 
 <div class="custom-banner design-scale" data-banner-section>
   {%- if section.blocks.size > 0 -%}
@@ -13,7 +13,7 @@
         >
           <!-- Image Container -->
           <div class="banner-image-wrapper">
-                {%- if block.settings.mobile_image != blank -%}
+            {%- if block.settings.mobile_image != blank -%}
               <img
                 class="banner-image banner-image-mobile"
                 src="{{ block.settings.mobile_image | image_url: width: 917 }}"
@@ -21,9 +21,13 @@
                 loading="lazy"
               >
             {%- else -%}
+              {%- assign default_mobile_image = 'banner-mobile.jpg' -%}
+              {%- if forloop.index == 2 -%}
+                {%- assign default_mobile_image = 'banner-mobile-1.jpg' -%}
+              {%- endif -%}
               <img
                 class="banner-image banner-image-mobile"
-                src="{{ 'banner-mobile.jpg' | asset_url }}"
+                src="{{ default_mobile_image | asset_url }}"
                 alt="{{ block.settings.heading | default: 'Banner' }}"
                 loading="lazy"
               >
@@ -49,13 +53,14 @@
           <!-- Content Container -->
           <div class="banner-content">
             {%- if block.settings.heading -%}
-              <div class="banner-heading">
-                {{ block.settings.heading }}
-              </div>
+              <div class="banner-heading">{{ block.settings.heading }}</div>
             {%- endif -%}
 
-            {%- if block.settings.button_text or block.settings.button_link -%}
-              <a href="{{ block.settings.button_link }}" class="banner-button">
+            {%- if block.settings.button_text -%}
+              <a
+                href="{{ block.settings.button_link | default: '/products/meraki-espresso-machine' }}"
+                class="banner-button"
+              >
                 {{ block.settings.button_text }}
               </a>
             {%- endif -%}
@@ -64,16 +69,15 @@
       {%- endfor -%}
     </div>
 
-    <!-- Dots Navigation -->
+    <!-- Indicators Navigation -->
     {%- if section.blocks.size > 1 -%}
-      <div class="banner-dots">
+      <div class="banner-indicators">
         {%- for block in section.blocks -%}
           <button
-            class="banner-dot {% if forloop.first %}active{% endif %}"
+            class="banner-indicator {% if forloop.first %}active{% endif %}"
             data-slide="{{ forloop.index }}"
             aria-label="Go to slide {{ forloop.index }}"
-          >
-          </button>
+          ></button>
         {%- endfor -%}
       </div>
     {%- endif -%}
@@ -81,42 +85,109 @@
 </div>
 
 <script>
-  document.addEventListener('DOMContentLoaded', function() {
-    const bannerSection = document.querySelector('[data-banner-section]');
-    if (!bannerSection) return;
+  (function() {
+    // Initialize banner carousel
+    function initBanner() {
+      const bannerSection = document.querySelector('[data-banner-section]');
+      if (!bannerSection) {
+        // Retry if element not yet loaded
+        setTimeout(initBanner, 100);
+        return;
+      }
 
-    const slides = bannerSection.querySelectorAll('.banner-slide');
-    const dots = bannerSection.querySelectorAll('.banner-dot');
-    let currentIndex = 0;
+      const slides = bannerSection.querySelectorAll('.banner-slide');
+      const indicators = bannerSection.querySelectorAll('.banner-indicator');
+      let currentIndex = 0;
+      let autoRotateTimer = null;
+      let touchStartX = 0;
+      let touchEndX = 0;
 
-    function goToSlide(index) {
-      // Handle wraparound
-      if (index < 0) index = slides.length - 1;
-      if (index >= slides.length) index = 0;
+      if (slides.length === 0) return;
 
-      // Remove active class from all slides and dots
-      slides.forEach(slide => slide.classList.remove('active'));
-      dots.forEach(dot => dot.classList.remove('active'));
+      function goToSlide(index) {
+        // Handle wraparound
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
 
-      // Add active class to current slide and dot
-      slides[index].classList.add('active');
-      dots[index]?.classList.add('active');
+        // Remove active class from all slides and indicators
+        slides.forEach(slide => slide.classList.remove('active'));
+        indicators.forEach(indicator => indicator.classList.remove('active'));
 
-      currentIndex = index;
+        // Add active class to current slide and indicator
+        slides[index].classList.add('active');
+        indicators[index]?.classList.add('active');
+
+        currentIndex = index;
+
+        // Restart auto-rotate after user interaction
+        restartAutoRotate();
+      }
+
+      function startAutoRotate() {
+        {%- if section.settings.auto_rotate -%}
+          if (autoRotateTimer) clearInterval(autoRotateTimer);
+          autoRotateTimer = setInterval(() => {
+            goToSlide(currentIndex + 1);
+          }, {{ section.settings.rotation_speed | default: 5000 }});
+        {%- endif -%}
+      }
+
+      function stopAutoRotate() {
+        {%- if section.settings.auto_rotate -%}
+          if (autoRotateTimer) {
+            clearInterval(autoRotateTimer);
+            autoRotateTimer = null;
+          }
+        {%- endif -%}
+      }
+
+      function restartAutoRotate() {
+        stopAutoRotate();
+        startAutoRotate();
+      }
+
+      // Indicator click handlers
+      indicators.forEach((indicator, index) => {
+        indicator.addEventListener('click', () => {
+          stopAutoRotate();
+          goToSlide(index);
+        });
+      });
+
+      // Touch swipe handlers - for mobile sliding
+      bannerSection.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+        stopAutoRotate();
+      }, false);
+
+      bannerSection.addEventListener('touchend', (e) => {
+        touchEndX = e.changedTouches[0].screenX;
+        const swipeDistance = touchStartX - touchEndX;
+
+        // Swipe left (swipeDistance > 0) - next slide
+        if (swipeDistance > 50) {
+          goToSlide(currentIndex + 1);
+        }
+        // Swipe right (swipeDistance < 0) - previous slide
+        else if (swipeDistance < -50) {
+          goToSlide(currentIndex - 1);
+        } else {
+          // Minor swipe, resume auto-rotate
+          startAutoRotate();
+        }
+      }, false);
+
+      // Initialize auto-rotate
+      startAutoRotate();
     }
 
-    // Dot click handlers
-    dots.forEach((dot, index) => {
-      dot.addEventListener('click', () => goToSlide(index));
-    });
-
-    // Auto-rotate if enabled
-    {%- if section.settings.auto_rotate -%}
-      setInterval(() => {
-        goToSlide(currentIndex + 1);
-      }, {{ section.settings.rotation_speed | default: 5000 }});
-    {%- endif -%}
-  });
+    // Wait for DOM to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initBanner);
+    } else {
+      initBanner();
+    }
+  })();
 </script>
 
 {% schema %}
@@ -133,7 +204,7 @@
       "type": "range",
       "id": "rotation_speed",
       "min": 2000,
-      "max": 10000,
+      "max": 9000,
       "step": 500,
       "unit": "ms",
       "label": "Rotation speed",
