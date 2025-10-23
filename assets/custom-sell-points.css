@@ -1,0 +1,157 @@
+/* Custom Sell Points (mobile-first) */
+
+.custom-sell-points {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.custom-sell-points.design-scale {
+  /* mobile tokens based on 750px mock */
+  --section-height: 3107px;
+  --section-bg: #f0f0f0;
+  --section-padding-x: 40px;
+  --section-title-font-size: 48px;
+  --section-title-line-height: 1.2;
+  --section-title-padding: 54px;
+  --section-title-margin-top: 46px;
+  --card-width: 670px;
+  --card-height: 920px;
+  --card-gap: 40px;
+  --card-radius: 10px;
+  --card-title-font-size: 40px;
+  --card-title-line-height: 46px;
+  --card-title-top: 654px;
+  --card-desc-font-size: 32px;
+  --card-desc-line-height: 40px;
+  --card-desc-top: 776px;
+  --card-desc-width: 600px;
+
+  width: 100%;
+  height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+  /* padding: 0 calc(var(--section-padding-x) * var(--scale-factor-mobile, 1)); */
+}
+
+/* Section Title */
+.sell-points-title {
+  width: 100%;
+  padding: calc(var(--section-title-padding) * var(--scale-factor-mobile, 1)) 0;
+  margin-top: calc(var(--section-title-margin-top) * var(--scale-factor-mobile, 1));
+  margin-bottom: 0;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--section-title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: var(--section-title-line-height);
+  color: #000000;
+  text-align: center;
+}
+
+/* Sell Point Items Container */
+.sell-points-container {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--card-gap) * var(--scale-factor-mobile, 1));
+  padding: 0 calc(var(--section-padding-x) * var(--scale-factor-mobile, 1));
+}
+
+/* Individual Sell Point Card */
+.sell-point-item {
+  position: relative;
+  width: 100%;
+  height: calc(var(--card-height) * var(--scale-factor-mobile, 1));
+  border-radius: calc(var(--card-radius) * var(--scale-factor-mobile, 1));
+  overflow: hidden;
+}
+
+/* Video Background */
+.sell-point-video {
+  position: absolute;
+  inset: 0;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Gradient Overlay (for third card) */
+.sell-point-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  pointer-events: none;
+}
+
+/* Text Content */
+.sell-point-content {
+  position: absolute;
+  /* bottom: 64px; */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+  gap: 30px;
+}
+
+.sell-point-title {
+  position: absolute;
+  top: calc(var(--card-title-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 500;
+  font-size: calc(var(--card-title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--card-title-line-height) * var(--scale-factor-mobile, 1));
+  color: #ffffff;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.sell-point-description {
+  position: absolute;
+  top: calc(var(--card-desc-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  /* width: clamp(280px, calc(var(--card-desc-width) * var(--scale-factor-mobile, 1)), 90%); */
+  width: 93%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  font-size: calc(var(--card-desc-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--card-desc-line-height) * var(--scale-factor-mobile, 1));
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin: 0;
+}
+
+/* Specific card backgrounds */
+.sell-point-item[data-card="1"] {
+  background-color: #000000;
+}
+
+.sell-point-item[data-card="2"] {
+  background-color: #0b0b0b;
+}
+
+.sell-point-item[data-card="3"] {
+  background-color: #c29a85;
+}
+
+/* Tablet: 750px mock applies at full scale */
+@media (min-width: 750px) {
+  .custom-sell-points.design-scale {
+    --scale-factor-mobile: clamp(1, calc(100vw / 750px), 1.2);
+  }
+}
+
+/* Desktop overrides - to be implemented later */
+@media (min-width: 990px) {
+  .custom-sell-points.design-scale {
+    /* Desktop tokens will be added later */
+  }
+}

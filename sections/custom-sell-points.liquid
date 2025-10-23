@@ -1,0 +1,140 @@
+{{ 'responsive-scale.css' | asset_url | stylesheet_tag }}
+{{ 'custom-sell-points.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-sell-points design-scale">
+  {%- if section.settings.section_title != blank -%}
+    <h2 class="sell-points-title">{{ section.settings.section_title }}</h2>
+  {%- endif -%}
+
+  <div class="sell-points-container">
+    <!-- Sell Point 1: Dual-Boiler System -->
+    <div class="sell-point-item" data-card="1">
+      <video
+        class="sell-point-video"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ 'sp1-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point1_title | default: "Dual-Boiler System:
+Barista Heat Control" }}</div>
+        <p class="sell-point-description">{{ section.settings.point1_description | default: "Brew and steam at the same time and enjoy café-quality drinks in minutes." }}</p>
+      </div>
+    </div>
+
+    <!-- Sell Point 2: Built-In Scales -->
+    <div class="sell-point-item" data-card="2">
+      <video
+        class="sell-point-video"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ 'sp2-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point2_title | default: "Built-In Scales:
+Precise Ratios" }}</div>
+        <p class="sell-point-description">{{ section.settings.point2_description | default: "Dual built-in scales powered by Espresso OS, no scooping and no guessing." }}</p>
+      </div>
+    </div>
+
+    <!-- Sell Point 3: CoffeeSense -->
+    <div class="sell-point-item" data-card="3">
+      <video
+        class="sell-point-video"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ 'sp3-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <!-- Gradient overlay for third card -->
+      <div class="sell-point-gradient"></div>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point3_title | default: "CoffeeSense™:
+Perfect First Shot" }}</div>
+        <p class="sell-point-description">{{ section.settings.point3_description | default: "Takes the guesswork out of new beans and delivers the right grind and brew instantly." }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Sell Points",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Precision Brewing, Every Cup"
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 1 - Dual-Boiler System"
+    },
+    {
+      "type": "textarea",
+      "id": "point1_title",
+      "label": "Title",
+      "default": "Dual-Boiler System:\nBarista Heat Control"
+    },
+    {
+      "type": "textarea",
+      "id": "point1_description",
+      "label": "Description",
+      "default": "Brew and steam at the same time and enjoy café-quality drinks in minutes."
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 2 - Built-In Scales"
+    },
+    {
+      "type": "textarea",
+      "id": "point2_title",
+      "label": "Title",
+      "default": "Built-In Scales: \nPrecise Ratios"
+    },
+    {
+      "type": "textarea",
+      "id": "point2_description",
+      "label": "Description",
+      "default": "Dual built-in scales powered by Espresso OS, no scooping and no guessing."
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 3 - CoffeeSense™"
+    },
+    {
+      "type": "textarea",
+      "id": "point3_title",
+      "label": "Title",
+      "default": "CoffeeSense™: \nPerfect First Shot"
+    },
+    {
+      "type": "textarea",
+      "id": "point3_description",
+      "label": "Description",
+      "default": "Takes the guesswork out of new beans and delivers the right grind and brew instantly."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Sell Points"
+    }
+  ]
+}
+{% endschema %}
