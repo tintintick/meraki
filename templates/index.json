@@ -58,12 +58,19 @@
         "button2_text": "Discover Meraki",
         "button2_link": "https://www.merakitech.com/pages/about-us"
       }
+    },
+    "custom_awards": {
+      "type": "custom-awards",
+      "settings": {
+        "title": "Awards and Recognition"
+      }
     }
   },
   "order": [
     "custom_banner",
     "custom_sell_points",
     "custom_move_effect",
-    "custom_feature"
+    "custom_feature",
+    "custom_awards"
   ]
 }
