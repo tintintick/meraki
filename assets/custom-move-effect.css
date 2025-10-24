@@ -1,0 +1,445 @@
+/* Custom Move Effect (mobile-first) */
+
+.custom-move-effect {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.custom-move-effect.design-scale {
+  /* mobile tokens based on 750px mock */
+  --section-width: 750px;
+  --section-height: 1346px;
+  --section-bg: #000000;
+
+  /* Title */
+  --title-font-size: 48px;
+  --title-line-height: 52px;
+  --title-top: 100px;
+  --title-color: #ffffff;
+
+  /* Description */
+  --desc-font-size: 32px;
+  --desc-line-height: 40px;
+  --desc-top: 244px;
+  --desc-width: 642px;
+  --desc-color: rgba(255, 255, 255, 0.7);
+
+  /* Machine */
+  --machine-width: 750px;
+  --machine-height: 655px;
+  --machine-start-top: 862px;
+  --machine-end-top: 691px;
+
+  /* UI Circles */
+  --circle-size: 132.501px;
+
+  /* Circle 1 - 冲煮头保温温度设置 (Inferred) */
+  --circle-1-start-left: -113px;
+  --circle-1-start-top: 365px;
+  --circle-1-end-left: 23px;
+  --circle-1-end-top: 466px;
+
+  /* Circle 2 - 自动研磨-进行中 */
+  --circle-2-start-left: 99px;
+  --circle-2-start-top: 365px;
+  --circle-2-end-left: 167px;
+  --circle-2-end-top: 469px;
+
+  /* Circle 3 - 手动多任务 */
+  --circle-3-start-left: 311px;
+  --circle-3-start-top: 365px;
+  --circle-3-end-left: 311px;
+  --circle-3-end-top: 466px;
+
+  /* Circle 4 - 蒸汽力度设置 */
+  --circle-4-start-left: 523px;
+  --circle-4-start-top: 365px;
+  --circle-4-end-left: 455px;
+  --circle-4-end-top: 466px;
+
+  /* Circle 5 - 反冲洗-1 (Inferred) */
+  --circle-5-start-left: 735px;
+  --circle-5-start-top: 365px;
+  --circle-5-end-left: 599px;
+  --circle-5-end-top: 466px;
+
+  /* Circle 6 - 时间日期设置 (Inferred) */
+  --circle-6-start-left: -222px;
+  --circle-6-start-top: 577px;
+  --circle-6-end-left: -51px;
+  --circle-6-end-top: 615px;
+
+  /* Circle 7 - 教程-1 */
+  --circle-7-start-left: -10px;
+  --circle-7-start-top: 577px;
+  --circle-7-end-left: 93px;
+  --circle-7-end-top: 615px;
+
+  /* Circle 8 - 蒸汽主页-40% */
+  --circle-8-start-left: 202px;
+  --circle-8-start-top: 577px;
+  --circle-8-end-left: 237px;
+  --circle-8-end-top: 615px;
+
+  /* Circle 9 - 自动研磨-主页 */
+  --circle-9-start-left: 414px;
+  --circle-9-start-top: 577px;
+  --circle-9-end-left: 381px;
+  --circle-9-end-top: 615px;
+
+  /* Circle 10 - 预热时间 */
+  --circle-10-start-left: 626px;
+  --circle-10-start-top: 577px;
+  --circle-10-end-left: 525px;
+  --circle-10-end-top: 614px;
+
+  /* Circle 11 - 4 7 (Inferred) */
+  --circle-11-start-left: 838px;
+  --circle-11-start-top: 577px;
+  --circle-11-end-left: 669px;
+  --circle-11-end-top: 614px;
+
+  /* Circle 12 - 研磨度调节 */
+  --circle-12-start-left: -40px;
+  --circle-12-start-top: 789px;
+  --circle-12-end-left: 23px;
+  --circle-12-end-top: 762px;
+
+  /* Circle 13 - 粉量设置 */
+  --circle-13-start-left: 172px;
+  --circle-13-start-top: 789px;
+  --circle-13-end-left: 166px;
+  --circle-13-end-top: 762px;
+
+  /* Circle 14 - 设置页 */
+  --circle-14-start-left: 462px;
+  --circle-14-start-top: 789px;
+  --circle-14-end-left: 456px;
+  --circle-14-end-top: 762px;
+
+  /* Circle 15 - 奶温设置 */
+  --circle-15-start-left: 674px;
+  --circle-15-start-top: 789px;
+  --circle-15-end-left: 599px;
+  --circle-15-end-top: 762px;
+
+  /* Animation timing */
+  --animation-duration: 1.2s;
+  --animation-delay-base: 0.1s;
+  --animation-timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+  width: 100%;
+  height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+}
+
+/* Section Container */
+.move-effect-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Bottom Gradient Mask */
+.move-effect-bottom-mask {
+  position: absolute;
+  top: calc(1018px * var(--scale-factor-mobile, 1));
+  left: 0;
+  width: 100%;
+  height: calc(328px * var(--scale-factor-mobile, 1));
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0) 0%,
+    rgba(0, 0, 0, 0.6) 100%
+  );
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* Content Container */
+.move-effect-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: calc(40px * var(--scale-factor-mobile, 1));
+  align-items: center;
+  opacity: 0.5;
+  will-change: top, opacity;
+}
+
+.move-effect-content {
+  --content-start-top: 0px;
+  --content-end-top: 100px;
+}
+
+/* Title */
+.move-effect-title {
+  width: 90%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--title-line-height) * var(--scale-factor-mobile, 1));
+  color: var(--title-color);
+  text-align: center;
+  white-space: pre-line;
+  margin: 0;
+}
+
+/* Description */
+.move-effect-description {
+  width: calc(var(--desc-width) * var(--scale-factor-mobile, 1));
+  max-width: 90%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  font-size: calc(var(--desc-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--desc-line-height) * var(--scale-factor-mobile, 1));
+  color: var(--desc-color);
+  text-align: center;
+  margin: 0;
+}
+
+/* Machine Container */
+.move-effect-machine-container {
+  position: absolute;
+  top: calc(var(--machine-start-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: calc(var(--machine-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--machine-height) * var(--scale-factor-mobile, 1));
+  flex-shrink: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  opacity: 1;
+  z-index: 2;
+  will-change: top;
+}
+
+/* Machine Image */
+.move-effect-machine {
+  width: 100%;
+  height: 597px;
+}
+
+/* UI Circles Container */
+.move-effect-circles {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+/* Individual Circle */
+.move-effect-circle {
+  position: absolute;
+  width: calc(var(--circle-size) * var(--scale-factor-mobile, 1));
+  height: calc(var(--circle-size) * var(--scale-factor-mobile, 1));
+  border-radius: 50%;
+  overflow: hidden;
+  opacity: 0;
+  will-change: left, top, opacity;
+}
+
+.move-effect-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+/* Circle positioning - Start state */
+.move-effect-circle[data-circle="1"] {
+  left: calc(var(--circle-1-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-1-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="2"] {
+  left: calc(var(--circle-2-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-2-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="3"] {
+  left: calc(var(--circle-3-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-3-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="4"] {
+  left: calc(var(--circle-4-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-4-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="5"] {
+  left: calc(var(--circle-5-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-5-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="6"] {
+  left: calc(var(--circle-6-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-6-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="7"] {
+  left: calc(var(--circle-7-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-7-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="8"] {
+  left: calc(var(--circle-8-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-8-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="9"] {
+  left: calc(var(--circle-9-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-9-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="10"] {
+  left: calc(var(--circle-10-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-10-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="11"] {
+  left: calc(var(--circle-11-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-11-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="12"] {
+  left: calc(var(--circle-12-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-12-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="13"] {
+  left: calc(var(--circle-13-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-13-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="14"] {
+  left: calc(var(--circle-14-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-14-start-top) * var(--scale-factor-mobile, 1));
+}
+
+.move-effect-circle[data-circle="15"] {
+  left: calc(var(--circle-15-start-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-15-start-top) * var(--scale-factor-mobile, 1));
+}
+
+/* Animated state - no longer used with scroll-based animation */
+/* Kept for backward compatibility if needed */
+.custom-move-effect.animated .move-effect-machine-container {
+  top: calc(var(--machine-end-top) * var(--scale-factor-mobile, 1));
+}
+
+/* Circle end positions - animated state */
+.custom-move-effect.animated .move-effect-circle {
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="1"] {
+  left: calc(var(--circle-1-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-1-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.5;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="2"] {
+  left: calc(var(--circle-2-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-2-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="3"] {
+  left: calc(var(--circle-3-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-3-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 1;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="4"] {
+  left: calc(var(--circle-4-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-4-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="5"] {
+  left: calc(var(--circle-5-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-5-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.5;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="6"] {
+  left: calc(var(--circle-6-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-6-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.4;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="7"] {
+  left: calc(var(--circle-7-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-7-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="8"] {
+  left: calc(var(--circle-8-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-8-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.9;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="9"] {
+  left: calc(var(--circle-9-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-9-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 1;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="10"] {
+  left: calc(var(--circle-10-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-10-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="11"] {
+  left: calc(var(--circle-11-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-11-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.5;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="12"] {
+  left: calc(var(--circle-12-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-12-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="13"] {
+  left: calc(var(--circle-13-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-13-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.8;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="14"] {
+  left: calc(var(--circle-14-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-14-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.5;
+}
+
+.custom-move-effect.animated .move-effect-circle[data-circle="15"] {
+  left: calc(var(--circle-15-end-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-15-end-top) * var(--scale-factor-mobile, 1));
+  opacity: 0.4;
+}
+
+/* Tablet: 750px mock applies at full scale */
+@media (min-width: 750px) {
+  .custom-move-effect.design-scale {
+    --scale-factor-mobile: clamp(1, calc(100vw / 750px), 1.2);
+  }
+}
+
+/* Desktop overrides - to be implemented later */
+@media (min-width: 990px) {
+  .custom-move-effect.design-scale {
+    /* Desktop tokens will be added later */
+  }
+}

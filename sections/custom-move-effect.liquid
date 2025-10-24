@@ -1,0 +1,248 @@
+{{ 'responsive-scale.css' | asset_url | stylesheet_tag }}
+{{ 'custom-move-effect.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-move-effect design-scale" data-section-id="{{ section.id }}">
+  <div class="move-effect-container">
+    <!-- Content (Title & Description) -->
+    <div class="move-effect-content">
+      <!-- Title -->
+      <h2 class="move-effect-title">{{ section.settings.title | default: "Streamlined Workflow\nOn Screen" }}</h2>
+
+      <!-- Description -->
+      <p class="move-effect-description">{{ section.settings.description | default: "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup." }}</p>
+    </div>
+
+    <!-- Machine Container -->
+    <div class="move-effect-machine-container">
+      <img
+        class="move-effect-machine"
+        src="{{ 'machine-mb.png' | asset_url }}"
+        alt="Meraki Coffee Machine"
+        loading="lazy"
+      >
+    </div>
+
+    <!-- UI Circles -->
+    <div class="move-effect-circles">
+      <!-- Circle 1 -->
+      <div class="move-effect-circle" data-circle="1">
+        <img src="{{ '1.png' | asset_url }}" alt="UI Circle 1" loading="lazy">
+      </div>
+
+      <!-- Circle 2 -->
+      <div class="move-effect-circle" data-circle="2">
+        <img src="{{ '2.png' | asset_url }}" alt="UI Circle 2" loading="lazy">
+      </div>
+
+      <!-- Circle 3 -->
+      <div class="move-effect-circle" data-circle="3">
+        <img src="{{ '3.png' | asset_url }}" alt="UI Circle 3" loading="lazy">
+      </div>
+
+      <!-- Circle 4 -->
+      <div class="move-effect-circle" data-circle="4">
+        <img src="{{ '4.png' | asset_url }}" alt="UI Circle 4" loading="lazy">
+      </div>
+
+      <!-- Circle 5 -->
+      <div class="move-effect-circle" data-circle="5">
+        <img src="{{ '5.png' | asset_url }}" alt="UI Circle 5" loading="lazy">
+      </div>
+
+      <!-- Circle 6 -->
+      <div class="move-effect-circle" data-circle="6">
+        <img src="{{ '6.png' | asset_url }}" alt="UI Circle 6" loading="lazy">
+      </div>
+
+      <!-- Circle 7 -->
+      <div class="move-effect-circle" data-circle="7">
+        <img src="{{ '7.png' | asset_url }}" alt="UI Circle 7" loading="lazy">
+      </div>
+
+      <!-- Circle 8 -->
+      <div class="move-effect-circle" data-circle="8">
+        <img src="{{ '8.png' | asset_url }}" alt="UI Circle 8" loading="lazy">
+      </div>
+
+      <!-- Circle 9 -->
+      <div class="move-effect-circle" data-circle="9">
+        <img src="{{ '9.png' | asset_url }}" alt="UI Circle 9" loading="lazy">
+      </div>
+
+      <!-- Circle 10 -->
+      <div class="move-effect-circle" data-circle="10">
+        <img src="{{ '10.png' | asset_url }}" alt="UI Circle 10" loading="lazy">
+      </div>
+
+      <!-- Circle 11 -->
+      <div class="move-effect-circle" data-circle="11">
+        <img src="{{ '11.png' | asset_url }}" alt="UI Circle 11" loading="lazy">
+      </div>
+
+      <!-- Circle 12 -->
+      <div class="move-effect-circle" data-circle="12">
+        <img src="{{ '12.png' | asset_url }}" alt="UI Circle 12" loading="lazy">
+      </div>
+
+      <!-- Circle 13 -->
+      <div class="move-effect-circle" data-circle="13">
+        <img src="{{ '13.png' | asset_url }}" alt="UI Circle 13" loading="lazy">
+      </div>
+
+      <!-- Circle 14 -->
+      <div class="move-effect-circle" data-circle="14">
+        <img src="{{ '14.png' | asset_url }}" alt="UI Circle 14" loading="lazy">
+      </div>
+
+      <!-- Circle 15 -->
+      <div class="move-effect-circle" data-circle="15">
+        <img src="{{ '15.png' | asset_url }}" alt="UI Circle 15" loading="lazy">
+      </div>
+    </div>
+
+    <!-- Bottom Gradient Mask -->
+    <div class="move-effect-bottom-mask"></div>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initMoveEffect() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      setTimeout(initMoveEffect, 100);
+      return;
+    }
+
+    // Get all elements to animate
+    const circles = section.querySelectorAll('.move-effect-circle');
+    const machineContainer = section.querySelector('.move-effect-machine-container');
+    const title = section.querySelector('.move-effect-title');
+    const description = section.querySelector('.move-effect-description');
+
+    // Read CSS variables (scale factor)
+    function getScaleFactor() {
+      const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
+      return parseFloat(value) || 1;
+    }
+
+    // Helper to read CSS variable
+    function getCSSVar(name) {
+      const value = getComputedStyle(section).getPropertyValue(name).trim();
+      return parseFloat(value.replace('px', '')) || 0;
+    }
+
+    // Read position CSS variables
+    const positions = {};
+    for (let i = 1; i <= 15; i++) {
+      positions[`circle${i}StartLeft`] = getCSSVar(`--circle-${i}-start-left`);
+      positions[`circle${i}StartTop`] = getCSSVar(`--circle-${i}-start-top`);
+      positions[`circle${i}EndLeft`] = getCSSVar(`--circle-${i}-end-left`);
+      positions[`circle${i}EndTop`] = getCSSVar(`--circle-${i}-end-top`);
+    }
+
+    positions.machineStartTop = getCSSVar('--machine-start-top') || 862;
+    positions.machineEndTop = getCSSVar('--machine-end-top') || 691;
+
+    // Circle opacity targets from CSS
+    const circleOpacities = [
+      null, // index 0 (unused)
+      0.5, 0.8, 1.0, 0.8, 0.5, // circles 1-5
+      0.4, 0.8, 0.9, 1.0, 0.8, // circles 6-10
+      0.5, 0.8, 0.8, 0.5, 0.4  // circles 11-15
+    ];
+
+    let animationFrameId = null;
+
+    function updateAnimation() {
+      const scaleFactor = getScaleFactor();
+      const rect = section.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      const sectionHeight = section.offsetHeight;
+
+      // Calculate scroll progress (0-1)
+      // 0 when section top just touches viewport bottom (starts entering)
+      // 1 when section top reaches viewport top (fully visible)
+      const scrolledIn = windowHeight - rect.top;
+      const progress = Math.max(0, Math.min(1, scrolledIn / windowHeight));
+
+      // Update content container (title & description follow)
+      const contentContainer = section.querySelector('.move-effect-content');
+      const contentStartTop = getCSSVar('--content-start-top') || 0;
+      const contentEndTop = getCSSVar('--content-end-top') || 100;
+
+      const currentContentTop = contentStartTop + (contentEndTop - contentStartTop) * progress;
+      const currentContentOpacity = 0.5 + (1 - 0.5) * progress; // 0.5 to 1
+
+      contentContainer.style.top = (currentContentTop * scaleFactor) + 'px';
+      contentContainer.style.opacity = currentContentOpacity;
+
+      // Update machine
+      const machineTop = positions.machineStartTop + (positions.machineEndTop - positions.machineStartTop) * progress;
+      machineContainer.style.top = (machineTop * scaleFactor) + 'px';
+
+      // Update circles
+      circles.forEach((circle, index) => {
+        const circleNum = index + 1;
+        const startLeft = positions[`circle${circleNum}StartLeft`];
+        const startTop = positions[`circle${circleNum}StartTop`];
+        const endLeft = positions[`circle${circleNum}EndLeft`];
+        const endTop = positions[`circle${circleNum}EndTop`];
+
+        const currentLeft = startLeft + (endLeft - startLeft) * progress;
+        const currentTop = startTop + (endTop - startTop) * progress;
+        const currentOpacity = circleOpacities[circleNum] * progress;
+
+        circle.style.left = (currentLeft * scaleFactor) + 'px';
+        circle.style.top = (currentTop * scaleFactor) + 'px';
+        circle.style.opacity = currentOpacity;
+      });
+    }
+
+    function scheduleUpdate() {
+      if (animationFrameId) {
+        cancelAnimationFrame(animationFrameId);
+      }
+      animationFrameId = requestAnimationFrame(updateAnimation);
+    }
+
+    // Listen to scroll and resize events
+    window.addEventListener('scroll', scheduleUpdate, { passive: true });
+    window.addEventListener('resize', scheduleUpdate);
+
+    // Initial update
+    updateAnimation();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMoveEffect);
+  } else {
+    initMoveEffect();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Move Effect",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Streamlined Workflow\nOn Screen"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Move Effect"
+    }
+  ]
+}
+{% endschema %}

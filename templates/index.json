@@ -40,10 +40,18 @@
         "point3_title": "CoffeeSense™: \nPerfect First Shot",
         "point3_description": "Takes the guesswork out of new beans and delivers the right grind and brew instantly."
       }
+    },
+    "custom_move_effect": {
+      "type": "custom-move-effect",
+      "settings": {
+        "title": "Streamlined Workflow\nOn Screen",
+        "description": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
+      }
     }
   },
   "order": [
     "custom_banner",
-    "custom_sell_points"
+    "custom_sell_points",
+    "custom_move_effect"
   ]
 }
