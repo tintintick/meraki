@@ -47,11 +47,23 @@
         "title": "Streamlined Workflow\nOn Screen",
         "description": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
       }
+    },
+    "custom_feature": {
+      "type": "custom-feature",
+      "settings": {
+        "title": "Café Performance, At Home",
+        "description": "Enjoy your daily coffee ritual elevated, with café-quality espresso and creamy milk made easy.",
+        "button1_text": "Get Yours Now",
+        "button1_link": "https://www.merakitech.com/products/meraki-espresso-machine",
+        "button2_text": "Discover Meraki",
+        "button2_link": "https://www.merakitech.com/pages/about-us"
+      }
     }
   },
   "order": [
     "custom_banner",
     "custom_sell_points",
-    "custom_move_effect"
+    "custom_move_effect",
+    "custom_feature"
   ]
 }
