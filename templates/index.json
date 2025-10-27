@@ -93,6 +93,27 @@
     "custom_exhibition_cards": {
       "type": "custom-exhibition-cards",
       "settings": {}
+    },
+    "custom_video": {
+      "type": "custom-video",
+      "blocks": {
+        "video_1": {
+          "type": "video_item",
+          "settings": {
+            "title": "The Choice of Coffee Professionals",
+            "video_src": "Meraki-Coffee-Sense-PC.mp4"
+          }
+        },
+        "video_2": {
+          "type": "video_item",
+          "settings": {
+            "title": "test",
+            "video_src": "Meraki-Coffee-Sense-PC-2.mp4"
+          }
+        }
+      },
+      "block_order": ["video_1", "video_2"],
+      "settings": {}
     }
   },
   "order": [
@@ -102,6 +123,7 @@
     "custom_feature",
     "custom_awards",
     "custom_prs",
-    "custom_exhibition_cards"
+    "custom_exhibition_cards",
+    "custom_video"
   ]
 }
