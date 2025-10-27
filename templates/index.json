@@ -64,6 +64,31 @@
       "settings": {
         "title": "Awards and Recognition"
       }
+    },
+    "custom_prs": {
+      "type": "custom-prs",
+      "blocks": {
+        "pr_card_1": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This is a real game-changer! And to be honest, it completely blew our minds the first time we tried it, because the espresso was just so on point.\""
+          }
+        },
+        "pr_card_2": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"It rivaled the much more expensive machines I was used to working with at my coffee jobs, creating a nice layer of crema and extracting the floral notes of the coffee.\""
+          }
+        },
+        "pr_card_3": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This linear approach optimizes and simplifies your coffee-making 'workflow' while still preserving the artistry and authenticity of barista-crafted espresso.\""
+          }
+        }
+      },
+      "block_order": ["pr_card_1", "pr_card_2", "pr_card_3"],
+      "settings": {}
     }
   },
   "order": [
@@ -71,6 +96,7 @@
     "custom_sell_points",
     "custom_move_effect",
     "custom_feature",
-    "custom_awards"
+    "custom_awards",
+    "custom_prs"
   ]
 }
