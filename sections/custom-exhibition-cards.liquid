@@ -1,0 +1,109 @@
+{{ 'responsive-scale.css' | asset_url | stylesheet_tag }}
+{{ 'custom-exhibition-cards.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-exhibition-cards design-scale" data-section-id="{{ section.id }}">
+  <div class="exhibition-container">
+    <div class="exhibition-grid">
+      <!-- Exhibition Item 1 -->
+      <div class="exhibition-item exhibition-item-1">
+        {%- if section.settings.exhibition_image_1 != blank -%}
+          <img
+            src="{{ section.settings.exhibition_image_1 | image_url: width: 650 }}"
+            alt="Exhibition Image 1"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'ex1.png' | asset_url }}"
+            alt="Exhibition Image 1"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <!-- Exhibition Item 2 -->
+      <div class="exhibition-item exhibition-item-2">
+        {%- if section.settings.exhibition_image_2 != blank -%}
+          <img
+            src="{{ section.settings.exhibition_image_2 | image_url: width: 650 }}"
+            alt="Exhibition Image 2"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'ex2.png' | asset_url }}"
+            alt="Exhibition Image 2"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <!-- Exhibition Item 3 -->
+      <div class="exhibition-item exhibition-item-3">
+        {%- if section.settings.exhibition_image_3 != blank -%}
+          <img
+            src="{{ section.settings.exhibition_image_3 | image_url: width: 650 }}"
+            alt="Exhibition Image 3"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'ex3.png' | asset_url }}"
+            alt="Exhibition Image 3"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+
+      <!-- Exhibition Item 4 -->
+      <div class="exhibition-item exhibition-item-4">
+        {%- if section.settings.exhibition_image_4 != blank -%}
+          <img
+            src="{{ section.settings.exhibition_image_4 | image_url: width: 1340 }}"
+            alt="Exhibition Image 4"
+            loading="lazy"
+          >
+        {%- else -%}
+          <img
+            src="{{ 'ex4.png' | asset_url }}"
+            alt="Exhibition Image 4"
+            loading="lazy"
+          >
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Exhibition Cards",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_1",
+      "label": "Exhibition Image 1 (325x554)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_2",
+      "label": "Exhibition Image 2 (325x204)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_3",
+      "label": "Exhibition Image 3 (325x330)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_4",
+      "label": "Exhibition Image 4 (670x264)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Exhibition Cards"
+    }
+  ]
+}
+{% endschema %}

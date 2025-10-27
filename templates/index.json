@@ -89,6 +89,10 @@
       },
       "block_order": ["pr_card_1", "pr_card_2", "pr_card_3"],
       "settings": {}
+    },
+    "custom_exhibition_cards": {
+      "type": "custom-exhibition-cards",
+      "settings": {}
     }
   },
   "order": [
@@ -97,6 +101,7 @@
     "custom_move_effect",
     "custom_feature",
     "custom_awards",
-    "custom_prs"
+    "custom_prs",
+    "custom_exhibition_cards"
   ]
 }
