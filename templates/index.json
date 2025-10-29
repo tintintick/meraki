@@ -114,6 +114,57 @@
       },
       "block_order": ["video_1", "video_2"],
       "settings": {}
+    },
+    "custom_accessory": {
+      "type": "custom-accessory",
+      "blocks": {
+        "accessory_1": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "58mm Portafilter",
+            "description": "Waterproof wooden handle for a natural grip and lasting quality.",
+            "image_src": "accessory/1.png"
+          }
+        },
+        "accessory_2": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Bean Hopper",
+            "description": "Easy to clean and built to keep beans fresh.",
+            "image_src": "accessory/2.png"
+          }
+        },
+        "accessory_3": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Espresso Shot MirrorEspresso Shot Mirror",
+            "description": "Magnetic aluminum design for effortless, precise extraction viewing.Magnetic aluminum design for effortless, precise extraction viewing.Magnetic aluminum design for effortless, precise extraction viewing.",
+            "image_src": "accessory/3.png"
+          }
+        },
+        "accessory_4": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Detachable Spout",
+            "description": "Polished stainless steel for smooth, balanced dual shots.",
+            "image_src": "accessory/4.png"
+          }
+        },
+        "accessory_5": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "18g Portafilter Basket",
+            "description": "Stainless steel basket adjustable for 16–20g espresso doses.",
+            "image_src": "accessory/5.png"
+          }
+        }
+      },
+      "block_order": ["accessory_1", "accessory_2", "accessory_3", "accessory_4", "accessory_5"],
+      "settings": {
+        "title": "Crafted Accessories\nBrew Elevated",
+        "description": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality.",
+        "view_all_link": "https://www.merakitech.com/collections/accessories"
+      }
     }
   },
   "order": [
@@ -124,6 +175,7 @@
     "custom_awards",
     "custom_prs",
     "custom_exhibition_cards",
-    "custom_video"
+    "custom_video",
+    "custom_accessory"
   ]
 }

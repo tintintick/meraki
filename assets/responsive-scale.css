@@ -13,16 +13,16 @@
   --scale-factor-desktop: clamp(0.516, calc(100vw / 1920px), 1);
 }
 
-/* 移动端：750-989.98px 固定为 100% */
+/* 移动端：750-989.98px 1-1.2倍放大 */
 @media (min-width: 750px) and (max-width: 989.98px) {
   .design-scale {
-    --scale-factor-mobile: 1;
+    --scale-factor-mobile: clamp(1, calc(100vw / 750px), 1.2);
   }
 }
 
 /* 桌面端：≥ 1920px 固定为 100% */
-@media (min-width: 1920px) {
+/* @media (min-width: 1920px) {
   .design-scale {
     --scale-factor-desktop: 1;
   }
-}
+} */

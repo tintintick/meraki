@@ -1,0 +1,376 @@
+{{ 'custom-accessory.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-accessory design-scale" data-section-id="{{ section.id }}">
+  <!-- Content Container -->
+  <div class="content-container">
+    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <p class="section-description">{{ section.settings.description }}</p>
+  </div>
+
+  <!-- Accessory Wrapper -->
+  <div class="accessory-wrapper">
+    <!-- Images Container -->
+    <div class="accessory-imgs">
+      <div class="accessory-imgs-track">
+        <!-- Left Spacer -->
+        <div class="accessory-img-spacer">&nbsp;</div>
+
+        {% for block in section.blocks %}
+          <div class="accessory-img {% if forloop.first %}is-center{% endif %}">
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 640 }}"
+                alt="{{ block.settings.name }}"
+                loading="lazy"
+              >
+            {%- elsif block.settings.image_src != blank -%}
+              <img
+                src="{{ block.settings.image_src | asset_url }}"
+                alt="{{ block.settings.name }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+          </div>
+        {% endfor %}
+
+        <!-- Right Spacer -->
+        <div class="accessory-img-spacer">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="accessory-content">
+      <div class="accessory-content-track">
+        {% for block in section.blocks %}
+          <div class="accessory-content-item">
+            <h3 class="accessory-title">{{ block.settings.name }}</h3>
+            <p class="accessory-text">{{ block.settings.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="accessory-switcher">
+      <!-- Previous Button -->
+      <button class="nav-button nav-prev" data-direction="prev" aria-label="Previous Accessory">
+        <img src="{{ 'icon-previous.svg' | asset_url }}" alt="Previous" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="Previous (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+
+      <!-- Next Button -->
+      <button class="nav-button nav-next" data-direction="next" aria-label="Next Accessory">
+        <img src="{{ 'icon-next.svg' | asset_url }}" alt="Next" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-next-disable.svg' | asset_url }}" alt="Next (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+    </div>
+  </div>
+
+  <!-- View All Button Container -->
+  <div class="accessory-view-all-container">
+    <a href="{{ section.settings.view_all_link }}" class="accessory-view-all">View All</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initAccessory() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      requestAnimationFrame(initAccessory);
+      return;
+    }
+
+    const prevBtn = section.querySelector('.nav-prev');
+    const nextBtn = section.querySelector('.nav-next');
+    const imgsContainer = section.querySelector('.accessory-imgs');
+    const imgTrack = section.querySelector('.accessory-imgs-track');
+    const contentContainer = section.querySelector('.accessory-content');
+    const contentTrack = contentContainer.querySelector('.accessory-content-track');
+    const imgItems = imgTrack ? Array.from(imgTrack.querySelectorAll('.accessory-img')) : [];
+    const totalItems = imgItems.length;
+
+    if (!prevBtn || !nextBtn || !imgsContainer || !imgTrack || !contentContainer || !contentTrack || totalItems === 0) {
+      return;
+    }
+
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    // Get scale factor
+    function getScaleFactor() {
+      const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
+      return parseFloat(value) || 1;
+    }
+
+    // Get item widths
+    function getItemWidths() {
+      const imgCenterWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-center-width').trim());
+      const imgSideWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-side-width').trim());
+      const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--img-gap').trim());
+      const contentWidth = parseFloat(getComputedStyle(section).getPropertyValue('--content-width').trim());
+      const scaleFactor = getScaleFactor();
+
+      return {
+        imgCenterWidth: imgCenterWidth * scaleFactor,
+        imgSideWidth: imgSideWidth * scaleFactor,
+        imgGap: imgGap * scaleFactor,
+        contentWidth: contentWidth * scaleFactor
+      };
+    }
+
+    // Update button states
+    function updateButtons() {
+      prevBtn.classList.toggle('disabled', currentIndex === 0);
+      nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 1);
+    }
+
+    // Update image states
+    function updateImageStates() {
+      imgItems.forEach((img, index) => {
+        img.classList.remove('is-center', 'is-side', 'is-hidden', 'is-left', 'is-right');
+
+        if (index === currentIndex) {
+          img.classList.add('is-center');
+        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
+          img.classList.add('is-side');
+          img.classList.add(index < currentIndex ? 'is-left' : 'is-right');
+        } else {
+          img.classList.add('is-hidden');
+        }
+      });
+    }
+
+    function setContentOffset(index, animate = true) {
+      const widths = getItemWidths();
+      const translate = index * widths.contentWidth;
+      if (!animate) {
+        contentTrack.style.transition = 'none';
+      }
+      contentTrack.style.transform = `translateX(-${translate}px)`;
+      if (!animate) {
+        // Force reflow
+        void contentTrack.offsetWidth;
+        contentTrack.style.transition = '';
+      }
+    }
+
+    function goToIndex(index) {
+      if (index < 0 || index >= totalItems || isAnimating || index === currentIndex) {
+        return;
+      }
+
+      isAnimating = true;
+      currentIndex = index;
+
+      updateButtons();
+      updateImageStates();
+
+      // Scroll to the target image
+      imgItems[index].scrollIntoView({
+        behavior: 'auto',
+        block: 'nearest',
+        inline: 'center'
+      });
+
+      // Sync content
+      setContentOffset(currentIndex, true);
+
+      // Reset animation flag after scroll completes
+      setTimeout(() => {
+        isAnimating = false;
+      }, 500);
+    }
+
+    function jumpToIndex(index) {
+      if (index < 0 || index >= totalItems) {
+        return;
+      }
+
+      currentIndex = index;
+      updateButtons();
+      updateImageStates();
+
+      // Instant scroll without animation
+      imgItems[index].scrollIntoView({
+        behavior: 'auto',
+        block: 'nearest',
+        inline: 'center'
+      });
+
+      setContentOffset(currentIndex, false);
+    }
+
+    // Initialize
+    updateButtons();
+    updateImageStates();
+    jumpToIndex(0);
+
+    // Button click handlers
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        goToIndex(currentIndex - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < totalItems - 1) {
+        goToIndex(currentIndex + 1);
+      }
+    });
+
+    window.addEventListener('resize', () => {
+      jumpToIndex(currentIndex);
+    });
+
+    // Handle manual scroll
+    let scrollRAF = null;
+    imgsContainer.addEventListener('scroll', () => {
+      if (isAnimating) return; // Wait for button animation to complete
+
+      if (scrollRAF) cancelAnimationFrame(scrollRAF);
+      scrollRAF = requestAnimationFrame(() => {
+        // Calculate which image is currently centered
+        const scrollLeft = imgsContainer.scrollLeft;
+        const containerWidth = imgsContainer.offsetWidth;
+        const containerCenter = scrollLeft + containerWidth / 2;
+
+        // Find the closest image to the container center
+        let newIndex = 0;
+        let minDistance = Infinity;
+
+        imgItems.forEach((img, index) => {
+          const imgLeft = img.offsetLeft;
+          const imgCenter = imgLeft + img.offsetWidth / 2;
+          const distance = Math.abs(containerCenter - imgCenter);
+
+          if (distance < minDistance) {
+            minDistance = distance;
+            newIndex = index;
+          }
+        });
+
+        // Only update if index actually changed
+        if (newIndex !== currentIndex) {
+          currentIndex = newIndex;
+          updateButtons();
+          updateImageStates();
+          setContentOffset(currentIndex, true);
+        }
+
+        scrollRAF = null;
+      });
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAccessory);
+  } else {
+    initAccessory();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Custom Accessory",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Crafted Accessories\nBrew Elevated"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality."
+    },
+    {
+      "type": "text",
+      "id": "view_all_link",
+      "label": "View All Link",
+      "default": "https://www.merakitech.com/collections/accessories"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accessory_item",
+      "name": "Accessory Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image (Shopify Upload)"
+        },
+        {
+          "type": "text",
+          "id": "image_src",
+          "label": "Image Source (Local Asset)",
+          "info": "Enter the filename of an image in your assets folder (e.g., 'accessory/1.png')"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name",
+          "default": "Accessory Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Accessory description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Accessory",
+      "blocks": [
+        {
+          "type": "accessory_item",
+          "settings": {
+            "name": "18g Portafilter Basket",
+            "description": "Stainless steel basket adjustable for 16–20g espresso doses.",
+            "image_src": "accessory/1.png"
+          }
+        },
+        {
+          "type": "accessory_item",
+          "settings": {
+            "name": "58mm Portafilter",
+            "description": "Waterproof wooden handle for a natural grip and lasting quality.",
+            "image_src": "accessory/2.png"
+          }
+        },
+        {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Bean Hopper",
+            "description": "Easy to clean and built to keep beans fresh.",
+            "image_src": "accessory/3.png"
+          }
+        },
+        {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Detachable Spout",
+            "description": "Polished stainless steel for smooth, balanced dual shots.",
+            "image_src": "accessory/4.png"
+          }
+        },
+        {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Espresso Shot Mirror",
+            "description": "Magnetic aluminum design for effortless, precise extraction viewing.",
+            "image_src": "accessory/5.png"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
