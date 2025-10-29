@@ -22,9 +22,12 @@
   --card-height: 380px;
   --card-bg: #ffffff;
   --card-radius: 10px;
-  --card-padding-top: 60px;
-  --card-padding-left: 46px;
-  --card-gap: 15px;
+  --card-padding-top: 44px;
+  --card-padding-left: 44px;
+  --card-gap: 25px;
+
+  /* PR Logo */
+  --logo-height: 74px;
 
   /* PR Text */
   --text-font-size: 32px;
@@ -70,10 +73,11 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
   background-color: var(--card-bg);
   border-radius: var(--card-radius);
+  padding-top: calc(var(--card-padding-top) * var(--scale-factor-mobile, 1));
   padding-left: calc(var(--card-padding-left) * var(--scale-factor-mobile, 1));
   gap: calc(var(--card-gap) * var(--scale-factor-mobile, 1));
   transition: transform 0.45s ease, opacity 0.45s ease;
@@ -110,8 +114,7 @@
 .pr-icon {
   flex-shrink: 0;
   width: auto;
-  height: auto;
-  max-height: 100px;
+  height: calc(var(--logo-height) * var(--scale-factor-mobile, 1));
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -121,7 +124,6 @@
 .pr-icon img {
   width: auto;
   height: 100%;
-  max-height: 100px;
   object-fit: contain;
   object-position: center;
 }
@@ -137,6 +139,11 @@
   margin: 0;
   text-align: left;
   width: calc(var(--text-width) * var(--scale-factor-mobile, 1));
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* Navigation Icons */

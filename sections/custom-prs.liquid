@@ -5,20 +5,19 @@
     <!-- PR Container -->
     <div class="pr-container">
       {% for block in section.blocks %}
-        {% assign block_index = forloop.index %}
         <div class="pr-card" data-block-id="{{ block.id }}">
           <!-- PR Icon -->
           <div class="pr-icon">
             {%- if block.settings.icon != blank -%}
               <img
                 src="{{ block.settings.icon | image_url: width: 150 }}"
-                alt="PR Icon"
+                alt="PR Logo {{ forloop.index }}"
                 loading="lazy"
               >
             {%- else -%}
               <img
-                src="{{ 'pr' | append: block_index | append: '.png' | asset_url }}"
-                alt="PR Icon"
+                src="{{ 'prs/pr' | append: forloop.index | append: '.png' | asset_url }}"
+                alt="PR Logo {{ forloop.index }}"
                 loading="lazy"
               >
             {%- endif -%}

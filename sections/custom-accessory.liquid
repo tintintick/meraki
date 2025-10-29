@@ -23,9 +23,9 @@
                 alt="{{ block.settings.name }}"
                 loading="lazy"
               >
-            {%- elsif block.settings.image_src != blank -%}
+            {%- else -%}
               <img
-                src="{{ block.settings.image_src | asset_url }}"
+                src="{{ 'accessory/' | append: forloop.index | append: '.png' | asset_url }}"
                 alt="{{ block.settings.name }}"
                 loading="lazy"
               >
@@ -278,20 +278,17 @@
     {
       "type": "textarea",
       "id": "title",
-      "label": "Title",
-      "default": "Crafted Accessories\nBrew Elevated"
+      "label": "Title"
     },
     {
       "type": "textarea",
       "id": "description",
-      "label": "Description",
-      "default": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality."
+      "label": "Description"
     },
     {
       "type": "text",
       "id": "view_all_link",
-      "label": "View All Link",
-      "default": "https://www.merakitech.com/collections/accessories"
+      "label": "View All Link"
     }
   ],
   "blocks": [
@@ -302,74 +299,24 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image (Shopify Upload)"
-        },
-        {
-          "type": "text",
-          "id": "image_src",
-          "label": "Image Source (Local Asset)",
-          "info": "Enter the filename of an image in your assets folder (e.g., 'accessory/1.png')"
+          "label": "Image"
         },
         {
           "type": "text",
           "id": "name",
-          "label": "Name",
-          "default": "Accessory Name"
+          "label": "Name"
         },
         {
           "type": "textarea",
           "id": "description",
-          "label": "Description",
-          "default": "Accessory description"
+          "label": "Description"
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Custom Accessory",
-      "blocks": [
-        {
-          "type": "accessory_item",
-          "settings": {
-            "name": "18g Portafilter Basket",
-            "description": "Stainless steel basket adjustable for 16–20g espresso doses.",
-            "image_src": "accessory/1.png"
-          }
-        },
-        {
-          "type": "accessory_item",
-          "settings": {
-            "name": "58mm Portafilter",
-            "description": "Waterproof wooden handle for a natural grip and lasting quality.",
-            "image_src": "accessory/2.png"
-          }
-        },
-        {
-          "type": "accessory_item",
-          "settings": {
-            "name": "Bean Hopper",
-            "description": "Easy to clean and built to keep beans fresh.",
-            "image_src": "accessory/3.png"
-          }
-        },
-        {
-          "type": "accessory_item",
-          "settings": {
-            "name": "Detachable Spout",
-            "description": "Polished stainless steel for smooth, balanced dual shots.",
-            "image_src": "accessory/4.png"
-          }
-        },
-        {
-          "type": "accessory_item",
-          "settings": {
-            "name": "Espresso Shot Mirror",
-            "description": "Magnetic aluminum design for effortless, precise extraction viewing.",
-            "image_src": "accessory/5.png"
-          }
-        }
-      ]
+      "name": "Custom Accessory"
     }
   ]
 }
