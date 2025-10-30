@@ -100,15 +100,15 @@
         "video_1": {
           "type": "video_item",
           "settings": {
-            "title": "The Choice of Coffee Professionals",
-            "video_src": "Meraki-Coffee-Sense-PC.mp4"
+            "title": "This Dual Boiler coffee machine is shocking! (in a good way)",
+            "creator_name": "Coffee Coach | Ryde Jeavons"
           }
         },
         "video_2": {
           "type": "video_item",
           "settings": {
-            "title": "test",
-            "video_src": "Meraki-Coffee-Sense-PC-2.mp4"
+            "title": "Video Title 2",
+            "creator_name": "Creator Name 2"
           }
         }
       },
@@ -160,6 +160,17 @@
         "description": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality.",
         "view_all_link": "https://www.merakitech.com/collections/accessories"
       }
+    },
+    "custom_news": {
+      "type": "custom-news",
+      "settings": {
+        "blog": "news",
+        "heading": "Latest News",
+        "show_image": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "show_view_all": true
+      }
     }
   },
   "order": [
@@ -171,6 +182,7 @@
     "custom_prs",
     "custom_exhibition_cards",
     "custom_video",
-    "custom_accessory"
+    "custom_accessory",
+    "custom_news"
   ]
 }

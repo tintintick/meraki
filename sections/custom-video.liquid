@@ -4,14 +4,8 @@
   <div class="video-container">
     <!-- Video Header -->
     <div class="video-header">
-      <!-- Title Wrapper -->
-      <div class="video-title-wrapper">
-        <div class="video-titles-track">
-          {% for block in section.blocks %}
-            <div class="video-title">{{ block.settings.title }}</div>
-          {% endfor %}
-        </div>
-      </div>
+      <!-- Section Title -->
+      <h2 class="video-section-title">The Choice of Coffee Professionals</h2>
 
       <!-- Navigation Buttons -->
       <div class="video-switch">
@@ -33,7 +27,7 @@
     <div class="video-player-container">
       <div class="video-players-track">
         {% for block in section.blocks %}
-          <div class="video-player-item">
+          <div class="video-player-item" data-video-wrapper>
             {%- if block.settings.video != blank -%}
               {{
                 block.settings.video
@@ -41,18 +35,51 @@
                   image_size: '1340x',
                   autoplay: false,
                   loop: false,
-                  controls: true,
+                  controls: false,
                   muted: true,
-                  loading: 'lazy'
+                  loading: 'lazy',
+                  class: 'video-element'
               }}
-            {%- elsif block.settings.video_src != blank -%}
+            {%- else -%}
               <video
-                src="{{ block.settings.video_src | asset_url }}"
-                controls
+                class="video-element"
+                src="{{ 'video/' | append: forloop.index | append: '.mp4' | asset_url }}"
                 muted
                 loading="lazy"
+                playsinline
               ></video>
             {%- endif -%}
+
+            <!-- Play Button -->
+            <button class="video-play-button" data-play-button>
+              <img src="{{ 'video/play.svg' | asset_url }}" alt="Play" />
+            </button>
+
+            <!-- Gradient Mask -->
+            <div class="video-gradient-mask" data-video-mask>
+              <img src="{{ 'video/video-gradient-mask.png' | asset_url }}" alt="" />
+            </div>
+
+            <!-- Video Info -->
+            <div class="video-info" data-video-info>
+              {%- if block.settings.creator_avatar != blank -%}
+                <img
+                  class="creator-avatar"
+                  src="{{ block.settings.creator_avatar | image_url: width: 160 }}"
+                  alt="{{ block.settings.creator_name | escape }}"
+                />
+              {%- else -%}
+                <img
+                  class="creator-avatar"
+                  src="{{ 'video/avatar' | append: forloop.index | append: '.png' | asset_url }}"
+                  alt="{{ block.settings.creator_name | escape }}"
+                />
+              {%- endif -%}
+              <div class="video-metadata">
+                <p class="creator-name">{{ block.settings.creator_name }}</p>
+                <p class="video-title">{{ block.settings.title }}</p>
+              </div>
+            </div>
           </div>
         {% endfor %}
       </div>
@@ -71,12 +98,11 @@
 
     const prevBtn = section.querySelector('.nav-prev');
     const nextBtn = section.querySelector('.nav-next');
-    const titleWrapper = section.querySelector('.video-title-wrapper');
     const playerContainer = section.querySelector('.video-player-container');
     const videos = Array.from(section.querySelectorAll('video'));
     const totalVideos = videos.length;
 
-    if (!prevBtn || !nextBtn || !titleWrapper || !playerContainer || totalVideos === 0) {
+    if (!prevBtn || !nextBtn || !playerContainer || totalVideos === 0) {
       return;
     }
 
@@ -88,15 +114,11 @@
       return parseFloat(value) || 1;
     }
 
-    // Get item widths from CSS variables
-    function getItemWidths() {
-      const titleWidth = parseFloat(getComputedStyle(section).getPropertyValue('--title-width').trim());
+    // Get player width from CSS variable
+    function getPlayerWidth() {
       const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue('--player-width').trim());
       const scaleFactor = getScaleFactor();
-      return {
-        titleWidth: titleWidth * scaleFactor,
-        playerWidth: playerWidth * scaleFactor
-      };
+      return playerWidth * scaleFactor;
     }
 
     // Update button states
@@ -105,14 +127,53 @@
       nextBtn.classList.toggle('disabled', currentIndex >= totalVideos - 1);
     }
 
-    // Pause non-current videos
+    // Pause non-current videos and reset UI
     function pauseNonCurrentVideos() {
       videos.forEach((video, vidIndex) => {
         if (vidIndex !== currentIndex) {
           video.pause();
+          const wrapper = video.closest('[data-video-wrapper]');
+          if (wrapper) {
+            wrapper.classList.remove('is-playing');
+            video.removeAttribute('controls');
+          }
         }
       });
     }
+
+    // Initialize video controls for each video
+    videos.forEach((video) => {
+      const wrapper = video.closest('[data-video-wrapper]');
+      const playButton = wrapper.querySelector('[data-play-button]');
+
+      if (!wrapper || !playButton) return;
+
+      // Initially hide controls
+      video.removeAttribute('controls');
+
+      // Play button click
+      playButton.addEventListener('click', () => {
+        video.play();
+      });
+
+      // When video starts playing
+      video.addEventListener('play', () => {
+        video.setAttribute('controls', '');
+        wrapper.classList.add('is-playing');
+      });
+
+      // When video pauses
+      video.addEventListener('pause', () => {
+        video.removeAttribute('controls');
+        wrapper.classList.remove('is-playing');
+      });
+
+      // When video ends
+      video.addEventListener('ended', () => {
+        video.removeAttribute('controls');
+        wrapper.classList.remove('is-playing');
+      });
+    });
 
     // Scroll to index
     function scrollToIndex(index) {
@@ -120,11 +181,8 @@
         return;
       }
 
-      const widths = getItemWidths();
-
-      // Scroll both containers
-      titleWrapper.scrollLeft = index * widths.titleWidth;
-      playerContainer.scrollLeft = index * widths.playerWidth;
+      const playerWidth = getPlayerWidth();
+      playerContainer.scrollLeft = index * playerWidth;
 
       currentIndex = index;
       updateButtons();
@@ -133,16 +191,13 @@
 
     // Detect scroll position and update index
     function handleScroll() {
-      const widths = getItemWidths();
-      const scrolledIndex = Math.round(playerContainer.scrollLeft / widths.playerWidth);
+      const playerWidth = getPlayerWidth();
+      const scrolledIndex = Math.round(playerContainer.scrollLeft / playerWidth);
 
       if (scrolledIndex !== currentIndex) {
         currentIndex = scrolledIndex;
         updateButtons();
         pauseNonCurrentVideos();
-
-        // Sync title scroll
-        titleWrapper.scrollLeft = currentIndex * widths.titleWidth;
       }
     }
 
@@ -185,19 +240,22 @@
         {
           "type": "textarea",
           "id": "title",
-          "label": "Title",
-          "default": "The Choice of Coffee Professionals"
+          "label": "Video Title"
+        },
+        {
+          "type": "text",
+          "id": "creator_name",
+          "label": "Creator Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "creator_avatar",
+          "label": "Creator Avatar"
         },
         {
           "type": "video",
           "id": "video",
           "label": "Video (Shopify Upload)"
-        },
-        {
-          "type": "text",
-          "id": "video_src",
-          "label": "Video Source (Local Asset)",
-          "info": "Enter the filename of a video in your assets folder (e.g., 'video.mp4')"
         }
       ]
     }
