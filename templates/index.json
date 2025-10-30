@@ -184,6 +184,10 @@
         "customer_tag": "newsletter-subscribe",
         "success_message": "Thank you for subscribing!"
       }
+    },
+    "custom_support": {
+      "type": "custom-support",
+      "settings": {}
     }
   },
   "order": [
@@ -197,6 +201,7 @@
     "custom_video",
     "custom_accessory",
     "custom_news",
-    "custom_subscribe"
+    "custom_subscribe",
+    "custom_support"
   ]
 }

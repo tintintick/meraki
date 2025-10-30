@@ -1,0 +1,80 @@
+{{ 'custom-support.css' | asset_url | stylesheet_tag }}
+
+<div class="custom-support design-scale" data-section-id="{{ section.id }}">
+  <!-- Section Title -->
+  <div class="support-header">
+    <h2 class="section-title">After-Sales Support</h2>
+  </div>
+
+  <!-- Support Cards -->
+  <div class="support-cards">
+    <!-- Card 1: Quick Request -->
+    <div class="support-card support-card-1">
+      <div class="support-icon">
+        <img src="{{ 'support/support 1.svg' | asset_url }}" alt="Quick Request" width="76" height="76" loading="lazy">
+      </div>
+      <div class="support-content">
+        <h3 class="support-title">1. Quick Request</h3>
+        <p class="support-description">
+          Click "<strong>Service Request</strong>" on our website and fill out the form to initiate your service request.
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 2: Timely Response -->
+    <div class="support-card support-card-2">
+      <div class="support-icon">
+        <img src="{{ 'support/support 2.svg' | asset_url }}" alt="Timely Response" width="68" height="68" loading="lazy">
+      </div>
+      <div class="support-content">
+        <h3 class="support-title">2. Timely Response</h3>
+        <p class="support-description">
+          Our customer service team will contact you within 48 business hours on working days (GMT+8, 10:00–18:00) to confirm your request and guide you through the next steps.
+        </p>
+      </div>
+    </div>
+
+    <!-- Card 3: Flexible Solutions -->
+    <div class="support-card support-card-3">
+      <div class="support-icon">
+        <img src="{{ 'support/support 3.svg' | asset_url }}" alt="Flexible Solutions" width="80" height="80" loading="lazy">
+      </div>
+      <div class="support-content">
+        <h3 class="support-title">3. Flexible Solutions</h3>
+        <div class="support-description">
+          <p>
+            You can choose:<br>
+            — Spare parts delivery for easy DIY repair;<br>
+            — Return & repair<br>
+            Once your machine arrives, we will promptly handle the repair within 7–10 business days. We will stay in touch to ensure it is returned to you
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card 4: Ongoing Support -->
+    <div class="support-card support-card-4">
+      <div class="support-icon">
+        <img src="{{ 'support/support 4.svg' | asset_url }}" alt="Ongoing Support" width="76" height="76" loading="lazy">
+      </div>
+      <div class="support-content">
+        <h3 class="support-title">4. Ongoing Support</h3>
+        <p class="support-description">
+          If you have any questions or feedback after the service, please don't hesitate to reach out. We're always here to support you and continuously improve your experience.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Support",
+  "presets": [
+    {
+      "name": "Custom Support"
+    }
+  ]
+}
+{% endschema %}
+
