@@ -171,6 +171,19 @@
         "show_excerpt": true,
         "show_view_all": true
       }
+    },
+    "custom_subscribe": {
+      "type": "custom-subscribe",
+      "settings": {
+        "heading": "Stay Inspired with Meraki",
+        "feature1_text": "<p>Join Meraki and enjoy exclusive offers and promotions.</p>",
+        "feature2_text": "<p>Get VIP support from your dedicated concierge.</p>",
+        "feature3_text": "<p>Access personalized tutorials tailored to your coffee journey.</p>",
+        "placeholder": "Enter your email address",
+        "button_text": "Subscribe",
+        "customer_tag": "newsletter-subscribe",
+        "success_message": "Thank you for subscribing!"
+      }
     }
   },
   "order": [
@@ -183,6 +196,7 @@
     "custom_exhibition_cards",
     "custom_video",
     "custom_accessory",
-    "custom_news"
+    "custom_news",
+    "custom_subscribe"
   ]
 }
