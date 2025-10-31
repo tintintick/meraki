@@ -82,15 +82,21 @@
 
     const prevBtn = section.querySelector('.nav-prev');
     const nextBtn = section.querySelector('.nav-next');
+    const prContainer = section.querySelector('.pr-container');
     const cards = Array.from(section.querySelectorAll('.pr-card'));
     const totalPRs = cards.length;
 
-    if (!prevBtn || !nextBtn || totalPRs === 0) {
+    if (!prevBtn || !nextBtn || !prContainer || totalPRs === 0) {
       return;
     }
 
     let currentIndex = 0;
     let isAnimating = false;
+
+    // Touch gesture variables
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 80; // Minimum swipe distance in pixels
 
     cards.forEach((card, index) => {
       if (index === 0) {
@@ -172,6 +178,29 @@
 
     prevBtn.addEventListener('click', () => handleNav('prev'));
     nextBtn.addEventListener('click', () => handleNav('next'));
+
+    // Touch gesture support
+    prContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    prContainer.addEventListener('touchend', (e) => {
+      const touchEndX = e.changedTouches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+      const deltaTime = Date.now() - touchStartTime;
+
+      // Only trigger if swipe is significant and not too slow
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
+        if (deltaX > 0) {
+          // Swipe right - go to previous
+          handleNav('prev');
+        } else {
+          // Swipe left - go to next
+          handleNav('next');
+        }
+      }
+    }, { passive: true });
   }
 
   if (document.readyState === 'loading') {

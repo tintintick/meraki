@@ -38,12 +38,17 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  background-color: #ffffff;
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
 }
 
 /* Mobile component styles */
+/* .custom-header.design-scale .header-wrapper.custom-header-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
+} */
+
 .custom-header.design-scale .custom-header-wrapper {
+  background: transparent !important;
   background-color: transparent !important;
   transition: background-color var(--header-transition-duration) var(--header-transition-timing), backdrop-filter var(--header-transition-duration) var(--header-transition-timing), -webkit-backdrop-filter var(--header-transition-duration) var(--header-transition-timing);
 }
@@ -159,6 +164,8 @@
 
 /* Fallback for non-design-scale headers */
 .custom-header-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
   transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
 }
 

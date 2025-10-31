@@ -100,6 +100,7 @@
         "video_1": {
           "type": "video_item",
           "settings": {
+            "youtube_id": "kuuXcujgWJQ",
             "title": "This Dual Boiler coffee machine is shocking! (in a good way)",
             "creator_name": "Coffee Coach | Ryde Jeavons"
           }
@@ -107,12 +108,37 @@
         "video_2": {
           "type": "video_item",
           "settings": {
-            "title": "Video Title 2",
-            "creator_name": "Creator Name 2"
+            "youtube_id": "rUyAnQ7JnGc",
+            "title": "Meraki Espresso Machine In-Depth Review | Making A Latte LIVE",
+            "creator_name": "Coffee with Jon & Zee"
+          }
+        },
+        "video_3": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "h87E8cYeIZE",
+            "title": "I Didn't Expect This from the Meraki Espresso Machine… (Review)",
+            "creator_name": "Luke Makes Coffee"
+          }
+        },
+        "video_4": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "v6cJn_eg2ZY",
+            "title": "This thing is awesome! Meraki home espresso machine review",
+            "creator_name": "Coffee Nerd Aaron"
+          }
+        },
+        "video_5": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "6KTuA3kWTJU",
+            "title": "Meraki Espresso Machine Review & Walkthrough | Dual Boiler, Rotary Pump, Grind & Brew by Weight",
+            "creator_name": "Brew Coffee Home"
           }
         }
       },
-      "block_order": ["video_1", "video_2"],
+      "block_order": ["video_1", "video_2", "video_3", "video_4", "video_5"],
       "settings": {}
     },
     "custom_accessory": {

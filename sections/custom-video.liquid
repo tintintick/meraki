@@ -1,4 +1,9 @@
 {{ 'custom-video.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'lite-youtube.js' | asset_url }}" defer></script>
+
+<!-- Preconnect to YouTube -->
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
 
 <div class="custom-video design-scale" data-section-id="{{ section.id }}">
   <div class="video-container">
@@ -27,8 +32,12 @@
     <div class="video-player-container">
       <div class="video-players-track">
         {% for block in section.blocks %}
-          <div class="video-player-item" data-video-wrapper>
-            {%- if block.settings.video != blank -%}
+          <div class="video-player-item" data-video-wrapper data-youtube-id="{{ block.settings.youtube_id }}">
+            {%- if block.settings.youtube_id != blank -%}
+              <!-- YouTube Embed -->
+              <lite-youtube videoid="{{ block.settings.youtube_id }}" class="video-element"></lite-youtube>
+            {%- elsif block.settings.video != blank -%}
+              <!-- Fallback: Shopify Video Upload -->
               {{
                 block.settings.video
                 | video_tag:
@@ -40,25 +49,23 @@
                   loading: 'lazy',
                   class: 'video-element'
               }}
+              <!-- Play Button -->
+              <button class="video-play-button" data-play-button>
+                <img src="{{ 'video/play.svg' | asset_url }}" alt="Play" />
+              </button>
             {%- else -%}
-              <video
-                class="video-element"
-                src="{{ 'video/' | append: forloop.index | append: '.mp4' | asset_url }}"
-                muted
-                loading="lazy"
-                playsinline
-              ></video>
+              <!-- Placeholder -->
+              <div class="video-placeholder video-element">
+                <p>No video configured</p>
+              </div>
             {%- endif -%}
 
-            <!-- Play Button -->
-            <button class="video-play-button" data-play-button>
-              <img src="{{ 'video/play.svg' | asset_url }}" alt="Play" />
-            </button>
-
-            <!-- Gradient Mask -->
-            <div class="video-gradient-mask" data-video-mask>
-              <img src="{{ 'video/video-gradient-mask.png' | asset_url }}" alt="" />
-            </div>
+            <!-- Gradient Mask (for non-YouTube videos) -->
+            {%- if block.settings.youtube_id == blank -%}
+              <div class="video-gradient-mask" data-video-mask>
+                <img src="{{ 'video/video-gradient-mask.png' | asset_url }}" alt="" />
+              </div>
+            {%- endif -%}
 
             <!-- Video Info -->
             <div class="video-info" data-video-info>
@@ -67,12 +74,16 @@
                   class="creator-avatar"
                   src="{{ block.settings.creator_avatar | image_url: width: 160 }}"
                   alt="{{ block.settings.creator_name | escape }}"
+                  width="80"
+                  height="80"
                 />
               {%- else -%}
                 <img
                   class="creator-avatar"
                   src="{{ 'video/avatar' | append: forloop.index | append: '.png' | asset_url }}"
                   alt="{{ block.settings.creator_name | escape }}"
+                  width="80"
+                  height="80"
                 />
               {%- endif -%}
               <div class="video-metadata">
@@ -99,14 +110,17 @@
     const prevBtn = section.querySelector('.nav-prev');
     const nextBtn = section.querySelector('.nav-next');
     const playerContainer = section.querySelector('.video-player-container');
-    const videos = Array.from(section.querySelectorAll('video'));
-    const totalVideos = videos.length;
+    const videoWrappers = Array.from(section.querySelectorAll('[data-video-wrapper]'));
+    const totalVideos = videoWrappers.length;
 
     if (!prevBtn || !nextBtn || !playerContainer || totalVideos === 0) {
       return;
     }
 
     let currentIndex = 0;
+    let isTransitioning = false;
+    let touchStartX = 0;
+    let touchStartTime = 0;
 
     // Get scale factor from CSS variable
     function getScaleFactor() {
@@ -127,26 +141,38 @@
       nextBtn.classList.toggle('disabled', currentIndex >= totalVideos - 1);
     }
 
-    // Pause non-current videos and reset UI
-    function pauseNonCurrentVideos() {
-      videos.forEach((video, vidIndex) => {
-        if (vidIndex !== currentIndex) {
-          video.pause();
-          const wrapper = video.closest('[data-video-wrapper]');
-          if (wrapper) {
-            wrapper.classList.remove('is-playing');
-            video.removeAttribute('controls');
+    // Stop all videos (pause and reset to beginning)
+    function stopAllVideos() {
+      videoWrappers.forEach((wrapper, index) => {
+        if (index === currentIndex) return; // Skip current video
+
+        // Stop YouTube videos
+        const liteYouTube = wrapper.querySelector('lite-youtube');
+        if (liteYouTube) {
+          if (typeof liteYouTube.reset === 'function') {
+            liteYouTube.reset();
           }
+          wrapper.classList.remove('is-playing');
+        }
+
+        // Stop regular video elements
+        const video = wrapper.querySelector('video');
+        if (video) {
+          video.pause();
+          video.currentTime = 0; // Reset to beginning
+          wrapper.classList.remove('is-playing');
+          video.removeAttribute('controls');
         }
       });
     }
 
-    // Initialize video controls for each video
-    videos.forEach((video) => {
-      const wrapper = video.closest('[data-video-wrapper]');
-      const playButton = wrapper.querySelector('[data-play-button]');
+    // Initialize controls for regular video elements (fallback)
+    videoWrappers.forEach((wrapper) => {
+      const video = wrapper.querySelector('video');
+      if (!video) return;
 
-      if (!wrapper || !playButton) return;
+      const playButton = wrapper.querySelector('[data-play-button]');
+      if (!playButton) return;
 
       // Initially hide controls
       video.removeAttribute('controls');
@@ -175,31 +201,111 @@
       });
     });
 
-    // Scroll to index
+    // Listen for YouTube activation
+    section.addEventListener('lyt-activated', (e) => {
+      // Add is-playing class to the activated wrapper for video-info hiding
+      const activatedElement = e.target;
+      if (activatedElement && activatedElement.tagName === 'LITE-YOUTUBE') {
+        const wrapper = activatedElement.closest('[data-video-wrapper]');
+        if (wrapper) {
+          wrapper.classList.add('is-playing');
+        }
+      }
+      // Note: Don't call stopAllVideos() here - it's already called in scrollToIndex()
+      // when user switches videos. Here we just play the current video.
+    });
+
+    // Scroll to index with smooth animation
     function scrollToIndex(index) {
-      if (index < 0 || index >= totalVideos) {
+      if (index < 0 || index >= totalVideos || isTransitioning) {
         return;
       }
 
       const playerWidth = getPlayerWidth();
-      playerContainer.scrollLeft = index * playerWidth;
+      isTransitioning = true;
+
+      // Smooth scroll animation
+      playerContainer.scrollTo({
+        left: index * playerWidth,
+        behavior: 'smooth'
+      });
 
       currentIndex = index;
       updateButtons();
-      pauseNonCurrentVideos();
+      stopAllVideos();
+
+      // Wait for animation to complete (typically 300-500ms)
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 500);
     }
 
-    // Detect scroll position and update index
-    function handleScroll() {
-      const playerWidth = getPlayerWidth();
-      const scrolledIndex = Math.round(playerContainer.scrollLeft / playerWidth);
+    // ===== TOUCH SWIPE DISABLED =====
+    // Touch event handlers for swipe detection (disabled to avoid conflicts with YouTube iframe on mobile)
+    // Uncomment when ready to re-enable swipe navigation
+    /*
+    let touchEndX = 0;
+    const SWIPE_THRESHOLD = 50; // Minimum swipe distance in pixels
 
-      if (scrolledIndex !== currentIndex) {
-        currentIndex = scrolledIndex;
-        updateButtons();
-        pauseNonCurrentVideos();
+    playerContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    // Prevent native scroll during touch move
+    playerContainer.addEventListener('touchmove', (e) => {
+      // Prevent native inertia scrolling
+      e.preventDefault();
+    }, { passive: false });
+
+    playerContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+      const deltaTime = Date.now() - touchStartTime;
+
+      // Only trigger if swipe is significant and not too slow
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
+        if (deltaX > 0 && currentIndex > 0) {
+          // Swipe right - go to previous
+          scrollToIndex(currentIndex - 1);
+        } else if (deltaX < 0 && currentIndex < totalVideos - 1) {
+          // Swipe left - go to next
+          scrollToIndex(currentIndex + 1);
+        }
       }
-    }
+    }, { passive: true });
+    */
+    // ===== END TOUCH SWIPE SECTION =====
+
+    // ===== WHEEL SCROLL DISABLED =====
+    // Wheel event handler disabled - only button navigation is allowed
+    // Uncomment when ready to re-enable wheel navigation
+    /*
+    let wheelTimeout;
+    playerContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
+      clearTimeout(wheelTimeout);
+      wheelTimeout = setTimeout(() => {
+        if (isTransitioning) return;
+
+        if (e.deltaX > 30 && currentIndex < totalVideos - 1) {
+          // Scroll right - go to next
+          scrollToIndex(currentIndex + 1);
+        } else if (e.deltaX < -30 && currentIndex > 0) {
+          // Scroll left - go to previous
+          scrollToIndex(currentIndex - 1);
+        } else if (e.deltaY > 30 && currentIndex < totalVideos - 1) {
+          // Scroll down - go to next (for vertical scroll wheels)
+          scrollToIndex(currentIndex + 1);
+        } else if (e.deltaY < -30 && currentIndex > 0) {
+          // Scroll up - go to previous
+          scrollToIndex(currentIndex - 1);
+        }
+      }, 50); // Debounce wheel events slightly
+    }, { passive: false });
+    */
+    // ===== END WHEEL SCROLL SECTION =====
 
     // Initialize
     updateButtons();
@@ -216,9 +322,6 @@
         scrollToIndex(currentIndex + 1);
       }
     });
-
-    // Listen to scroll events
-    playerContainer.addEventListener('scroll', handleScroll, { passive: true });
   }
 
   if (document.readyState === 'loading') {
@@ -238,6 +341,12 @@
       "name": "Video Item",
       "settings": [
         {
+          "type": "text",
+          "id": "youtube_id",
+          "label": "YouTube Video ID",
+          "info": "Enter the YouTube video ID (e.g., dQw4w9WgXcQ from https://www.youtube.com/watch?v=dQw4w9WgXcQ)"
+        },
+        {
           "type": "textarea",
           "id": "title",
           "label": "Video Title"
@@ -255,7 +364,8 @@
         {
           "type": "video",
           "id": "video",
-          "label": "Video (Shopify Upload)"
+          "label": "Video (Shopify Upload - Fallback)",
+          "info": "Only used if YouTube ID is not provided"
         }
       ]
     }
