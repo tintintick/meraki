@@ -1,6 +1,44 @@
 /* ===== Custom Menu Drawer Styles ===== */
 /* ===== 基础样式 - 从 component-menu-drawer.css 复制 ===== */
 
+/* ===== Responsive Scaling System ===== */
+.menu-drawer-container.design-scale {
+  /* Mobile tokens based on 750px design */
+  --menu-item-height: 72px;
+  --menu-item-font-size: 48px;
+  --menu-item-padding-left: 50px;
+  --menu-item-padding-right: 52px;
+  --menu-gap: 48px;
+  --navigation-padding-top: 80px;
+  
+  /* Localization */
+  --localization-font-size: 32px;
+  --localization-line-height: 40px;
+  --localization-icon-size: 44px;
+  --localization-gap: 14px;
+  --localization-margin-top: 60px;
+  
+  /* Account */
+  --account-icon-size: 44px;
+  --account-font-size: 32px;
+  --account-line-height: 40px;
+  
+  /* Utility section */
+  --utility-margin-top: 60px;
+  --utility-padding-v: 40px;
+  --utility-padding-h: 50px;
+  
+  /* Flag icons */
+  --flag-icon-size: 42px;
+}
+
+/* Tablet: 750px and above */
+@media (min-width: 750px) {
+  .menu-drawer-container.design-scale {
+    --scale-factor-mobile: clamp(1, calc(100vw / 750px), 1.2);
+  }
+}
+
 /* 禁用 base.css 中的遮罩 */
 .header__icon--menu[aria-expanded='true']::before {
   content: none !important;
@@ -61,6 +99,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .menu-drawer__inner-container {
   position: relative;
+  width: 100%;
   height: 100%;
 }
 
@@ -69,11 +108,12 @@ details[open].menu-opening > .menu-drawer__submenu {
   grid-template-rows: 1fr auto;
   align-content: space-between;
   overflow-y: auto;
+  width: 100%;
   height: 100%;
 }
 
 .menu-drawer__navigation {
-  padding-top: 8rem;
+  padding-top: calc(var(--navigation-padding-top, 80px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer__inner-submenu {
@@ -85,15 +125,15 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__menu {
   display: flex;
   flex-direction: column;
-  gap: 4.8rem;
+  gap: calc(var(--menu-gap, 48px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer__menu-item {
   /* padding: 1.1rem 3rem; */
-  height: 7.2rem;
-  padding-left: 5rem;
+  height: calc(var(--menu-item-height, 72px) * var(--scale-factor-mobile, 1));
+  padding-left: calc(var(--menu-item-padding-left, 50px) * var(--scale-factor-mobile, 1));
   text-decoration: none;
-  font-size: 4.8rem;
+  font-size: calc(var(--menu-item-font-size, 48px) * var(--scale-factor-mobile, 1));
   font-family: 'Kanit', sans-serif;
   font-weight: 600;
   line-height: normal;
@@ -101,7 +141,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 }
 
 .menu-drawer summary.menu-drawer__menu-item {
-  padding-right: 5.2rem;
+  padding-right: calc(var(--menu-item-padding-right, 52px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer__menu-item--active,
@@ -168,11 +208,11 @@ details[open].menu-opening > .menu-drawer__submenu {
   padding: 0;
   background-color: rgba(var(--color-foreground), 0.03);
   position: relative;
-  height: 35rem;
+  height: calc(450px * var(--scale-factor-mobile, 1));
 }
 
 .header--has-social .menu-drawer__utility-links {
-  padding: 4rem 5rem;
+  padding: calc(var(--utility-padding-v, 40px) * var(--scale-factor-mobile, 1)) calc(var(--utility-padding-h, 50px) * var(--scale-factor-mobile, 1));
 }
 
 @media screen and (max-width: 749px) {
@@ -193,9 +233,9 @@ details[open].menu-opening > .menu-drawer__submenu {
   text-decoration: none;
   padding: 1rem 0;
   font-family: 'Kanit', sans-serif;
-  font-size: 3.2rem;
+  font-size: calc(var(--account-font-size, 32px) * var(--scale-factor-mobile, 1));
   font-weight: 400;
-  line-height: 4rem;
+  line-height: calc(var(--account-line-height, 40px) * var(--scale-factor-mobile, 1));
   color: rgb(var(--color-foreground));
   margin-bottom: 0;
 }
@@ -206,9 +246,9 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .menu-drawer__account account-icon > .svg-wrapper,
 .menu-drawer__account .svg-wrapper {
-  height: 4.4rem;
-  width: 4.4rem;
-  margin-right: 1.4rem;
+  height: calc(var(--account-icon-size, 44px) * var(--scale-factor-mobile, 1));
+  width: calc(var(--account-icon-size, 44px) * var(--scale-factor-mobile, 1));
+  margin-right: calc(var(--localization-gap, 14px) * var(--scale-factor-mobile, 1));
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -232,14 +272,14 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .menu-drawer .menu-drawer__utility-links .menu-drawer__localization.header-localization {
   display: flex;
-  gap: 5rem;
-  margin-top: 6rem;
+  gap: calc(50px * var(--scale-factor-mobile, 1));
+  margin-top: calc(var(--localization-margin-top, 60px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer .list-social {
   display: flex;
-  gap: 5rem;
-  margin-top: 6rem;
+  gap: calc(50px * var(--scale-factor-mobile, 1));
+  margin-top: calc(var(--utility-margin-top, 60px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer .list-social:empty {
@@ -247,8 +287,8 @@ details[open].menu-opening > .menu-drawer__submenu {
 }
 
 .menu-drawer .list-social__link .svg-wrapper {
-  width: 4.4rem;
-  height: 4.4rem;
+  width: calc(var(--account-icon-size, 44px) * var(--scale-factor-mobile, 1));
+  height: calc(var(--account-icon-size, 44px) * var(--scale-factor-mobile, 1));
   display: flex;
 }
 
@@ -268,158 +308,13 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 /* ===== 自定义样式 - 覆盖基础样式 ===== */
 
-/* Menu drawer content - ensure 100% width at all screen sizes */
-.custom-menu-drawer {
-  width: 100% !important;
-  max-width: 100% !important;
-  height: 1394px;
-  background-color: #ffffff;
-}
-
-.custom-menu-drawer__inner {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-}
-
-.custom-menu-drawer__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  padding-top: 80px;
-  overflow-y: auto;
-}
-
-/* Navigation section */
-.custom-menu-drawer__navigation {
-  height: 932px;
-  padding-left: calc(50px * var(--scale-factor-mobile, 1));
-  background-color: #ffffff;
-}
-
-.custom-menu-drawer__menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: calc(48px * var(--scale-factor-mobile, 1));
-}
-
-.custom-menu-drawer__menu-item {
-  margin: 0;
-}
-
-.custom-menu-drawer__menu-link {
-  font-family: 'Kanit', sans-serif;
-  font-size: calc(48px * var(--scale-factor-mobile, 1));
-  font-weight: 600;
-  line-height: normal;
-  color: #000000;
-  text-decoration: none;
-  display: block;
-  transition: opacity 0.3s ease;
-}
-
-.custom-menu-drawer__menu-link:hover {
-  opacity: 0.7;
-}
-
-.custom-menu-drawer__menu-link--active {
-  text-decoration: none;
-}
-
-/* Utility section (bottom) */
-.custom-menu-drawer__utility {
-  background-color: #f0f0f0;
-  padding: calc(40px * var(--scale-factor-mobile, 1)) calc(50px * var(--scale-factor-mobile, 1));
-  display: flex;
-  flex-direction: column;
-  gap: calc(36px * var(--scale-factor-mobile, 1));
-  min-height: calc(462px * var(--scale-factor-mobile, 1));
-}
-
-/* Login section */
-.custom-menu-drawer__login {
-  display: flex;
-  align-items: center;
-}
-
-.custom-menu-drawer__login-link {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  text-decoration: none;
-  color: #000000;
-}
-
-.custom-menu-drawer__login-icon {
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.custom-menu-drawer__login-icon svg {
-  width: 44px;
-  height: 44px;
-  stroke: #000000;
-  fill: none;
-}
-
-.custom-menu-drawer__login-text {
-  font-family: 'Kanit', sans-serif;
-  font-size: calc(32px * var(--scale-factor-mobile, 1));
-  font-weight: 400;
-  line-height: calc(40px * var(--scale-factor-mobile, 1));
-  color: #000000;
-}
-
-/* Localization section */
-.custom-menu-drawer__localization {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-}
-
-.custom-menu-drawer__localization-form {
-  display: flex;
-  align-items: center;
-}
-
-.custom-menu-drawer__localization .localization-form {
-  display: flex;
-  align-items: center;
-}
-
-.custom-menu-drawer__localization .localization-selector {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.custom-menu-drawer__localization .localization-selector__submit {
-  padding: 8px 12px;
-  font-family: 'Kanit', sans-serif;
-  font-size: 32px;
-  font-weight: 600;
-  color: #000000;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
 /* Language selector text styles - merged and optimized */
 .menu-drawer__utility-links .menu-drawer__localization .localization-form__select,
 .menu-drawer__utility-links .menu-drawer__localization .localization-selector,
 .menu-drawer__utility-links .menu-drawer__localization .disclosure__button.localization-form__select,
 .menu-drawer__utility-links .menu-drawer__localization .disclosure__button.localization-selector {
   font-family: 'Kanit', sans-serif;
-  font-size: 3.2rem;
+  font-size: calc(var(--localization-font-size, 32px) * var(--scale-factor-mobile, 1));
   font-weight: 600;
   line-height: normal;
   display: flex !important;
@@ -432,7 +327,7 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__utility-links .menu-drawer__localization .localization-form__select span,
 .menu-drawer__utility-links .menu-drawer__localization .localization-selector span {
   font-family: 'Kanit', sans-serif;
-  font-size: 3.2rem;
+  font-size: calc(var(--localization-font-size, 32px) * var(--scale-factor-mobile, 1));
   font-weight: 600;
   line-height: normal;
   margin: 0;
@@ -451,11 +346,9 @@ details[open].menu-opening > .menu-drawer__submenu {
 .menu-drawer__utility-links .menu-drawer__localization .localization-form__select svg,
 .menu-drawer__utility-links .menu-drawer__localization .localization-selector svg,
 .menu-drawer__utility-links .menu-drawer__localization .localization-form__select .icon-caret,
-.menu-drawer__utility-links .menu-drawer__localization .localization-selector .icon-caret,
-.custom-menu-drawer__localization .localization-selector svg,
-.custom-menu-drawer__localization .localization-selector .icon-caret {
-  width: 4.2rem;
-  height: 4.2rem;
+.menu-drawer__utility-links .menu-drawer__localization .localization-selector .icon-caret {
+  width: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
+  height: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
   stroke: #000000;
   flex-shrink: 0;
   display: inline-block;
@@ -479,8 +372,8 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 .country-flag-icon,
 .header-localization .country-flag-icon {
-  width: 4.2rem;
-  height: 4.2rem;
+  width: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
+  height: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
   object-fit: contain;
   display: inline-block;
   vertical-align: middle;
@@ -489,8 +382,8 @@ details[open].menu-opening > .menu-drawer__submenu {
 
 /* Menu drawer localization - flag icons fill container */
 .menu-drawer__utility-links .menu-drawer__localization .country-flag-wrapper {
-  width: 4.2rem;
-  height: 4.2rem;
+  width: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
+  height: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1));
 }
 
 .menu-drawer__utility-links .menu-drawer__localization .country-flag-icon {
@@ -507,53 +400,11 @@ details[open].menu-opening > .menu-drawer__submenu {
 .country .country-flag-icon,
 .disclosure__list .country .country-flag-icon,
 .country-selector__list .country .country-flag-icon {
-  width: 4.2rem !important;
-  height: 4.2rem !important;
+  width: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1)) !important;
+  height: calc(var(--flag-icon-size, 42px) * var(--scale-factor-mobile, 1)) !important;
   margin-right: 8px;
   flex-shrink: 0;
   object-fit: contain;
 }
 
-/* Social media icons */
-.custom-menu-drawer__social {
-  display: flex;
-  align-items: center;
-  gap: 50px;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.custom-menu-drawer__social-item {
-  margin: 0;
-}
-
-.custom-menu-drawer__social-link {
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #000000;
-  transition: opacity 0.3s ease;
-}
-
-.custom-menu-drawer__social-link:hover {
-  opacity: 0.7;
-}
-
-.custom-menu-drawer__social-link svg {
-  width: 48px;
-  height: 48px;
-  fill: #000000;
-}
-
-/* Ensure custom menu drawer is always 100% width, even on tablet/desktop */
-@media (min-width: 750px) {
-  .custom-menu-drawer {
-    width: 100% !important;
-    max-width: 100% !important;
-    border: none !important;
-  }
-}
 

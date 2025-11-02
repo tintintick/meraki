@@ -34,6 +34,7 @@
   width: 100%;
   height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
   background-color: var(--section-bg);
+  letter-spacing: normal;
 }
 
 /* Feature Container */
@@ -93,7 +94,7 @@
   color: var(--desc-color);
   text-align: center;
   margin: 0;
-  /* padding: 0 calc(40px * var(--scale-factor-mobile, 1)); */
+  padding: 0 calc(23px * var(--scale-factor-mobile, 1));
 }
 
 /* Buttons Container */

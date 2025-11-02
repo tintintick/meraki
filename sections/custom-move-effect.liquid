@@ -124,7 +124,18 @@
     // Read CSS variables (scale factor)
     function getScaleFactor() {
       const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
-      return parseFloat(value) || 1;
+      const parsed = parseFloat(value);
+      
+      // 如果 CSS 变量解析失败，手动计算缩放因子
+      if (isNaN(parsed) || !parsed) {
+        const screenWidth = window.innerWidth;
+        if (screenWidth < 750) {
+          return Math.max(0.5, Math.min(1, screenWidth / 750));
+        }
+        return 1;
+      }
+      
+      return parsed;
     }
 
     // Helper to read CSS variable

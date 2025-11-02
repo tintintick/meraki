@@ -128,8 +128,15 @@
       return parseFloat(value) || 1;
     }
 
-    // Get player width from CSS variable
+    // Get player width from actual DOM element
     function getPlayerWidth() {
+      // 直接获取第一个 video-player-item 的实际渲染宽度
+      const firstItem = playerContainer.querySelector('.video-player-item');
+      if (firstItem) {
+        return firstItem.offsetWidth;
+      }
+      
+      // Fallback: 如果找不到 item，使用 CSS 计算
       const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue('--player-width').trim());
       const scaleFactor = getScaleFactor();
       return playerWidth * scaleFactor;

@@ -103,19 +103,25 @@
       return parseFloat(value) || 1;
     }
 
-    // Get item widths
+    // Get item widths from actual DOM elements
     function getItemWidths() {
-      const imgCenterWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-center-width').trim());
-      const imgSideWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-side-width').trim());
-      const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--img-gap').trim());
-      const contentWidth = parseFloat(getComputedStyle(section).getPropertyValue('--content-width').trim());
       const scaleFactor = getScaleFactor();
+      
+      // 优先使用实际 DOM 元素的宽度
+      const firstContentItem = contentTrack.querySelector('.accessory-content-item');
+      const contentWidth = firstContentItem ? firstContentItem.offsetWidth : 
+        parseFloat(getComputedStyle(section).getPropertyValue('--content-width').trim()) * scaleFactor;
+      
+      // 图片宽度仍使用 CSS 计算（用于样式控制，不影响滑动距离）
+      const imgCenterWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-center-width').trim()) * scaleFactor;
+      const imgSideWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-side-width').trim()) * scaleFactor;
+      const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--img-gap').trim()) * scaleFactor;
 
       return {
-        imgCenterWidth: imgCenterWidth * scaleFactor,
-        imgSideWidth: imgSideWidth * scaleFactor,
-        imgGap: imgGap * scaleFactor,
-        contentWidth: contentWidth * scaleFactor
+        imgCenterWidth,
+        imgSideWidth,
+        imgGap,
+        contentWidth
       };
     }
 

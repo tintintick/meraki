@@ -40,8 +40,8 @@
 /* Container */
 .exhibition-container {
   width: calc(100% - calc(var(--container-margin) * 2));
-  margin-left: var(--container-margin);
-  margin-right: var(--container-margin);
+  margin-left: calc(var(--container-margin) * var(--scale-factor-mobile, 1));
+  margin-right: calc(var(--container-margin) * var(--scale-factor-mobile, 1));
   padding: var(--container-padding);
   background: transparent;
   height: 100%;
