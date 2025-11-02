@@ -1,0 +1,559 @@
+/* ===== Custom Menu Drawer Styles ===== */
+/* ===== 基础样式 - 从 component-menu-drawer.css 复制 ===== */
+
+/* 禁用 base.css 中的遮罩 */
+.header__icon--menu[aria-expanded='true']::before {
+  content: none !important;
+  display: none !important;
+}
+
+.header__icon--menu {
+  position: initial;
+}
+
+.menu-drawer {
+  position: absolute;
+  transform: translateX(100%);
+  visibility: hidden;
+  z-index: 3;
+  right: 0;
+  top: 100%;
+  width: 100%;
+  padding: 0;
+  background-color: rgb(var(--color-background));
+  overflow-x: hidden;
+  font-family: 'Kanit', sans-serif;
+  filter: drop-shadow(
+    var(--drawer-shadow-horizontal-offset) var(--drawer-shadow-vertical-offset) var(--drawer-shadow-blur-radius)
+      rgba(var(--color-shadow), var(--drawer-shadow-opacity))
+  );
+  letter-spacing: normal;
+}
+
+.js .menu-drawer {
+  height: calc(100vh - 100%);
+  height: calc(var(--viewport-height, 100vh) - (var(--header-bottom-position, 100%)));
+}
+
+.js details[open] > .menu-drawer,
+.js details[open] > .menu-drawer__submenu {
+  transition: transform var(--duration-default) ease, visibility var(--duration-default) ease;
+}
+
+.js details[open].menu-opening > .menu-drawer,
+details[open].menu-opening > .menu-drawer__submenu {
+  transform: translateX(0);
+  visibility: visible;
+}
+
+.js .menu-drawer__navigation .submenu-open {
+  visibility: hidden; /* hide menus from screen readers when hidden by submenu */
+}
+
+@media screen and (min-width: 750px) {
+  .menu-drawer {
+    width: 40rem;
+    border-width: 0 0 0 var(--drawer-border-width);
+    border-style: solid;
+    border-color: rgba(var(--color-foreground), var(--drawer-border-opacity));
+  }
+}
+
+.menu-drawer__inner-container {
+  position: relative;
+  height: 100%;
+}
+
+.menu-drawer__navigation-container {
+  display: grid;
+  grid-template-rows: 1fr auto;
+  align-content: space-between;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.menu-drawer__navigation {
+  padding-top: 8rem;
+}
+
+.menu-drawer__inner-submenu {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.menu-drawer__menu {
+  display: flex;
+  flex-direction: column;
+  gap: 4.8rem;
+}
+
+.menu-drawer__menu-item {
+  /* padding: 1.1rem 3rem; */
+  height: 7.2rem;
+  padding-left: 5rem;
+  text-decoration: none;
+  font-size: 4.8rem;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  line-height: normal;
+  background-color: #ffffff;
+}
+
+.menu-drawer summary.menu-drawer__menu-item {
+  padding-right: 5.2rem;
+}
+
+.menu-drawer__menu-item--active,
+.menu-drawer__menu-item:focus,
+.menu-drawer__close-button:focus,
+.menu-drawer__menu-item:hover,
+.menu-drawer__close-button:hover {
+  color: rgb(var(--color-foreground));
+  background-color: rgba(var(--color-foreground), 0.04);
+}
+
+.menu-drawer__menu-item--active:hover {
+  background-color: rgba(var(--color-foreground), 0.08);
+}
+
+.js .menu-drawer__menu-item .icon-caret {
+  display: none;
+}
+
+.menu-drawer__menu-item > .svg-wrapper {
+  width: 15px;
+  position: absolute;
+  right: 3rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.js .menu-drawer__submenu {
+  position: absolute;
+  top: 0;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  background-color: rgb(var(--color-background));
+  z-index: 1;
+  transform: translateX(100%);
+  visibility: hidden;
+}
+
+.js .menu-drawer__submenu .menu-drawer__submenu {
+  overflow-y: auto;
+}
+
+.menu-drawer__close-button {
+  margin-top: 1.5rem;
+  padding: 1.2rem 2.6rem 1.2rem 3rem;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  font-size: 1.4rem;
+  width: 100%;
+  background-color: transparent;
+  font-family: 'Kanit', sans-serif;
+  text-align: left;
+}
+
+.menu-drawer__close-button .svg-wrapper {
+  transform: rotate(180deg);
+  margin-right: 1rem;
+  width: 15px;
+}
+
+.menu-drawer__utility-links {
+  padding: 0;
+  background-color: rgba(var(--color-foreground), 0.03);
+  position: relative;
+  height: 35rem;
+}
+
+.header--has-social .menu-drawer__utility-links {
+  padding: 4rem 5rem;
+}
+
+@media screen and (max-width: 749px) {
+  .header--has-account:where(:not(.header--has-social):not(.header--has-localizations)) .menu-drawer__utility-links {
+    padding: 2rem 3rem;
+  }
+}
+
+@media screen and (max-width: 989px) {
+  .header--has-localizations:where(:not(.header--has-social)) .menu-drawer__utility-links {
+    padding: 4rem 5rem;
+  }
+}
+
+.menu-drawer__account {
+  display: inline-flex;
+  align-items: center;
+  text-decoration: none;
+  padding: 1rem 0;
+  font-family: 'Kanit', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 400;
+  line-height: 4rem;
+  color: rgb(var(--color-foreground));
+  margin-bottom: 0;
+}
+
+.menu-drawer__utility-links:has(.menu-drawer__localization) .menu-drawer__account {
+  margin: 0;
+}
+
+.menu-drawer__account account-icon > .svg-wrapper,
+.menu-drawer__account .svg-wrapper {
+  height: 4.4rem;
+  width: 4.4rem;
+  margin-right: 1.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-drawer__account account-icon > .svg-wrapper svg,
+.menu-drawer__account .svg-wrapper svg {
+  width: 100%;
+  height: 100%;
+}
+
+.menu-drawer__account shop-user-avatar {
+  --shop-avatar-size: 2.4rem;
+  margin-right: 0.55rem;
+  margin-left: -0.45rem;
+}
+
+.menu-drawer__account:hover account-icon > .svg-wrapper {
+  transform: scale(1.07);
+}
+
+.menu-drawer .menu-drawer__utility-links .menu-drawer__localization.header-localization {
+  display: flex;
+  gap: 5rem;
+  margin-top: 6rem;
+}
+
+.menu-drawer .list-social {
+  display: flex;
+  gap: 5rem;
+  margin-top: 6rem;
+}
+
+.menu-drawer .list-social:empty {
+  display: none;
+}
+
+.menu-drawer .list-social__link .svg-wrapper {
+  width: 4.4rem;
+  height: 4.4rem;
+  display: flex;
+}
+
+.menu-drawer .list-social__item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media screen and (max-width: 749px) {
+  .menu-drawer.country-selector-open {
+    transform: none !important;
+    filter: none !important;
+    transition: none !important;
+  }
+}
+
+/* ===== 自定义样式 - 覆盖基础样式 ===== */
+
+/* Menu drawer content - ensure 100% width at all screen sizes */
+.custom-menu-drawer {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 1394px;
+  background-color: #ffffff;
+}
+
+.custom-menu-drawer__inner {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.custom-menu-drawer__content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  overflow-y: auto;
+}
+
+/* Navigation section */
+.custom-menu-drawer__navigation {
+  height: 932px;
+  padding-left: calc(50px * var(--scale-factor-mobile, 1));
+  background-color: #ffffff;
+}
+
+.custom-menu-drawer__menu-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: calc(48px * var(--scale-factor-mobile, 1));
+}
+
+.custom-menu-drawer__menu-item {
+  margin: 0;
+}
+
+.custom-menu-drawer__menu-link {
+  font-family: 'Kanit', sans-serif;
+  font-size: calc(48px * var(--scale-factor-mobile, 1));
+  font-weight: 600;
+  line-height: normal;
+  color: #000000;
+  text-decoration: none;
+  display: block;
+  transition: opacity 0.3s ease;
+}
+
+.custom-menu-drawer__menu-link:hover {
+  opacity: 0.7;
+}
+
+.custom-menu-drawer__menu-link--active {
+  text-decoration: none;
+}
+
+/* Utility section (bottom) */
+.custom-menu-drawer__utility {
+  background-color: #f0f0f0;
+  padding: calc(40px * var(--scale-factor-mobile, 1)) calc(50px * var(--scale-factor-mobile, 1));
+  display: flex;
+  flex-direction: column;
+  gap: calc(36px * var(--scale-factor-mobile, 1));
+  min-height: calc(462px * var(--scale-factor-mobile, 1));
+}
+
+/* Login section */
+.custom-menu-drawer__login {
+  display: flex;
+  align-items: center;
+}
+
+.custom-menu-drawer__login-link {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  text-decoration: none;
+  color: #000000;
+}
+
+.custom-menu-drawer__login-icon {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.custom-menu-drawer__login-icon svg {
+  width: 44px;
+  height: 44px;
+  stroke: #000000;
+  fill: none;
+}
+
+.custom-menu-drawer__login-text {
+  font-family: 'Kanit', sans-serif;
+  font-size: calc(32px * var(--scale-factor-mobile, 1));
+  font-weight: 400;
+  line-height: calc(40px * var(--scale-factor-mobile, 1));
+  color: #000000;
+}
+
+/* Localization section */
+.custom-menu-drawer__localization {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+}
+
+.custom-menu-drawer__localization-form {
+  display: flex;
+  align-items: center;
+}
+
+.custom-menu-drawer__localization .localization-form {
+  display: flex;
+  align-items: center;
+}
+
+.custom-menu-drawer__localization .localization-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.custom-menu-drawer__localization .localization-selector__submit {
+  padding: 8px 12px;
+  font-family: 'Kanit', sans-serif;
+  font-size: 32px;
+  font-weight: 600;
+  color: #000000;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Language selector text styles - merged and optimized */
+.menu-drawer__utility-links .menu-drawer__localization .localization-form__select,
+.menu-drawer__utility-links .menu-drawer__localization .localization-selector,
+.menu-drawer__utility-links .menu-drawer__localization .disclosure__button.localization-form__select,
+.menu-drawer__utility-links .menu-drawer__localization .disclosure__button.localization-selector {
+  font-family: 'Kanit', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: normal;
+  display: flex !important;
+  align-items: center;
+  gap: 0;
+  justify-content: flex-start;
+  padding: 0 !important;
+}
+
+.menu-drawer__utility-links .menu-drawer__localization .localization-form__select span,
+.menu-drawer__utility-links .menu-drawer__localization .localization-selector span {
+  font-family: 'Kanit', sans-serif;
+  font-size: 3.2rem;
+  font-weight: 600;
+  line-height: normal;
+  margin: 0;
+  padding: 0;
+}
+
+/* Country flag wrapper should be inline with caret */
+.menu-drawer__utility-links .menu-drawer__localization .country-flag-wrapper {
+  display: inline-flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+/* Caret icon size for both country and language selectors - merged and optimized */
+.menu-drawer__utility-links .menu-drawer__localization .localization-form__select svg,
+.menu-drawer__utility-links .menu-drawer__localization .localization-selector svg,
+.menu-drawer__utility-links .menu-drawer__localization .localization-form__select .icon-caret,
+.menu-drawer__utility-links .menu-drawer__localization .localization-selector .icon-caret,
+.custom-menu-drawer__localization .localization-selector svg,
+.custom-menu-drawer__localization .localization-selector .icon-caret {
+  width: 4.2rem;
+  height: 4.2rem;
+  stroke: #000000;
+  flex-shrink: 0;
+  display: inline-block;
+  vertical-align: middle;
+  position: static !important;
+  right: auto !important;
+  top: auto !important;
+  transform: none !important;
+  margin: 0;
+  padding: 0;
+}
+
+/* Country flag icons - unified for all contexts */
+.country-flag-wrapper,
+.menu-drawer__utility-links .menu-drawer__localization .country-flag-wrapper,
+.header-localization .country-flag-wrapper {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.country-flag-icon,
+.header-localization .country-flag-icon {
+  width: 4.2rem;
+  height: 4.2rem;
+  object-fit: contain;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+/* Menu drawer localization - flag icons fill container */
+.menu-drawer__utility-links .menu-drawer__localization .country-flag-wrapper {
+  width: 4.2rem;
+  height: 4.2rem;
+}
+
+.menu-drawer__utility-links .menu-drawer__localization .country-flag-icon {
+  width: 100%;
+  height: 100%;
+}
+
+/* Country selector list items */
+.country {
+  display: flex;
+  align-items: center;
+}
+
+.country .country-flag-icon,
+.disclosure__list .country .country-flag-icon,
+.country-selector__list .country .country-flag-icon {
+  width: 4.2rem !important;
+  height: 4.2rem !important;
+  margin-right: 8px;
+  flex-shrink: 0;
+  object-fit: contain;
+}
+
+/* Social media icons */
+.custom-menu-drawer__social {
+  display: flex;
+  align-items: center;
+  gap: 50px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.custom-menu-drawer__social-item {
+  margin: 0;
+}
+
+.custom-menu-drawer__social-link {
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000;
+  transition: opacity 0.3s ease;
+}
+
+.custom-menu-drawer__social-link:hover {
+  opacity: 0.7;
+}
+
+.custom-menu-drawer__social-link svg {
+  width: 48px;
+  height: 48px;
+  fill: #000000;
+}
+
+/* Ensure custom menu drawer is always 100% width, even on tablet/desktop */
+@media (min-width: 750px) {
+  .custom-menu-drawer {
+    width: 100% !important;
+    max-width: 100% !important;
+    border: none !important;
+  }
+}
+

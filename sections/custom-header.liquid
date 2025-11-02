@@ -1,8 +1,8 @@
 {{ 'custom-header.css' | asset_url | stylesheet_tag }}
+{{ 'custom-component-menu-drawer.css' | asset_url | stylesheet_tag }}
 
 <link rel="stylesheet" href="{{ 'component-list-menu.css' | asset_url }}" media="print" onload="this.media='all'">
 <link rel="stylesheet" href="{{ 'component-search.css' | asset_url }}" media="print" onload="this.media='all'">
-<link rel="stylesheet" href="{{ 'component-menu-drawer.css' | asset_url }}" media="print" onload="this.media='all'">
 <link
   rel="stylesheet"
   href="{{ 'component-cart-notification.css' | asset_url }}"
@@ -123,19 +123,63 @@
     endif
   -%}
   <header class="header custom-header design-scale page-width{% if social_links %} header--has-social{% endif %}{% if shop.customer_accounts_enabled %} header--has-account{% endif %}{% if localization_forms %} header--has-localizations{% endif %}">
+    {%- comment -%} Close button (menu-open state only) {%- endcomment -%}
+    <button class="header__close-button menu-open-only" aria-label="{{ 'sections.header.menu' | t }}">
+      <img src="{{ 'header/menu-cross.svg' | asset_url }}" alt="Close" width="44" height="44">
+    </button>
+
     {%- comment -%} Logo - Shared across mobile and desktop {%- endcomment -%}
     <div class="header__logo">
       {%- if request.page_type == 'index' -%}
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        <img
-          src="{{ 'logo-white.svg' | asset_url }}"
-          alt="{{ shop.name | escape }}"
-          class="custom-header-logo"
-          width="133"
-          height="52"
-        >
+        {%- comment -%} Logo (White - Default) {%- endcomment -%}
+        {%- if section.settings.logo_white != blank -%}
+          {%- assign logo_white_alt = shop.name | escape -%}
+          {{
+            section.settings.logo_white
+            | image_url: width: 266
+            | image_tag:
+              class: 'custom-header-logo',
+              width: 133,
+              height: 52,
+              alt: logo_white_alt,
+              loading: 'eager',
+              preload: true
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'header/logo-white.svg' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="custom-header-logo"
+            width="133"
+            height="52"
+          >
+        {%- endif -%}
+
+        {%- comment -%} Logo (Black - Menu Open) {%- endcomment -%}
+        {%- if section.settings.logo_black != blank -%}
+          {%- assign logo_black_alt = shop.name | escape -%}
+          {{
+            section.settings.logo_black
+            | image_url: width: 266
+            | image_tag:
+              class: 'custom-header-logo-menu-open menu-open-only',
+              width: 133,
+              height: 52,
+              alt: logo_black_alt,
+              loading: 'eager'
+          }}
+        {%- else -%}
+          <img
+            src="{{ 'header/logo-black.svg' | asset_url }}"
+            alt="{{ shop.name | escape }}"
+            class="custom-header-logo-menu-open menu-open-only"
+            width="133"
+            height="52"
+          >
+        {%- endif -%}
       </a>
       {%- if request.page_type == 'index' -%}
         </h1>
@@ -162,7 +206,7 @@
                 height="48"
               >
             </summary>
-            {% render 'header-drawer-menu' %}
+            {% render 'custom-header-drawer-menu' %}
           </details>
         </header-drawer>
       {%- endif -%}
@@ -261,9 +305,9 @@
         {%- comment -%} Cart Icon {%- endcomment -%}
         <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
           {% if cart == empty %}
-            <span class="svg-wrapper">{{ 'icon-cart-empty.svg' | inline_asset_content }}</span>
+            <span class="svg-wrapper">{{ 'header/Cart.svg' | inline_asset_content }}</span>
           {% else %}
-            <span class="svg-wrapper">{{ 'icon-cart.svg' | inline_asset_content }}</span>
+            <span class="svg-wrapper">{{ 'header/Cart.svg' | inline_asset_content }}</span>
           {% endif %}
           <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
           {%- if cart != empty -%}
@@ -441,21 +485,61 @@
           this.currentScrollTop = scrollTop;
           this.menuShouldResetOnClose = !this.wasScrolledBeforeMenu;
           this.menuCloseHandledEarly = false;
+          this.closeHandledByButton = false;
           // Force header to scrolled state (white background, black icons/text)
-          this.header.classList.add('scrolled-past-header');
+          this.header.classList.add('scrolled-past-header', 'menu-open');
+          document.body.classList.add('menu-open');
           this.switchIcons();
         } else {
-          // Menu closed - restore previous scroll state
-          if (!this.wasScrolledBeforeMenu && !this.menuCloseHandledEarly) {
-            // If header was not scrolled before menu opened, restore top state
-            this.resetHeaderToTopState();
+          // Menu closed - only handle if not already handled by close button
+          if (!this.closeHandledByButton) {
+            requestAnimationFrame(() => {
+              if (!this.wasScrolledBeforeMenu && !this.menuCloseHandledEarly) {
+                // If header was not scrolled before menu opened, restore top state
+                this.header.classList.remove('scrolled-past-header');
+              }
+              // 立即移除 menu-open 类
+              this.header.classList.remove('menu-open');
+              document.body.classList.remove('menu-open');
+              this.menuShouldResetOnClose = false;
+              this.menuCloseHandledEarly = false;
+              this.switchIcons();
+            });
           }
-          // If it was already scrolled before menu opened, keep it scrolled
+          // Reset flag
+          this.closeHandledByButton = false;
+        }
+      });
+
+      // Setup close button in custom menu drawer
+      this.setupCustomMenuCloseButton();
+    }
+
+    setupCustomMenuCloseButton() {
+      const closeButton = document.querySelector('.header__close-button');
+      const menuDrawerContainer = document.querySelector('#Details-menu-drawer-container');
+      const headerDrawer = document.querySelector('header-drawer');
+      const summaryElement = menuDrawerContainer?.querySelector('summary');
+      
+      if (closeButton && headerDrawer && summaryElement) {
+        closeButton.addEventListener('click', (event) => {
+          // 设置标志，表示关闭已由按钮处理
+          this.closeHandledByButton = true;
+          
+          // 立即更新 header 状态，不等待 toggle 事件
+          if (!this.wasScrolledBeforeMenu && !this.menuCloseHandledEarly) {
+            this.header.classList.remove('scrolled-past-header');
+          }
+          this.header.classList.remove('menu-open');
+          document.body.classList.remove('menu-open');
           this.menuShouldResetOnClose = false;
           this.menuCloseHandledEarly = false;
           this.switchIcons();
-        }
-      });
+          
+          // 调用 HeaderDrawer 的 closeMenuDrawer 方法，确保移除 overflow-hidden 类
+          headerDrawer.closeMenuDrawer(event, summaryElement);
+        });
+      }
     }
 
     resetHeaderToTopState() {
@@ -675,6 +759,22 @@
       "id": "show_line_separator",
       "default": false,
       "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_white",
+      "label": "Logo (White - Default)",
+      "info": "Logo displayed on default header. If not set, will use assets/header/logo-white.svg"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo_black",
+      "label": "Logo (Black - Menu Open)",
+      "info": "Logo displayed when menu is open. If not set, will use assets/header/logo-black.svg"
     },
     {
       "type": "header",

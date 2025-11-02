@@ -134,7 +134,7 @@
   transform: translateX(-50%);
   display: flex;
   gap: calc(var(--dots-gap) * var(--scale-factor-mobile, 1));
-  z-index: 10;
+  z-index: 3;
 }
 
 .banner-indicator {
@@ -229,7 +229,7 @@
     top: calc(var(--banner-height) * var(--scale-factor-desktop, 1) + var(--dots-offset));
     left: calc(var(--text-block-left));
     transform: translateX(var(--text-block-translate, 0));
-    z-index: 10;
+    z-index: 3;
   }
 }
 

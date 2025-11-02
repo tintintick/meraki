@@ -98,23 +98,23 @@
     <!-- Social Media Icons -->
     {%- if section.settings.show_social -%}
       <div class="social-media-icons">
-        {%- if section.settings.social_facebook_link != blank -%}
-          <a href="{{ section.settings.social_facebook_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+        {%- if settings.social_facebook_link != blank -%}
+          <a href="{{ settings.social_facebook_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
             <img src="{{ 'footer/Facebook.svg' | asset_url }}" alt="Facebook" width="60" height="60" loading="lazy">
           </a>
         {%- endif -%}
-        {%- if section.settings.social_instagram_link != blank -%}
-          <a href="{{ section.settings.social_instagram_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+        {%- if settings.social_instagram_link != blank -%}
+          <a href="{{ settings.social_instagram_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <img src="{{ 'footer/Instagram.svg' | asset_url }}" alt="Instagram" width="60" height="60" loading="lazy">
           </a>
         {%- endif -%}
-        {%- if section.settings.social_youtube_link != blank -%}
-          <a href="{{ section.settings.social_youtube_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        {%- if settings.social_youtube_link != blank -%}
+          <a href="{{ settings.social_youtube_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
             <img src="{{ 'footer/YouTube.svg' | asset_url }}" alt="YouTube" width="60" height="60" loading="lazy">
           </a>
         {%- endif -%}
-        {%- if section.settings.social_tiktok_link != blank -%}
-          <a href="{{ section.settings.social_tiktok_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+        {%- if settings.social_tiktok_link != blank -%}
+          <a href="{{ settings.social_tiktok_link }}" class="social-link" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
             <img src="{{ 'footer/tiktok.svg' | asset_url }}" alt="TikTok" width="60" height="60" loading="lazy">
           </a>
         {%- endif -%}
@@ -149,30 +149,14 @@
       "content": "Social Media"
     },
     {
+      "type": "paragraph",
+      "content": "Social media links are configured in Theme Settings → Social Media"
+    },
+    {
       "type": "checkbox",
       "id": "show_social",
       "label": "Show social media icons",
       "default": true
-    },
-    {
-      "type": "url",
-      "id": "social_facebook_link",
-      "label": "Facebook"
-    },
-    {
-      "type": "url",
-      "id": "social_instagram_link",
-      "label": "Instagram"
-    },
-    {
-      "type": "url",
-      "id": "social_youtube_link",
-      "label": "YouTube"
-    },
-    {
-      "type": "url",
-      "id": "social_tiktok_link",
-      "label": "TikTok"
     },
     {
       "type": "header",

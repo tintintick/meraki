@@ -38,7 +38,8 @@
   align-items: center;
   justify-content: space-between;
   position: relative;
-  transition: background-color 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+  background-color: transparent;
+  transition: background-color var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease), backdrop-filter var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease), -webkit-backdrop-filter var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease);
 }
 
 /* Mobile component styles */
@@ -54,14 +55,13 @@
 }
 
 .custom-header.design-scale.page-width {
-  padding: 0 !important;
+  padding: 0 calc(34px * var(--scale-factor-mobile, 1)) !important;
 }
 
 .custom-header.design-scale .header__logo {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: calc(var(--logo-left) * var(--scale-factor-mobile, 1));
 }
 
 .custom-header.design-scale .header__heading-link {
@@ -71,6 +71,9 @@
 }
 
 .custom-header.design-scale .custom-header-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
   width: calc(var(--logo-width) * var(--scale-factor-mobile, 1));
   height: calc(var(--logo-height) * var(--scale-factor-mobile, 1));
   display: block;
@@ -82,7 +85,6 @@
   align-items: center;
   gap: calc(var(--order-button-gap) * var(--scale-factor-mobile, 1));
   margin-left: auto;
-  padding-right: calc(var(--order-button-spacing) * var(--scale-factor-mobile, 1));
 }
 
 .custom-header.design-scale .header__order-button {
@@ -136,10 +138,18 @@
   box-shadow: none;
 }
 
-.custom-header.design-scale .header__desktop-elements {
+/* Hide desktop elements on mobile */
+.custom-header.design-scale .header__desktop-elements,
+.header__desktop-elements {
   display: none;
 }
 
+/* Hide desktop navigation in menu open state and on mobile */
+.custom-header .header__desktop-nav {
+  display: none;
+}
+
+/* Header icon styling */
 .custom-header.design-scale .header__icon {
   color: #ffffff;
 }
@@ -170,12 +180,11 @@
 }
 
 .custom-header-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
   display: block;
   transition: filter 0.3s ease;
-}
-
-.header__desktop-elements {
-  display: none;
 }
 
 /* ===== Tablet Scaling (750px+) ===== */
@@ -311,6 +320,7 @@
 .scrolled-past-header .custom-header.design-scale .custom-header-wrapper {
   background-color: #ffffff !important;
   background: #ffffff !important;
+  transition: background-color var(--header-transition-duration) var(--header-transition-timing), backdrop-filter var(--header-transition-duration) var(--header-transition-timing), -webkit-backdrop-filter var(--header-transition-duration) var(--header-transition-timing);
 }
 
 .scrolled-past-header .custom-header.design-scale .header__order-button {
@@ -406,4 +416,184 @@ main#MainContent {
 /* First section (banner) moves up to be under header */
 main#MainContent>.shopify-section:first-child {
   margin-top: calc(-1 * var(--header-height, 118px));
+}
+
+/* ===== Menu Open State - Header Transformation ===== */
+
+/* Default: hide menu-open-only elements */
+.menu-open-only {
+  display: none !important;
+}
+
+/* Menu open: header transformation - white background and flex layout */
+.menu-open .custom-header {
+  background-color: #ffffff !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calc(34px * var(--scale-factor-mobile, 1));
+  transition: background-color var(--header-transition-duration) var(--header-transition-timing), backdrop-filter var(--header-transition-duration) var(--header-transition-timing), -webkit-backdrop-filter var(--header-transition-duration) var(--header-transition-timing);
+}
+
+.menu-open .custom-header.design-scale .custom-header-wrapper {
+  background-color: #ffffff !important;
+  background: #ffffff !important;
+  transition: background-color var(--header-transition-duration) var(--header-transition-timing), backdrop-filter var(--header-transition-duration) var(--header-transition-timing), -webkit-backdrop-filter var(--header-transition-duration) var(--header-transition-timing);
+}
+
+/* Menu open: hide default elements */
+.menu-open .custom-header-logo,
+.menu-open .header__order-button,
+.menu-open .header__icon--menu {
+  display: none !important;
+}
+
+/* Menu open 时隐藏 mobile elements - 需要更高优先级 */
+.section-header.menu-open .header.custom-header.design-scale header-drawer {
+  width: 0;
+  height: 0;
+}
+
+/* Menu open: show menu-open-only elements */
+.menu-open .menu-open-only {
+  display: block !important;
+}
+
+/* Menu open时显示黑色logo */
+.menu-open .custom-header-logo-menu-open.menu-open-only {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Logo container - position relative for absolute positioning of both logos */
+.header__logo .header__heading-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* 黑色logo：相对定位，在文档流中占据空间 */
+/* 需要同时覆盖 .menu-open-only 的 display: none */
+.custom-header-logo-menu-open.menu-open-only {
+  position: relative !important;
+  width: calc(133px * var(--scale-factor-mobile, 1));
+  height: calc(52px * var(--scale-factor-mobile, 1));
+  display: block !important; /* 覆盖 menu-open-only 的 display: none，确保占据空间 */
+  visibility: hidden; /* 占据空间但不可见 */
+}
+
+/* Close button styling */
+.header__close-button {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header__close-button img {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  display: block;
+}
+
+
+/* Menu open: logo centered using flex */
+.menu-open .header__logo {
+  flex: 1;
+  display: flex;
+  /* justify-content: center; */
+  align-items: center;
+  margin-left: calc(233px * var(--scale-factor-mobile, 1));
+}
+
+.menu-open .header__logo .header__heading-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu open: show desktop-icons (mobile) and style them for mobile design */
+.menu-open .header__desktop-elements {
+  display: flex !important;
+  align-items: center;
+}
+
+.menu-open .header__desktop-icons {
+  display: flex !important;
+  align-items: center;
+  width: calc(130px * var(--scale-factor-mobile, 1));
+  gap: calc(42px * var(--scale-factor-mobile, 1));
+  margin-left: auto;
+}
+
+/* Menu open: desktop-icons styling - mobile design (44px icons, black) */
+.menu-open .header__desktop-icons .header__icon {
+  width: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  height: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000000 !important;
+  padding: 0;
+}
+
+.menu-open .header__desktop-icons .header__icon .svg-wrapper {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-open .header__desktop-icons .header__icon .icon,
+.menu-open .header__desktop-icons .header__icon svg {
+  width: 100%;
+  height: 100%;
+  color: #000000 !important;
+  stroke: #000000 !important;
+}
+
+/* Ensure SVG fills container for account, cart, and search icons */
+.menu-open .header__desktop-icons .header__icon--account svg,
+.menu-open .header__desktop-icons .header__icon--cart svg,
+.menu-open .header__desktop-icons .header__icon--search svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Hide desktop icons in menu-open state (country/language selectors and account) - only show search and cart */
+.menu-open .header__desktop-icons localization-form {
+  display: none !important;
+}
+
+.menu-open .header__desktop-icons .header__icon--account {
+  display: none !important;
+}
+
+/* Ensure search is visible in menu-open state - override base.css rule */
+.menu-open .header__desktop-icons .header__search {
+  display: inline-flex !important;
+}
+
+.menu-open .header__desktop-icons .header__search .header__icon--search {
+  display: flex !important;
+  width: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  height: calc(44px * var(--scale-factor-mobile, 1)) !important;
+}
+
+/* Hide the close icon in search button when menu is open - always show search icon */
+.menu-open .header__desktop-icons .header__search .header__icon-close {
+  display: none !important;
+}
+
+/* Ensure search icon (not close) is always visible in menu-open state */
+.menu-open .header__desktop-icons .header__search .svg-wrapper:not(.header__icon-close) {
+  display: flex !important;
 }

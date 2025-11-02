@@ -33,12 +33,18 @@
     aria-controls="{{ localPosition }}-country-results"
     aria-describedby="{{ localPosition }}Label"
   >
-    <span>
-      {{- localization.country.name }} |
-      {{ localization.country.currency.iso_code }}
-      {{ localization.country.currency.symbol -}}
+    <span class="country-flag-wrapper" aria-label="{{ localization.country.name }} | {{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }}">
+      {%- assign country_code = localization.country.iso_code | downcase -%}
+      <img 
+        src="{{ 'flags/' | append: country_code | append: '.png' | asset_url }}" 
+        alt="{{ localization.country.name }}"
+        class="country-flag-icon"
+        width="42"
+        height="42"
+        loading="lazy"
+      >
     </span>
-    {{ 'icon-caret.svg' | inline_asset_content }}
+    {{ 'header/caret.svg' | inline_asset_content }}
   </button>
   <div class="disclosure__list-wrapper country-selector" hidden>
     <div class="country-filter{% unless show_country_filter %} country-filter--no-padding{% endunless %}">
@@ -111,7 +117,18 @@
                 >
                   {{- 'icon-checkmark.svg' | inline_asset_content -}}
                 </span>
-                <span class="country">{{- country.name }}</span>
+                <span class="country">
+                  {%- assign country_code = country.iso_code | downcase -%}
+                  <img 
+                    src="{{ 'flags/' | append: country_code | append: '.png' | asset_url }}" 
+                    alt=""
+                    class="country-flag-icon"
+                    width="42"
+                    height="42"
+                    loading="lazy"
+                  >
+                  {{- country.name }}
+                </span>
                 <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
                   {{ country.currency.iso_code }}
                   {{ country.currency.symbol -}}
@@ -140,7 +157,18 @@
               >
                 {{- 'icon-checkmark.svg' | inline_asset_content -}}
               </span>
-              <span class="country">{{- country.name }}</span>
+              <span class="country">
+                {%- assign country_code = country.iso_code | downcase -%}
+                <img 
+                  src="{{ 'flags/' | append: country_code | append: '.png' | asset_url }}" 
+                  alt=""
+                  class="country-flag-icon"
+                  width="42"
+                  height="42"
+                  loading="lazy"
+                >
+                {{- country.name }}
+              </span>
               <span class="localization-form__currency motion-reduce{% unless show_currencies %} hidden{% endunless %}">
                 {{ country.currency.iso_code }}
                 {{ country.currency.symbol -}}
