@@ -53,6 +53,14 @@
   height: auto;
   z-index: 1;
   display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.feature-background img {
+  width: 100%;
+  height: auto;
+  display: block;
 }
 
 /* Content Container */
@@ -73,28 +81,46 @@
 
 /* Title */
 .feature-title {
-  width: 100%;
   font-family: 'Kanit', sans-serif;
   font-weight: 600;
-  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
-  line-height: calc(var(--title-line-height) * var(--scale-factor-mobile, 1));
   color: var(--title-color);
-  text-align: center;
   white-space: pre-line;
   margin: 0;
 }
 
+.feature-title--mobile {
+  width: 100%;
+  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--title-line-height) * var(--scale-factor-mobile, 1));
+  text-align: center;
+  display: block;
+}
+
+.feature-title--desktop {
+  display: none;
+}
+
 /* Description */
 .feature-description {
-  width: 100%;
   font-family: 'Kanit', sans-serif;
   font-weight: 300;
+  color: var(--desc-color);
+  white-space: pre-line;
+  margin: 0;
+  padding: 0;
+}
+
+.feature-description--mobile {
+  width: 100%;
   font-size: calc(var(--desc-font-size) * var(--scale-factor-mobile, 1));
   line-height: calc(var(--desc-line-height) * var(--scale-factor-mobile, 1));
-  color: var(--desc-color);
   text-align: center;
-  margin: 0;
   padding: 0 calc(23px * var(--scale-factor-mobile, 1));
+  display: block;
+}
+
+.feature-description--desktop {
+  display: none;
 }
 
 /* Buttons Container */
@@ -157,14 +183,76 @@
 /* Desktop overrides */
 @media (min-width: 990px) {
   .custom-feature.design-scale {
-    /* Desktop tokens will be added later */
-    --scale-factor-desktop: 1;
+    /* Desktop tokens based on 1920px design */
+    --section-height: 1000px;
+    
+    /* Content positioning */
+    --content-gap: 22px;
+    --title-width: 500px;
+    --title-font-size: 54px;
+    --title-line-height: 1.2;
+    
+    --desc-width: 702px;
+    --desc-font-size: 24px;
+    --desc-line-height: 1.4;
+    
+    --buttons-margin-top: 50px;
+    --button-width: 220px;
+    --button-height: 68px;
+    --button-font-size: 24px;
+    --button-gap: 32px;
+
+    height: calc(var(--section-height) * var(--scale-factor-desktop, 1));
   }
 
-  /* Buttons side by side on desktop */
+  /* Content left-aligned on desktop */
+  .feature-content {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: calc(320px * var(--scale-factor-desktop, 1));
+    padding-top: calc(160px * var(--scale-factor-desktop, 1));
+    gap: calc(var(--content-gap) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Hide mobile content on desktop */
+  .feature-title--mobile,
+  .feature-description--mobile {
+    display: none;
+  }
+
+  /* Show desktop content on desktop */
+  .feature-title--desktop {
+    display: block;
+    width: calc(var(--title-width) * var(--scale-factor-desktop, 1));
+    height: calc(108px * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--title-font-size) * var(--scale-factor-desktop, 1));
+    line-height: 54px;
+    text-align: left;
+  }
+
+  .feature-description--desktop {
+    display: block;
+    width: calc(var(--desc-width) * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--desc-font-size) * var(--scale-factor-desktop, 1));
+    line-height: var(--desc-line-height);
+    text-align: left;
+    padding: 0;
+  }
+
+  /* Buttons container desktop styles */
   .feature-buttons {
     flex-direction: row;
-    gap: calc(40px * var(--scale-factor-desktop, 1));
+    justify-content: flex-start;
+    gap: calc(var(--button-gap) * var(--scale-factor-desktop, 1));
+    margin-top: calc(var(--buttons-margin-top) * var(--scale-factor-desktop, 1));
+    width: auto;
+  }
+
+  /* Button desktop sizes */
+  .feature-button {
+    width: calc(var(--button-width) * var(--scale-factor-desktop, 1));
+    height: calc(var(--button-height) * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--button-font-size) * var(--scale-factor-desktop, 1));
   }
 }
 
