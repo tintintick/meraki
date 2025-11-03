@@ -68,16 +68,6 @@
       {%- endfor -%}
     </div>
 
-    <!-- Info Overlay -->
-    <div class="banner-info-overlay">
-      <div class="banner-info-overlay__text">Get more info</div>
-      <button class="banner-info-overlay__close" aria-label="Close">
-        <span class="svg-wrapper">
-          {{- 'banner/cross.svg' | inline_asset_content -}}
-        </span>
-      </button>
-    </div>
-
     <!-- Indicators Navigation -->
     {%- if section.blocks.size > 1 -%}
       <div class="banner-indicators">
@@ -188,15 +178,6 @@
 
       // Initialize auto-rotate
       startAutoRotate();
-
-      // Info overlay close functionality
-      const infoOverlay = bannerSection.querySelector('.banner-info-overlay');
-      const closeButton = bannerSection.querySelector('.banner-info-overlay__close');
-      if (infoOverlay && closeButton) {
-        closeButton.addEventListener('click', () => {
-          infoOverlay.style.display = 'none';
-        });
-      }
     }
 
     // Wait for DOM to be ready
