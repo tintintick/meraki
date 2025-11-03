@@ -705,6 +705,11 @@ summary::-webkit-details-marker {
   width: 100%;
 }
 
+/* 禁用移动端所有元素的 tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* base-focus */
 /*
   Focus ring - default (with offset)

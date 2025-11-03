@@ -17,7 +17,7 @@
   --text-block-gap: 50px;
   --heading-font-size: 54px;
   --heading-line-height: 64px;
-  --heading-height: 220px;
+  --heading-height: 128px;
   --button-width: 260px;
   --button-height: 80px;
   --button-font-size: 32px;
@@ -25,8 +25,21 @@
   --dots-size: 14px;
   --dots-gap: 22px;
   --text-block-height: 300px;
+
+  /* Info Overlay */
+  --info-overlay-width: 270px;
+  --info-overlay-height: 72px;
+  --info-overlay-left: 449px;
+  --info-overlay-top: 1179px;
+  --info-overlay-text-font-size: 32px;
+  --info-overlay-text-line-height: 64px;
+  --info-overlay-close-size: 28px;
+  --info-overlay-close-right: 31px;
+  --info-overlay-close-bottom: 29px;
+
   height: calc(var(--banner-height) * var(--scale-factor-mobile, 1));
   background-color: var(--banner-bg);
+  letter-spacing: normal;
 }
 
 .banner-slides,
@@ -242,4 +255,63 @@
   .custom-banner.design-scale {
     --scale-factor-desktop: clamp(1, calc(100vw / 1920px), 2);
   }
+}
+
+/* Banner Info Overlay */
+.banner-info-overlay {
+  position: absolute;
+  left: calc(var(--info-overlay-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--info-overlay-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--info-overlay-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--info-overlay-height) * var(--scale-factor-mobile, 1));
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(9px * var(--scale-factor-mobile, 1));
+  /* padding: 0 calc(var(--info-overlay-close-right) * var(--scale-factor-mobile, 1)) 0 calc(9px * var(--scale-factor-mobile, 1)); */
+  z-index: 10;
+  pointer-events: none;
+}
+
+.banner-info-overlay__background {
+  display: none;
+}
+
+.banner-info-overlay__text {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--info-overlay-text-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--info-overlay-text-line-height) * var(--scale-factor-mobile, 1));
+  color: #ffffff;
+  white-space: pre-wrap;
+  text-align: center;
+  pointer-events: none;
+}
+
+.banner-info-overlay__close {
+  width: calc(var(--info-overlay-close-size) * var(--scale-factor-mobile, 1));
+  height: calc(var(--info-overlay-close-size) * var(--scale-factor-mobile, 1));
+  flex-shrink: 0;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: auto;
+}
+
+.banner-info-overlay__close .svg-wrapper {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.banner-info-overlay__close .svg-wrapper svg {
+  width: 100%;
+  height: 100%;
 }

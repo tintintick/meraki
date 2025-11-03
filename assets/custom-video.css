@@ -81,7 +81,7 @@
 }
 
 /* Title Wrapper */
-.video-title-wrapper {
+/* .video-title-wrapper {
   width: calc(var(--title-width) * var(--scale-factor-mobile, 1));
   height: calc(var(--header-height) * var(--scale-factor-mobile, 1));
   overflow-x: scroll;
@@ -91,7 +91,7 @@
   scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
-}
+} */
 
 .video-title-wrapper::-webkit-scrollbar {
   display: none;
@@ -184,9 +184,6 @@
   overflow-x: hidden; /* 禁用滚动，仅允许按钮切换 */
   overflow-y: hidden;
   position: relative;
-  /* scroll-snap-type: x mandatory; */
-  scroll-snap-type: none;
-  scroll-behavior: smooth;
   scrollbar-width: none;
   -ms-overflow-style: none;
   overscroll-behavior: none; /* 确保完全禁用滚动行为 */
@@ -208,7 +205,6 @@
   flex-shrink: 0;
   width: calc(var(--player-width) * var(--scale-factor-mobile, 1));
   height: 100%;
-  scroll-snap-align: start;
   border-radius: var(--border-radius);
   overflow: hidden;
 }

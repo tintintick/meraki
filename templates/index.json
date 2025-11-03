@@ -8,7 +8,7 @@
           "settings": {
             "heading": "Redefining Espresso\nat home",
             "button_text": "Shop Now",
-            "button_link": ""
+            "button_link": "https://www.merakitech.com/products/meraki-espresso-machine"
           }
         },
         "slide_2": {
@@ -16,7 +16,7 @@
           "settings": {
             "heading": "Slide 2 Test\nCarousel",
             "button_text": "Learn More",
-            "button_link": ""
+            "button_link": "https://www.merakitech.com/collections/accessories"
           }
         }
       },
@@ -148,35 +148,40 @@
           "type": "accessory_item",
           "settings": {
             "name": "58mm Portafilter",
-            "description": "Waterproof wooden handle for a natural grip and lasting quality."
+            "description": "Waterproof wooden handle for a natural grip and lasting quality.",
+            "link": "https://www.merakitech.com/products/bottomless-portafilter"
           }
         },
         "accessory_2": {
           "type": "accessory_item",
           "settings": {
             "name": "Bean Hopper",
-            "description": "Easy to clean and built to keep beans fresh."
+            "description": "Easy to clean and built to keep beans fresh.",
+            "link": "https://www.merakitech.com/products/bean-hopper"
           }
         },
         "accessory_3": {
           "type": "accessory_item",
           "settings": {
             "name": "Espresso Shot Mirror",
-            "description": "Magnetic aluminum design for effortless, precise extraction viewing."
+            "description": "Magnetic aluminum design for effortless, precise extraction viewing.",
+            "link": "https://www.merakitech.com/products/espresso-shot-mirror"
           }
         },
         "accessory_4": {
           "type": "accessory_item",
           "settings": {
             "name": "Detachable Spout",
-            "description": "Polished stainless steel for smooth, balanced dual shots."
+            "description": "Polished stainless steel for smooth, balanced dual shots.",
+            "link": "https://www.merakitech.com/products/detachable-spout"
           }
         },
         "accessory_5": {
           "type": "accessory_item",
           "settings": {
             "name": "18g Portafilter Basket",
-            "description": "Stainless steel basket adjustable for 16–20g espresso doses."
+            "description": "Stainless steel basket adjustable for 16–20g espresso doses.",
+            "link": "https://www.merakitech.com/products/58mm-portaflter-basket"
           }
         }
       },
@@ -186,7 +191,7 @@
         "description": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality.",
         "view_all_link": "https://www.merakitech.com/collections/accessories"
       }
-    },
+    }, 
     "custom_news": {
       "type": "custom-news",
       "settings": {

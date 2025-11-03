@@ -17,6 +17,9 @@
 
         {% for block in section.blocks %}
           <div class="accessory-img {% if forloop.first %}is-center{% endif %}">
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}">
+            {%- endif -%}
             {%- if block.settings.image != blank -%}
               <img
                 src="{{ block.settings.image | image_url: width: 640 }}"
@@ -29,6 +32,9 @@
                 alt="{{ block.settings.name }}"
                 loading="lazy"
               >
+            {%- endif -%}
+            {%- if block.settings.link != blank -%}
+              </a>
             {%- endif -%}
           </div>
         {% endfor %}
@@ -172,12 +178,16 @@
       updateButtons();
       updateImageStates();
 
-      // Scroll to the target image
-      imgItems[index].scrollIntoView({
-        behavior: 'auto',
-        block: 'nearest',
-        inline: 'center'
-      });
+      // 使用 scrollTo 替代 scrollIntoView，避免触发页面滚动
+      const targetImg = imgItems[index];
+      if (targetImg) {
+        const containerCenter = imgsContainer.offsetWidth / 2;
+        const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+        imgsContainer.scrollTo({
+          left: imgCenter - containerCenter,
+          behavior: 'smooth'
+        });
+      }
 
       // Sync content
       setContentOffset(currentIndex, true);
@@ -197,17 +207,19 @@
       updateButtons();
       updateImageStates();
 
-      // Instant scroll without animation
-      imgItems[index].scrollIntoView({
-        behavior: 'auto',
-        block: 'nearest',
-        inline: 'center'
-      });
+      // 使用 scrollLeft 替代 scrollIntoView，避免触发页面滚动
+      const targetImg = imgItems[index];
+      if (targetImg) {
+        const containerCenter = imgsContainer.offsetWidth / 2;
+        const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+        imgsContainer.scrollLeft = imgCenter - containerCenter;
+      }
 
       setContentOffset(currentIndex, false);
     }
 
     // Initialize
+    imgsContainer.scrollLeft = 0; // 重置滚动位置，防止浏览器恢复滚动状态
     updateButtons();
     updateImageStates();
     jumpToIndex(0);
@@ -316,6 +328,11 @@
           "type": "textarea",
           "id": "description",
           "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Link"
         }
       ]
     }
