@@ -20,9 +20,9 @@
   }
 }
 
-/* 桌面端：≥ 1920px 固定为 100% */
-/* @media (min-width: 1920px) {
+/* 桌面端：≥ 1920px 支持 4K（1-2倍缩放） */
+@media (min-width: 1920px) {
   .design-scale {
-    --scale-factor-desktop: 1;
+    --scale-factor-desktop: clamp(1, calc(100vw / 1920px), 2);
   }
-} */
+}

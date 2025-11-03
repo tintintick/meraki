@@ -14,7 +14,11 @@
     aria-describedby="{{ localPosition }}Label"
   >
     <span>{{ localization.language.endonym_name | capitalize }}</span>
-    {{ 'header/caret.svg' | inline_asset_content }}
+    {%- if localPosition contains 'Desktop' -%}
+      {{ 'header/caret-white.svg' | inline_asset_content }}
+    {%- else -%}
+      {{ 'header/caret.svg' | inline_asset_content }}
+    {%- endif -%}
   </button>
   <div class="disclosure__list-wrapper language-selector" hidden>
     <ul id="{{ localPosition }}List" role="list" class="disclosure__list list-unstyled">

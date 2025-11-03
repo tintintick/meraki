@@ -205,7 +205,8 @@ details[open] .icon-expanded {
 .menu-link {
   font-family: 'Kanit', sans-serif;
   font-weight: var(--menu-link-font-weight);
-  font-size: calc(var(--menu-link-font-size) * var(--scale-factor-mobile, 1));
+  /* font-size: calc(var(--menu-link-font-size) * var(--scale-factor-mobile, 1)); */
+  font-size: max(14px, calc(var(--menu-link-font-size) * var(--scale-factor-mobile, 1)));
   line-height: calc(var(--menu-link-line-height) * var(--scale-factor-mobile, 1));
   color: var(--menu-link-color);
   text-decoration: none;

@@ -197,52 +197,83 @@
 /* ===== Desktop Overrides (990px+) ===== */
 @media (min-width: 990px) {
   .custom-header.design-scale {
-    /* Desktop tokens override */
     --header-height: 80px;
     --header-padding-x: 320px;
-    --logo-left: 0px;
-    --logo-top: 24px;
     --logo-width: 82px;
     --logo-height: 32px;
-    --order-button-gap: 24px;
+    --nav-margin-left: 167px;
+    --nav-font-size: 18px;
+    --nav-font-weight: 600;
     --nav-gap: 50px;
-    --nav-font: 18px;
-    --nav-weight: 600;
+    --nav-local-gap: 90px;
+    --local-gap: 32px;
+    --utility-gap: 30px;
+    --local-utility-gap: 40px;
     --icon-size: 28px;
-    --icon-gap: 24px;
-
+    
+    display: flex;
+    align-items: center;
     height: calc(var(--header-height) * var(--scale-factor-desktop, 1));
+    padding-left: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
+    padding-right: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
     background-color: #282828;
     color: #ffffff;
   }
-
-  .custom-header.design-scale .header__logo {
-    top: calc(var(--logo-top) * var(--scale-factor-desktop, 1));
-    margin-left: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
+  
+  /* 覆盖 page-width 的宽度和 padding 限制，让 header 铺满 */
+  .custom-header.design-scale.page-width {
+    max-width: 100% !important;
+    padding-left: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1)) !important;
+    padding-right: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1)) !important;
   }
-
+  
+  /* 隐藏移动端元素 */
+  .custom-header.design-scale .header__mobile-elements,
+  .custom-header.design-scale .header__close-button {
+    display: none;
+  }
+  
+  .custom-header.design-scale .menu-open-only {
+    display: none !important;
+  }
+  
+  /* Logo */
+  .custom-header.design-scale .header__logo {
+    flex-shrink: 0;
+    position: relative;
+    top: 0;
+    margin-left: 0;
+  }
+  
   .custom-header.design-scale .custom-header-logo {
+    position: relative;
+    top: 0;
+    left: 0;
     width: calc(var(--logo-width) * var(--scale-factor-desktop, 1));
     height: calc(var(--logo-height) * var(--scale-factor-desktop, 1));
   }
-
-  .custom-header.design-scale .header__mobile-elements {
-    display: none;
+  
+  /* 桌面端隐藏黑色 logo */
+  .custom-header.design-scale .header__logo .menu-open-only {
+    display: none !important;
   }
-
+  
+  /* Desktop Elements 容器 */
   .custom-header.design-scale .header__desktop-elements {
     display: flex;
     align-items: center;
-    gap: calc(var(--nav-gap) * var(--scale-factor-desktop, 1));
-    margin-left: auto;
-    margin-right: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
+    flex: 1;
+    min-width: 0;
   }
-
+  
+  /* Navigation */
   .custom-header.design-scale .header__desktop-nav {
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+    margin-left: calc(var(--nav-margin-left) * var(--scale-factor-desktop, 1));
   }
-
+  
   .custom-header.design-scale .header__desktop-menu {
     display: flex;
     align-items: center;
@@ -251,56 +282,226 @@
     margin: 0;
     padding: 0;
   }
-
+  
   .custom-header.design-scale .header__desktop-menu-item {
     margin: 0;
   }
-
+  
   .custom-header.design-scale .header__desktop-menu-link {
-    font-size: 1.8rem;
-    font-weight: var(--nav-weight);
     font-family: 'Kanit', sans-serif;
+    font-size: calc(var(--nav-font-size) * var(--scale-factor-desktop, 1));
+    font-weight: var(--nav-font-weight);
     color: #ffffff;
     text-decoration: none;
-    transition: opacity var(--header-interaction-transition-duration) var(--header-transition-timing);
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
   }
-
+  
   .custom-header.design-scale .header__desktop-menu-link:hover {
     opacity: 0.8;
   }
-
+  
   .custom-header.design-scale .header__desktop-menu-link--active {
     text-decoration: underline;
   }
-
-  .custom-header.design-scale .header__desktop-icons {
+  
+  /* 禁用 nav 链接的 focus outline */
+  .custom-header.design-scale .header__desktop-menu-link:focus,
+  .custom-header.design-scale .header__desktop-menu-link:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Localization 区域 */
+  .custom-header.design-scale .header__desktop-local {
     display: flex;
     align-items: center;
-    gap: calc(var(--icon-gap) * var(--scale-factor-desktop, 1));
+    gap: calc(var(--local-gap) * var(--scale-factor-desktop, 1));
+    margin-left: calc(var(--nav-local-gap) * var(--scale-factor-desktop, 1));
   }
-
-  .custom-header.design-scale .header__desktop-icons .header__icon {
+  
+  .custom-header.design-scale .header__desktop-local .localization-form {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  /* localization-form 按钮：垂直居中，国旗和 caret 无间隔 */
+  .custom-header.design-scale .header__desktop-local .localization-form__select {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: 'Kanit', sans-serif;
+    font-size: calc(var(--nav-font-size) * var(--scale-factor-desktop, 1));
+    font-weight: var(--nav-font-weight);
+    color: #ffffff;
+    background: transparent;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    padding: 0;
+    width: fit-content;
+  }
+  
+  /* 删除 localization-form 相关元素的所有边框 */
+  .custom-header.design-scale .header__desktop-local .localization-form,
+  .custom-header.design-scale .header__desktop-local .localization-form__select,
+  .custom-header.design-scale .header__desktop-local .disclosure,
+  .custom-header.design-scale .header__desktop-local .disclosure__button,
+  .custom-header.design-scale .header__desktop-local .country-flag-wrapper,
+  .custom-header.design-scale .header__desktop-local .country-flag-wrapper img {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* 删除 focus 状态的边框和 outline */
+  .custom-header.design-scale .header__desktop-local .localization-form__select:focus,
+  .custom-header.design-scale .header__desktop-local .localization-form__select:focus-visible,
+  .custom-header.design-scale .header__desktop-local .localization-form__select:hover {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* 删除 before/after 伪元素生成的边框和阴影 */
+  .custom-header.design-scale .header__desktop-local .localization-form__select::before,
+  .custom-header.design-scale .header__desktop-local .localization-form__select::after {
+    display: none !important;
+    content: none !important;
+  }
+  
+  .custom-header.design-scale .header__desktop-local .localization-form__select:hover::after,
+  .custom-header.design-scale .header__desktop-local .localization-form__select:focus::after,
+  .custom-header.design-scale .header__desktop-local .localization-form__select:focus-visible::after {
+    display: none !important;
+    content: none !important;
+    box-shadow: none !important;
+    border: none !important;
+  }
+  
+  /* 国旗图标：28px */
+  .custom-header.design-scale .header__desktop-local .country-flag-wrapper {
     width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
     height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .custom-header.design-scale .header__desktop-local .country-flag-wrapper img {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    object-fit: contain;
+  }
+  
+  /* caret 箭头：垂直居中，紧贴国旗/文字 */
+  .custom-header.design-scale .header__desktop-local .localization-form__select svg {
+    width: auto;
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 0;
+  }
+  
+  /* language-localization 的文字部分 */
+  .custom-header.design-scale .header__desktop-local .localization-form__select > span:not(.country-flag-wrapper) {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  /* 桌面端：菜单向下弹出 */
+  .custom-header.design-scale .header__desktop-local .disclosure__list-wrapper {
+    position: absolute;
+    top: 100% !important;
+    bottom: auto !important;
+    transform: translateY(0.5rem) !important;
+    left: 0;
+    right: auto;
+    margin-top: 0;
+  }
+  
+  .custom-header.design-scale .header__desktop-local .disclosure__list-wrapper.country-selector,
+  .custom-header.design-scale .header__desktop-local .disclosure__list-wrapper.language-selector {
+    top: 100% !important;
+    bottom: auto !important;
+    transform: translateY(0.5rem) !important;
+  }
+  
+  /* Utility 区域 */
+  .custom-header.design-scale .header__desktop-utility {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--utility-gap) * var(--scale-factor-desktop, 1));
+    margin-left: calc(var(--local-utility-gap) * var(--scale-factor-desktop, 1));
+  }
+  
+  .custom-header.design-scale .header__desktop-utility .header__icon {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
     color: #ffffff;
     padding: 0;
   }
-
-  .custom-header.design-scale .header__desktop-icons .header__icon .icon,
-  .custom-header.design-scale .header__desktop-icons .header__icon svg {
+  
+  .custom-header.design-scale .header__desktop-utility .header__icon .icon,
+  .custom-header.design-scale .header__desktop-utility .header__icon svg {
     width: 100%;
     height: 100%;
     color: #ffffff;
     stroke: #ffffff;
     fill: none;
   }
-
-  .custom-header.design-scale .header__desktop-icons localization-form {
+  
+  .custom-header.design-scale .header__desktop-utility .svg-wrapper {
+    width: 100%;
+    height: 100%;
     display: flex;
     align-items: center;
+    justify-content: center;
+  }
+  
+  .custom-header.design-scale .header__desktop-utility .svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Search component styling */
+  .custom-header.design-scale .header__desktop-utility .header__search {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .custom-header.design-scale .header__desktop-utility .header__search .header__icon--search {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #ffffff;
+  }
+  
+  .custom-header.design-scale .header__desktop-utility .header__search .header__icon--search svg {
+    width: 100%;
+    height: 100%;
+    color: #ffffff;
+    stroke: #ffffff;
+  }
+  
+  /* 禁用 utility 图标的 focus outline */
+  .custom-header.design-scale .header__desktop-utility .header__icon:focus,
+  .custom-header.design-scale .header__desktop-utility .header__icon:focus-visible,
+  .custom-header.design-scale .header__desktop-utility .header__search:focus,
+  .custom-header.design-scale .header__desktop-utility .header__search:focus-visible,
+  .custom-header.design-scale .header__desktop-utility .header__search summary:focus,
+  .custom-header.design-scale .header__desktop-utility .header__search summary:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
   }
 }
 
@@ -524,7 +725,12 @@ main#MainContent>.shopify-section:first-child {
   align-items: center;
 }
 
-.menu-open .header__desktop-icons {
+/* Menu open: hide localization, show utility (search and cart only) */
+.menu-open .header__desktop-local {
+  display: none !important;
+}
+
+.menu-open .header__desktop-utility {
   display: flex !important;
   align-items: center;
   width: calc(130px * var(--scale-factor-mobile, 1));
@@ -532,8 +738,8 @@ main#MainContent>.shopify-section:first-child {
   margin-left: auto;
 }
 
-/* Menu open: desktop-icons styling - mobile design (44px icons, black) */
-.menu-open .header__desktop-icons .header__icon {
+/* Menu open: utility icons styling - mobile design (44px icons, black) */
+.menu-open .header__desktop-utility .header__icon {
   width: calc(44px * var(--scale-factor-mobile, 1)) !important;
   height: calc(44px * var(--scale-factor-mobile, 1)) !important;
   display: flex;
@@ -543,7 +749,7 @@ main#MainContent>.shopify-section:first-child {
   padding: 0;
 }
 
-.menu-open .header__desktop-icons .header__icon .svg-wrapper {
+.menu-open .header__desktop-utility .header__icon .svg-wrapper {
   width: calc(44px * var(--scale-factor-mobile, 1));
   height: calc(44px * var(--scale-factor-mobile, 1));
   display: flex;
@@ -551,8 +757,8 @@ main#MainContent>.shopify-section:first-child {
   justify-content: center;
 }
 
-.menu-open .header__desktop-icons .header__icon .icon,
-.menu-open .header__desktop-icons .header__icon svg {
+.menu-open .header__desktop-utility .header__icon .icon,
+.menu-open .header__desktop-utility .header__icon svg {
   width: 100%;
   height: 100%;
   color: #000000 !important;
@@ -560,40 +766,36 @@ main#MainContent>.shopify-section:first-child {
 }
 
 /* Ensure SVG fills container for account, cart, and search icons */
-.menu-open .header__desktop-icons .header__icon--account svg,
-.menu-open .header__desktop-icons .header__icon--cart svg,
-.menu-open .header__desktop-icons .header__icon--search svg {
+.menu-open .header__desktop-utility .header__icon--account svg,
+.menu-open .header__desktop-utility .header__icon--cart svg,
+.menu-open .header__desktop-utility .header__icon--search svg {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-/* Hide desktop icons in menu-open state (country/language selectors and account) - only show search and cart */
-.menu-open .header__desktop-icons localization-form {
+/* Hide account icon in menu-open state - only show search and cart */
+.menu-open .header__desktop-utility .header__icon--account {
   display: none !important;
 }
 
-.menu-open .header__desktop-icons .header__icon--account {
+/* Hide app blocks in menu-open state */
+.menu-open .header__desktop-utility > *:not(.header__search):not(.header__icon--cart) {
   display: none !important;
 }
 
 /* Ensure search is visible in menu-open state - override base.css rule */
-.menu-open .header__desktop-icons .header__search {
+.menu-open .header__desktop-utility .header__search {
   display: inline-flex !important;
 }
 
-.menu-open .header__desktop-icons .header__search .header__icon--search {
+.menu-open .header__desktop-utility .header__search .header__icon--search {
   display: flex !important;
   width: calc(44px * var(--scale-factor-mobile, 1)) !important;
   height: calc(44px * var(--scale-factor-mobile, 1)) !important;
 }
 
-/* Hide the close icon in search button when menu is open - always show search icon */
-.menu-open .header__desktop-icons .header__search .header__icon-close {
-  display: none !important;
-}
-
-/* Ensure search icon (not close) is always visible in menu-open state */
-.menu-open .header__desktop-icons .header__search .svg-wrapper:not(.header__icon-close) {
+/* Ensure search icon is always visible in menu-open state */
+.menu-open .header__desktop-utility .header__search .svg-wrapper {
   display: flex !important;
 }

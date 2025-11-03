@@ -235,9 +235,8 @@
         </nav>
       {%- endif -%}
 
-      {%- comment -%} Desktop Icons {%- endcomment -%}
-      <div class="header__desktop-icons">
-        {%- comment -%} Country Selector {%- endcomment -%}
+      {%- comment -%} Desktop Localization (Country + Language) {%- endcomment -%}
+      <div class="header__desktop-local">
         {%- if section.settings.enable_country_selector and localization.available_countries.size > 1 -%}
           <localization-form data-prevent-hide>
             {%- form 'localization', id: 'HeaderCountryFormDesktop', class: 'localization-form' -%}
@@ -249,7 +248,6 @@
           </localization-form>
         {% endif %}
 
-        {%- comment -%} Language Selector {%- endcomment -%}
         {%- if section.settings.enable_language_selector and localization.available_languages.size > 1 -%}
           <localization-form data-prevent-hide>
             {%- form 'localization', id: 'HeaderLanguageFormDesktop', class: 'localization-form' -%}
@@ -260,7 +258,10 @@
             {%- endform -%}
           </localization-form>
         {%- endif -%}
+      </div>
 
+      {%- comment -%} Desktop Utility Icons (Search, Account, Apps, Cart) {%- endcomment -%}
+      <div class="header__desktop-utility">
         {%- comment -%} Search Icon {%- endcomment -%}
         {% render 'header-search', input_id: 'Search-In-Modal-Desktop' %}
 
@@ -276,11 +277,11 @@
                 {%- if customer and customer.has_avatar? -%}
                   {{ customer | avatar }}
                 {%- else -%}
-                  <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+                  <span class="svg-wrapper">{{ 'header/account-white.svg' | inline_asset_content }}</span>
                 {%- endif -%}
               </account-icon>
             {%- else -%}
-              <span class="svg-wrapper">{{ 'icon-account.svg' | inline_asset_content }}</span>
+              <span class="svg-wrapper">{{ 'header/account-white.svg' | inline_asset_content }}</span>
             {%- endif -%}
             <span class="visually-hidden">
               {%- liquid
@@ -305,9 +306,9 @@
         {%- comment -%} Cart Icon {%- endcomment -%}
         <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
           {% if cart == empty %}
-            <span class="svg-wrapper">{{ 'header/Cart.svg' | inline_asset_content }}</span>
+            <span class="svg-wrapper">{{ 'header/cart-white.svg' | inline_asset_content }}</span>
           {% else %}
-            <span class="svg-wrapper">{{ 'header/Cart.svg' | inline_asset_content }}</span>
+            <span class="svg-wrapper">{{ 'header/cart-white.svg' | inline_asset_content }}</span>
           {% endif %}
           <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
           {%- if cart != empty -%}

@@ -259,7 +259,7 @@
 
 /* Banner Info Overlay */
 .banner-info-overlay {
-  position: absolute;
+  position: fixed;
   left: calc(var(--info-overlay-left) * var(--scale-factor-mobile, 1));
   top: calc(var(--info-overlay-top) * var(--scale-factor-mobile, 1));
   width: calc(var(--info-overlay-width) * var(--scale-factor-mobile, 1));
@@ -270,7 +270,7 @@
   justify-content: center;
   gap: calc(9px * var(--scale-factor-mobile, 1));
   /* padding: 0 calc(var(--info-overlay-close-right) * var(--scale-factor-mobile, 1)) 0 calc(9px * var(--scale-factor-mobile, 1)); */
-  z-index: 10;
+  z-index: 4; /* 相对于视口固定定位，层级低于 header/menu，不遮挡 menu */
   pointer-events: none;
 }
 

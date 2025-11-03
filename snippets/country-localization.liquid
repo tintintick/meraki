@@ -44,7 +44,11 @@
         loading="lazy"
       >
     </span>
-    {{ 'header/caret.svg' | inline_asset_content }}
+    {%- if localPosition contains 'Desktop' -%}
+      {{ 'header/caret-white.svg' | inline_asset_content }}
+    {%- else -%}
+      {{ 'header/caret.svg' | inline_asset_content }}
+    {%- endif -%}
   </button>
   <div class="disclosure__list-wrapper country-selector" hidden>
     <div class="country-filter{% unless show_country_filter %} country-filter--no-padding{% endunless %}">
