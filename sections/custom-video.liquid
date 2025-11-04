@@ -31,6 +31,7 @@
     <!-- Video Player Container -->
     <div class="video-player-container">
       <div class="video-players-track">
+        <div class="video-player-item video-spacer">&nbsp;</div>
         {% for block in section.blocks %}
           <div class="video-player-item" data-video-wrapper data-youtube-id="{{ block.settings.youtube_id }}">
             {%- if block.settings.youtube_id != blank -%}
@@ -93,6 +94,7 @@
             </div>
           </div>
         {% endfor %}
+        <div class="video-player-item video-spacer">&nbsp;</div>
       </div>
     </div>
   </div>
@@ -124,22 +126,38 @@
 
     // Get scale factor from CSS variable
     function getScaleFactor() {
-      const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
+      const isDesktop = window.innerWidth >= 990;
+      const varName = isDesktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
+      const value = getComputedStyle(section).getPropertyValue(varName).trim();
       return parseFloat(value) || 1;
     }
 
-    // Get player width from actual DOM element
+    // Get gap from CSS variable
+    function getGap() {
+      const isDesktop = window.innerWidth >= 990;
+      if (isDesktop) {
+        const gapValue = getComputedStyle(section).getPropertyValue('--player-track-gap-desktop').trim();
+        const scaleFactor = getScaleFactor();
+        return parseFloat(gapValue) * scaleFactor || 0;
+      }
+      return 0; // Mobile has no gap
+    }
+
+    // Get player width + gap for scrolling distance
     function getPlayerWidth() {
-      // 直接获取第一个 video-player-item 的实际渲染宽度
-      const firstItem = playerContainer.querySelector('.video-player-item');
+      const firstItem = playerContainer.querySelector('.video-player-item:not(.video-spacer)');
       if (firstItem) {
-        return firstItem.offsetWidth;
+        const gap = getGap();
+        return firstItem.offsetWidth + gap;
       }
       
-      // Fallback: 如果找不到 item，使用 CSS 计算
-      const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue('--player-width').trim());
+      // Fallback: 使用 CSS 计算
+      const isDesktop = window.innerWidth >= 990;
+      const varName = isDesktop ? '--player-width-desktop' : '--player-width';
+      const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue(varName).trim());
       const scaleFactor = getScaleFactor();
-      return playerWidth * scaleFactor;
+      const gap = getGap();
+      return playerWidth * scaleFactor + gap;
     }
 
     // Update button states
