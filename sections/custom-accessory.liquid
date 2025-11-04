@@ -3,7 +3,20 @@
 <div class="custom-accessory design-scale" data-section-id="{{ section.id }}">
   <!-- Content Container -->
   <div class="content-container">
-    <h2 class="section-title">{{ section.settings.title }}</h2>
+    <!-- Title - Mobile -->
+    {%- if section.settings.title_mobile != blank -%}
+      <h2 class="section-title section-title--mobile">{{ section.settings.title_mobile }}</h2>
+    {%- elsif section.settings.title != blank -%}
+      <h2 class="section-title section-title--mobile">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <!-- Title - Desktop -->
+    {%- if section.settings.title_desktop != blank -%}
+      <h2 class="section-title section-title--desktop">{{ section.settings.title_desktop }}</h2>
+    {%- elsif section.settings.title != blank -%}
+      <h2 class="section-title section-title--desktop">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
     <p class="section-description">{{ section.settings.description }}</p>
   </div>
 
@@ -105,18 +118,28 @@
 
     // Get scale factor
     function getScaleFactor() {
-      const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
+      const isDesktop = window.innerWidth >= 990;
+      const property = isDesktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
+      const value = getComputedStyle(section).getPropertyValue(property).trim();
       return parseFloat(value) || 1;
     }
 
     // Get item widths from actual DOM elements
     function getItemWidths() {
       const scaleFactor = getScaleFactor();
+      const isDesktop = window.innerWidth >= 990;
       
       // 优先使用实际 DOM 元素的宽度
       const firstContentItem = contentTrack.querySelector('.accessory-content-item');
-      const contentWidth = firstContentItem ? firstContentItem.offsetWidth : 
+      let contentWidth = firstContentItem ? firstContentItem.offsetWidth : 
         parseFloat(getComputedStyle(section).getPropertyValue('--content-width').trim()) * scaleFactor;
+      
+      // 桌面端：使用图片宽度+间隔来计算移动距离，与图片保持一致
+      if (isDesktop) {
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        contentWidth = imgSize + imgGap;
+      }
       
       // 图片宽度仍使用 CSS 计算（用于样式控制，不影响滑动距离）
       const imgCenterWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-center-width').trim()) * scaleFactor;
@@ -134,7 +157,14 @@
     // Update button states
     function updateButtons() {
       prevBtn.classList.toggle('disabled', currentIndex === 0);
-      nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 1);
+      
+      // 桌面端：一次显示 3 张，当最后一张进入可视区域时禁用右翻页
+      const isDesktop = window.innerWidth >= 990;
+      if (isDesktop) {
+        nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 3);
+      } else {
+        nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 1);
+      }
     }
 
     // Update image states
@@ -155,7 +185,19 @@
 
     function setContentOffset(index, animate = true) {
       const widths = getItemWidths();
-      const translate = index * widths.contentWidth;
+      
+      // 桌面端：限制 content track 的移动范围与 img track 一致
+      const isDesktop = window.innerWidth >= 990;
+      let clampedIndex = index;
+      if (isDesktop) {
+        // 桌面端最多移动到 totalItems - 3，使 content track 与 img track 同步
+        clampedIndex = Math.max(0, Math.min(index, totalItems - 3));
+      } else {
+        // 移动端保持原有逻辑
+        clampedIndex = Math.max(0, Math.min(index, totalItems - 1));
+      }
+      
+      const translate = clampedIndex * widths.contentWidth;
       if (!animate) {
         contentTrack.style.transition = 'none';
       }
@@ -178,16 +220,34 @@
       updateButtons();
       updateImageStates();
 
-      // 使用 scrollTo 替代 scrollIntoView，避免触发页面滚动
-      const targetImg = imgItems[index];
-      if (targetImg) {
-        const containerCenter = imgsContainer.offsetWidth / 2;
-        const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
-        imgsContainer.scrollTo({
-          left: imgCenter - containerCenter,
-          behavior: 'smooth'
-        });
+      // 计算目标滚动位置
+      const isDesktop = window.innerWidth >= 990;
+      const scaleFactor = getScaleFactor();
+      let scrollLeft;
+
+      if (isDesktop) {
+        // 桌面端：通过索引直接计算（避免 spacer 影响）
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        scrollLeft = index * (imgSize + imgGap);
+      } else {
+        // 移动端：使用 offsetLeft（包含 spacer）
+        const targetImg = imgItems[index];
+        if (targetImg) {
+          const containerCenter = imgsContainer.offsetWidth / 2;
+          const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+          scrollLeft = imgCenter - containerCenter;
+          
+          // 限制最小值为 0，防止左侧 spacer 显示
+          scrollLeft = Math.max(0, scrollLeft);
+        } else {
+          isAnimating = false;
+          return;
+        }
       }
+      
+      // 桌面端和移动端都使用 CSS transform 移动（与 content track 一致）
+      imgTrack.style.transform = `translateX(-${scrollLeft}px)`;
 
       // Sync content
       setContentOffset(currentIndex, true);
@@ -195,7 +255,7 @@
       // Reset animation flag after scroll completes
       setTimeout(() => {
         isAnimating = false;
-      }, 500);
+      }, 450);
     }
 
     function jumpToIndex(index) {
@@ -207,22 +267,57 @@
       updateButtons();
       updateImageStates();
 
-      // 使用 scrollLeft 替代 scrollIntoView，避免触发页面滚动
-      const targetImg = imgItems[index];
-      if (targetImg) {
-        const containerCenter = imgsContainer.offsetWidth / 2;
-        const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
-        imgsContainer.scrollLeft = imgCenter - containerCenter;
+      // 计算目标滚动位置
+      const isDesktop = window.innerWidth >= 990;
+      const scaleFactor = getScaleFactor();
+      let scrollLeft;
+
+      if (isDesktop) {
+        // 桌面端：通过索引直接计算（避免 spacer 影响）
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        scrollLeft = index * (imgSize + imgGap);
+      } else {
+        // 移动端：使用 offsetLeft（包含 spacer）
+        const targetImg = imgItems[index];
+        if (targetImg) {
+          const containerCenter = imgsContainer.offsetWidth / 2;
+          const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+          scrollLeft = imgCenter - containerCenter;
+          
+          // 限制最小值为 0，防止左侧 spacer 显示
+          scrollLeft = Math.max(0, scrollLeft);
+        } else {
+          return;
+        }
       }
+      
+      // 统一使用 transform 移动（无动画）
+      imgTrack.style.transition = 'none';
+      imgTrack.style.transform = `translateX(-${scrollLeft}px)`;
+      // Force reflow
+      void imgTrack.offsetWidth;
+      imgTrack.style.transition = '';
 
       setContentOffset(currentIndex, false);
     }
 
-    // Initialize
-    imgsContainer.scrollLeft = 0; // 重置滚动位置，防止浏览器恢复滚动状态
-    updateButtons();
-    updateImageStates();
-    jumpToIndex(0);
+    // Initialize - wait for layout to complete
+    function initialize() {
+      // Reset scroll position (虽然不再使用 scrollLeft，但保留以防万一)
+      imgsContainer.scrollLeft = 0;
+      
+      // Wait for next frame to ensure layout is complete
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          updateButtons();
+          updateImageStates();
+          jumpToIndex(0);
+        });
+      });
+    }
+    
+    initialize();
 
     // Button click handlers
     prevBtn.addEventListener('click', () => {
@@ -237,47 +332,9 @@
       }
     });
 
+    // Handle window resize
     window.addEventListener('resize', () => {
       jumpToIndex(currentIndex);
-    });
-
-    // Handle manual scroll
-    let scrollRAF = null;
-    imgsContainer.addEventListener('scroll', () => {
-      if (isAnimating) return; // Wait for button animation to complete
-
-      if (scrollRAF) cancelAnimationFrame(scrollRAF);
-      scrollRAF = requestAnimationFrame(() => {
-        // Calculate which image is currently centered
-        const scrollLeft = imgsContainer.scrollLeft;
-        const containerWidth = imgsContainer.offsetWidth;
-        const containerCenter = scrollLeft + containerWidth / 2;
-
-        // Find the closest image to the container center
-        let newIndex = 0;
-        let minDistance = Infinity;
-
-        imgItems.forEach((img, index) => {
-          const imgLeft = img.offsetLeft;
-          const imgCenter = imgLeft + img.offsetWidth / 2;
-          const distance = Math.abs(containerCenter - imgCenter);
-
-          if (distance < minDistance) {
-            minDistance = distance;
-            newIndex = index;
-          }
-        });
-
-        // Only update if index actually changed
-        if (newIndex !== currentIndex) {
-          currentIndex = newIndex;
-          updateButtons();
-          updateImageStates();
-          setContentOffset(currentIndex, true);
-        }
-
-        scrollRAF = null;
-      });
     });
   }
 
@@ -294,9 +351,25 @@
   "name": "Custom Accessory",
   "settings": [
     {
+      "type": "header",
+      "content": "Mobile Content"
+    },
+    {
       "type": "textarea",
-      "id": "title",
-      "label": "Title"
+      "id": "title_mobile",
+      "label": "Title (Mobile)",
+      "default": "Crafted Accessories\nBrew Elevated"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Content"
+    },
+    {
+      "type": "textarea",
+      "id": "title_desktop",
+      "label": "Title (Desktop)",
+      "info": "Use \\n for line breaks",
+      "default": "Crafted Accessories Brew Elevated"
     },
     {
       "type": "textarea",
