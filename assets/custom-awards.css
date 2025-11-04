@@ -56,6 +56,7 @@
   height: 100%;
 }
 
+
 /* Title */
 .awards-title {
   position: absolute;
@@ -72,6 +73,7 @@
   margin: 0;
   white-space: nowrap;
 }
+
 
 /* Awards Grid */
 .awards-grid {
@@ -139,16 +141,84 @@
   }
 }
 
-/* Desktop overrides - to be implemented later */
+/* Desktop overrides */
 @media (min-width: 990px) {
   .custom-awards.design-scale {
-    /* Desktop tokens will be added later */
+    /* Desktop tokens */
+    --grid-width-desktop: 1280px;
+    --grid-height-desktop: 120px;
+    --grid-margin-top-desktop: 100px;
+    --section-height-desktop: 480px;
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Awards Container - Desktop */
+  .awards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* Title - Desktop */
+  .awards-title {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  /* Awards Grid - Desktop: Flex layout */
+  .awards-grid {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(var(--grid-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--grid-height-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+    margin-top: calc(var(--grid-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    padding: 0;
+  }
+
+  /* Award Item - Desktop: Flex item */
+  .award-item {
+    position: relative;
+    flex: 0 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Reset absolute positioning for desktop */
+  .award-1,
+  .award-2,
+  .award-3,
+  .award-4 {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: 100%;
+  }
+
+  /* Award Image - Desktop */
+  .award-image {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
   }
 }
 
 /* Ultra-wide / 4K */
 @media (min-width: 1920px) {
   .custom-awards.design-scale {
-    --scale-factor-desktop: clamp(1, calc(100vw / 1920px), 2);
+    --scale-factor-desktop: 1;
   }
 }
