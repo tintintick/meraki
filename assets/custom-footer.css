@@ -101,6 +101,29 @@
   margin: 0 auto;
 }
 
+/* Footer Main - Mobile: vertical stacking */
+.footer-main {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* Mobile: Reorder elements - menu first, then logo, then social icons */
+.footer-logo {
+  order: 2;
+}
+
+.social-media-icons {
+  order: 3;
+}
+
+.menu-container {
+  order: 1;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
 /* Menu Group */
 .menu-group {
   /* width: 100%; */
@@ -218,13 +241,7 @@ details[open] .icon-expanded {
   opacity: 0.8;
 }
 
-/* Dividers */
-.divider {
-  align-self: center;
-  width: calc(var(--divider-width) * var(--scale-factor-mobile, 1));
-  height: calc(var(--divider-height) * var(--scale-factor-mobile, 1));
-  background-color: var(--divider-color);
-}
+/* Dividers - Removed from HTML, no longer needed */
 
 /* Footer Logo */
 .footer-logo {
@@ -271,6 +288,14 @@ details[open] .icon-expanded {
   height: 100%;
   object-fit: contain;
   display: block;
+}
+
+/* Footer Bottom Container */
+.footer-bottom {
+  /* 移动端：保持默认布局（垂直堆叠） */
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 
 /* Footer Copyright */
@@ -322,11 +347,267 @@ details[open] .icon-expanded {
   }
 }
 
-/* Desktop: 990px+ - to be implemented later */
+/* Desktop: 990px+ */
 @media (min-width: 990px) {
   .custom-footer.design-scale {
-    /* Desktop tokens will be added later */
-    min-height: auto;
+    /* Desktop tokens */
+    --section-width-desktop: 1920px;
+    --section-height-desktop: 820px;
+    
+    /* Logo */
+    --logo-width-desktop: 210px;
+    --logo-height-desktop: 82px;
+    --logo-margin-left-desktop: 320px;
+    --logo-margin-top-desktop: 116px;
+    
+    /* Social Icons */
+    --social-icon-size-desktop: 42px;
+    --social-icon-gap-desktop: 20px;
+    --social-icons-margin-top-desktop: 84px;
+    
+    /* Menu Container */
+    --menu-container-margin-left-desktop: 257px;
+    --menu-column-gap-desktop: 138px;
+    --menu-title-font-size-desktop: 32px;
+    --menu-link-font-size-desktop: 24px;
+    --menu-link-gap-desktop: 10px;
+    --menu-title-margin-bottom-desktop: 32px;
+    --menu-title-color-desktop: #ffffff;
+    --menu-link-color-desktop: #c8c8c8;
+    
+    /* Copyright & Payment */
+    --copyright-margin-top-desktop: 45px;
+    --copyright-font-size-desktop: 24px;
+    --copyright-color-desktop: grey;
+    --payment-icons-margin-top-desktop: 45px;
+    --payment-icon-height-desktop: 40px;
+    --payment-icon-gap-desktop: 10px;
+    
+    /* Divider */
+    --divider-margin-top-desktop: 146px;
+    --divider-margin-bottom-desktop: 45px;
+    --divider-width-desktop: 1280px;
+    
+    min-height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Footer Container - Desktop */
+  .footer-container {
+    width: 100%;
+    max-width: calc(var(--section-width-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Footer Main - Desktop: Grid 2×2 layout */
+  .footer-main {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    grid-template-rows: auto auto;
+    width: 1280px;
+    margin: 0 auto;
+    /* padding-left: calc(var(--logo-margin-left-desktop) * var(--scale-factor-desktop, 1)); */
+  }
+
+  /* Reset order for desktop (Grid layout ignores order) */
+  .footer-logo,
+  .social-media-icons,
+  .menu-container {
+    order: 0;
+  }
+
+  /* Logo - Desktop: Grid row 1, col 1 */
+  .footer-logo {
+    grid-row: 1;
+    grid-column: 1;
+    width: calc(var(--logo-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--logo-height-desktop) * var(--scale-factor-desktop, 1));
+    margin-top: calc(var(--logo-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: 0;
+    align-self: start;
+  }
+
+  /* Social Icons - Desktop: Grid row 2, col 1 */
+  .social-media-icons {
+    grid-row: 2;
+    grid-column: 1;
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--social-icon-gap-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0;
+    margin-top: calc(var(--social-icons-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    padding: 0;
+    border: none;
+    align-self: start;
+  }
+
+  .social-link {
+    width: calc(var(--social-icon-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--social-icon-size-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Menu Container - Desktop: Grid row 1-2, col 2 (spans 2 rows) */
+  .menu-container {
+    grid-row: 1 / 3;
+    grid-column: 2;
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--menu-column-gap-desktop) * var(--scale-factor-desktop, 1));
+    margin-left: calc(var(--menu-container-margin-left-desktop) * var(--scale-factor-desktop, 1));
+    margin-top: calc(var(--logo-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    align-items: start;
+  }
+
+  /* Menu Groups - Desktop: No positioning, flex children */
+  .menu-group {
+    position: static;
+    margin: 0;
+    padding: 0;
+    border: none;
+    flex: 0 0 auto;
+  }
+
+  /* Details - Desktop: Always open, show content */
+  .footer-details {
+    position: static;
+    display: block !important;
+  }
+
+  /* Force all details to display content on desktop (regardless of open attribute) */
+  .footer-details summary {
+    display: block;
+    cursor: default;
+    pointer-events: none;
+  }
+
+  .footer-details summary::after {
+    display: none;
+  }
+
+  .footer-details summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Force menu-content to always display on desktop (even when details is not open) */
+  .footer-details .menu-content {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    flex-direction: column;
+    gap: calc(var(--menu-link-gap-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0;
+    padding: 0;
+    margin-top: calc(var(--menu-title-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Ensure content is visible for closed details */
+  .footer-details:not([open]) {
+    display: block !important;
+  }
+
+  .footer-details:not([open]) summary {
+    display: block !important;
+  }
+
+  .footer-details:not([open]) .menu-content {
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+  }
+
+  /* Menu Summary - Desktop: Show title, hide toggle */
+  .menu-summary {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    height: auto;
+    padding: 0;
+    margin: 0;
+  }
+
+  /* Toggle Icon - Desktop: Hide */
+  .toggle-icon {
+    display: none;
+  }
+
+  /* Menu Title - Desktop: Show as heading */
+  .menu-title {
+    font-family: 'Kanit', sans-serif;
+    font-weight: 400;
+    font-size: calc(var(--menu-title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    color: var(--menu-title-color-desktop);
+    margin: 0;
+    padding: 0;
+    letter-spacing: normal;
+  }
+
+  /* Menu Links - Desktop */
+  .menu-link {
+    font-size: calc(var(--menu-link-font-size-desktop) * var(--scale-factor-desktop, 1));
+    color: var(--menu-link-color-desktop);
+    line-height: normal;
+  }
+
+  /* Divider line - Desktop: Before copyright/payment section */
+  .footer-main::after {
+    content: '';
+    grid-column: 1 / 3;
+    width: calc(var(--divider-width-desktop) * var(--scale-factor-desktop, 1));
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.2);
+    margin-top: calc(var(--divider-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: calc(var(--divider-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+    margin-left: auto;
+    margin-right: auto;
+    justify-self: center;
+  }
+
+  /* Footer Bottom - Desktop: One row, space-between */
+  .footer-bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: 1280px;
+    margin: 0 auto;
+    gap: 40px;
+  }
+
+  /* Copyright - Desktop */
+  .footer-copyright {
+    margin-top: 0;
+  }
+
+  .footer-copyright p {
+    font-size: calc(var(--copyright-font-size-desktop) * var(--scale-factor-desktop, 1));
+    color: var(--copyright-color-desktop);
+  }
+
+  /* Payment Icons - Desktop */
+  .payment-icons {
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--payment-icon-gap-desktop) * var(--scale-factor-desktop, 1));
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-shrink: 0;
+  }
+
+  .payment-icon {
+    height: calc(var(--payment-icon-height-desktop) * var(--scale-factor-desktop, 1));
+    width: auto;
+  }
+}
+
+/* Ultra-wide / 4K */
+@media (min-width: 1920px) {
+  .custom-footer.design-scale {
+    --scale-factor-desktop: 1;
   }
 }
 
