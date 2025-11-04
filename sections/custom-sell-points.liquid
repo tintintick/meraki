@@ -23,14 +23,24 @@
       <!-- Sell Point 1: Dual-Boiler System -->
     <div class="sell-point-item" data-card="1">
       <video
-        class="sell-point-video"
+        class="sell-point-video sell-point-video-mobile"
         autoplay
         loop
         muted
         playsinline
         preload="auto"
       >
-        <source src="{{ 'sp1-mb.mp4' | asset_url }}" type="video/mp4">
+        <source src="{{ section.settings.point1_video_mobile | default: 'sell_points/sp1-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ section.settings.point1_video_desktop | default: 'sell_points/sp1-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <div class="sell-point-content">
@@ -43,14 +53,24 @@ Barista Heat Control" }}</div>
     <!-- Sell Point 2: Built-In Scales -->
     <div class="sell-point-item" data-card="2">
       <video
-        class="sell-point-video"
+        class="sell-point-video sell-point-video-mobile"
         autoplay
         loop
         muted
         playsinline
         preload="auto"
       >
-        <source src="{{ 'sp2-mb.mp4' | asset_url }}" type="video/mp4">
+        <source src="{{ section.settings.point2_video_mobile | default: 'sell_points/sp2-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ section.settings.point2_video_desktop | default: 'sell_points/sp2-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <div class="sell-point-content">
@@ -63,14 +83,24 @@ Precise Ratios" }}</div>
     <!-- Sell Point 3: CoffeeSense -->
     <div class="sell-point-item" data-card="3">
       <video
-        class="sell-point-video"
+        class="sell-point-video sell-point-video-mobile"
         autoplay
         loop
         muted
         playsinline
         preload="auto"
       >
-        <source src="{{ 'sp3-mb.mp4' | asset_url }}" type="video/mp4">
+        <source src="{{ section.settings.point3_video_mobile | default: 'sell_points/sp3-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        autoplay
+        loop
+        muted
+        playsinline
+        preload="auto"
+      >
+        <source src="{{ section.settings.point3_video_desktop | default: 'sell_points/sp3-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <!-- Gradient overlay for third card -->
@@ -222,6 +252,16 @@ Perfect First Shot" }}</div>
       "content": "Sell Point 1 - Dual-Boiler System"
     },
     {
+      "type": "url",
+      "id": "point1_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point1_video_desktop",
+      "label": "Video URL (Desktop)"
+    },
+    {
       "type": "textarea",
       "id": "point1_title",
       "label": "Title",
@@ -238,6 +278,16 @@ Perfect First Shot" }}</div>
       "content": "Sell Point 2 - Built-In Scales"
     },
     {
+      "type": "url",
+      "id": "point2_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point2_video_desktop",
+      "label": "Video URL (Desktop)"
+    },
+    {
       "type": "textarea",
       "id": "point2_title",
       "label": "Title",
@@ -252,6 +302,16 @@ Perfect First Shot" }}</div>
     {
       "type": "header",
       "content": "Sell Point 3 - CoffeeSense™"
+    },
+    {
+      "type": "url",
+      "id": "point3_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point3_video_desktop",
+      "label": "Video URL (Desktop)"
     },
     {
       "type": "textarea",

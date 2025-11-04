@@ -97,6 +97,11 @@
   object-position: center;
 }
 
+/* Hide desktop video on mobile */
+.sell-point-video-desktop {
+  display: none;
+}
+
 /* Gradient Overlay (for third card) */
 .sell-point-gradient {
   position: absolute;
@@ -301,6 +306,16 @@
   .sell-point-spacer {
     display: block;
     background: #F0F0F0;
+  }
+
+  /* Hide mobile video on desktop */
+  .sell-point-video-mobile {
+    display: none;
+  }
+
+  /* Show desktop video on desktop */
+  .sell-point-video-desktop {
+    display: block;
   }
 
   /* Content - Absolute positioning */
