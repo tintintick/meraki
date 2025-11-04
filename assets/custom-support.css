@@ -114,21 +114,9 @@
   letter-spacing: normal;
 }
 
-/* Card Heights */
-.support-card-1 {
-  min-height: calc(var(--card-1-height) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-2 {
-  min-height: calc(var(--card-2-height) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-3 {
-  min-height: calc(var(--card-3-height) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-4 {
-  min-height: calc(var(--card-4-height) * var(--scale-factor-mobile, 1));
+/* Card Heights - All cards use auto height, content determines size */
+.support-card {
+  min-height: auto;
 }
 
 /* Support Icon */
@@ -138,26 +126,9 @@
   align-items: center;
   justify-content: center;
   margin-right: calc(39px * var(--scale-factor-mobile, 1));
-}
-
-.support-card-1 .support-icon {
-  width: calc(var(--icon-1-size) * var(--scale-factor-mobile, 1));
-  height: calc(var(--icon-1-size) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-2 .support-icon {
-  width: calc(var(--icon-2-size) * var(--scale-factor-mobile, 1));
-  height: calc(var(--icon-2-size) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-3 .support-icon {
-  width: calc(var(--icon-3-size) * var(--scale-factor-mobile, 1));
-  height: calc(var(--icon-3-size) * var(--scale-factor-mobile, 1));
-}
-
-.support-card-4 .support-icon {
-  width: calc(var(--icon-4-size) * var(--scale-factor-mobile, 1));
-  height: calc(var(--icon-4-size) * var(--scale-factor-mobile, 1));
+  /* Use inline CSS variable --icon-size from Liquid */
+  width: calc(var(--icon-size, 76px) * var(--scale-factor-mobile, 1));
+  height: calc(var(--icon-size, 76px) * var(--scale-factor-mobile, 1));
 }
 
 .support-icon img {
@@ -189,12 +160,7 @@
   margin-bottom: calc(24px * var(--scale-factor-mobile, 1));
 }
 
-/* Card 4 has smaller title */
-.support-card-4 .support-title {
-  font-size: calc(var(--card-title-font-size-card4) * var(--scale-factor-mobile, 1));
-  line-height: normal;
-  margin-bottom: calc(34px * var(--scale-factor-mobile, 1));
-}
+/* All cards use unified title styles - removed support-card-4 special styling */
 
 /* Support Description */
 .support-description {
@@ -217,8 +183,8 @@
   margin-top: calc(14px * var(--scale-factor-mobile, 1));
 }
 
-/* Bold text in card 1 */
-.support-card-1 .support-description strong {
+/* Bold text in descriptions - unified for all cards */
+.support-description strong {
   font-family: 'Kanit', sans-serif;
   font-weight: 600;
 }
@@ -232,11 +198,83 @@
   }
 }
 
-/* Desktop: 990px+ - to be implemented later */
+/* Desktop: 990px+ */
 @media (min-width: 990px) {
   .custom-support.design-scale {
-    /* Desktop tokens will be added later */
-    height: auto;
+    /* Desktop tokens */
+    --section-width-desktop: 1920px;
+    --section-height-desktop: 1078px;
+    
+    /* Header */
+    --header-margin-top-desktop: 108px;
+    --header-margin-bottom-desktop: 80px;
+    
+    /* Card */
+    --card-width-desktop: 620px;
+    --card-height-desktop: 380px;
+    --card-padding-left-desktop: 33px;
+    --card-padding-right-desktop: 33px;
+    --card-padding-top-desktop: 60px;
+    --card-gap-desktop: 40px;
+    
+    /* Description */
+    --description-font-size-desktop: 24px;
+    --description-line-height-desktop: 32px;
+    
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Support Header - Desktop */
+  .support-header {
+    margin-top: calc(var(--header-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: calc(var(--header-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Support Cards Container - Desktop: Grid layout */
+  .support-cards {
+    display: grid;
+    grid-template-columns: repeat(2, calc(var(--card-width-desktop) * var(--scale-factor-desktop, 1)));
+    gap: calc(var(--card-gap-desktop) * var(--scale-factor-desktop, 1));
+    width: fit-content;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    justify-content: center;
+  }
+
+  /* Support Card - Desktop */
+  .support-card {
+    width: calc(var(--card-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--card-height-desktop) * var(--scale-factor-desktop, 1));
+    padding: 
+      calc(var(--card-padding-top-desktop) * var(--scale-factor-desktop, 1))
+      calc(var(--card-padding-right-desktop) * var(--scale-factor-desktop, 1))
+      calc(var(--card-padding) * var(--scale-factor-desktop, 1))
+      calc(var(--card-padding-left-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Card 1 and 2 - Desktop: Special height 320px */
+  .support-card:nth-child(1),
+  .support-card:nth-child(2) {
+    height: calc(320px * var(--scale-factor-desktop, 1));
+  }
+
+  /* Support Icon - Desktop */
+  .support-icon {
+    margin-right: calc(24px * var(--scale-factor-desktop, 1));
+  }
+
+  /* Support Description - Desktop */
+  .support-description {
+    font-size: calc(var(--description-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--description-line-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+}
+
+/* Ultra-wide / 4K */
+@media (min-width: 1920px) {
+  .custom-support.design-scale {
+    --scale-factor-desktop: 1;
   }
 }
 
