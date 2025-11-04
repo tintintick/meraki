@@ -1,46 +1,50 @@
 {{ 'custom-subscribe.css' | asset_url | stylesheet_tag }}
 
 <div class="custom-subscribe design-scale" data-section-id="{{ section.id }}">
-  <!-- Section Title -->
-  <div class="subscribe-header">
-    <h2 class="section-title">{{ section.settings.heading }}</h2>
-  </div>
-
-  <!-- Features List -->
-  <div class="subscribe-features">
-    <!-- Feature 1: Join Meraki -->
-    <div class="feature-item">
-      <div class="feature-icon">
-        <img src="{{ 'subscribe/Join Meraki.svg' | asset_url }}" alt="Join Meraki" loading="lazy" width="48" height="48">
+  <div class="subscribe-container">
+    <!-- Left Column: Title + Features -->
+    <div class="subscribe-content">
+      <!-- Section Title -->
+      <div class="subscribe-header">
+        <h2 class="section-title">{{ section.settings.heading }}</h2>
       </div>
-      <div class="feature-text">
-        {{ section.settings.feature1_text }}
+
+      <!-- Features List -->
+      <div class="subscribe-features">
+        <!-- Feature 1: Join Meraki -->
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="{{ 'subscribe/Join Meraki.svg' | asset_url }}" alt="Join Meraki" loading="lazy" width="48" height="48">
+          </div>
+          <div class="feature-text">
+            {{ section.settings.feature1_text }}
+          </div>
+        </div>
+
+        <!-- Feature 2: VIP Support -->
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="{{ 'subscribe/VIP.svg' | asset_url }}" alt="VIP" loading="lazy" width="42" height="42">
+          </div>
+          <div class="feature-text">
+            {{ section.settings.feature2_text }}
+          </div>
+        </div>
+
+        <!-- Feature 3: Access Tutorials -->
+        <div class="feature-item">
+          <div class="feature-icon">
+            <img src="{{ 'subscribe/Access.svg' | asset_url }}" alt="Access" loading="lazy" width="42" height="42">
+          </div>
+          <div class="feature-text">
+            {{ section.settings.feature3_text }}
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Feature 2: VIP Support -->
-    <div class="feature-item">
-      <div class="feature-icon">
-        <img src="{{ 'subscribe/VIP.svg' | asset_url }}" alt="VIP" loading="lazy" width="42" height="42">
-      </div>
-      <div class="feature-text">
-        {{ section.settings.feature2_text }}
-      </div>
-    </div>
-
-    <!-- Feature 3: Access Tutorials -->
-    <div class="feature-item">
-      <div class="feature-icon">
-        <img src="{{ 'subscribe/Access.svg' | asset_url }}" alt="Access" loading="lazy" width="42" height="42">
-      </div>
-      <div class="feature-text">
-        {{ section.settings.feature3_text }}
-      </div>
-    </div>
-  </div>
-
-  <!-- Subscribe Form -->
-  <div class="subscribe-form-wrapper">
+    <!-- Right Column: Subscribe Form -->
+    <div class="subscribe-form-wrapper">
     {% form 'customer', class: 'subscribe-form' %}
       <input type="hidden" name="contact[tags]" value="{{ section.settings.customer_tag | escape }}">
       
@@ -95,6 +99,7 @@
         </div>
       {%- endif -%}
     {% endform %}
+    </div>
   </div>
 </div>
 

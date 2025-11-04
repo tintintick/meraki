@@ -71,6 +71,22 @@
   letter-spacing: normal;   
 }
 
+/* Subscribe Container - Mobile: Keep vertical layout */
+.subscribe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Subscribe Content - Mobile */
+.subscribe-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 100%; */
+}
+
 /* Subscribe Header */
 .subscribe-header {
   margin-top: calc(var(--header-margin-top) * var(--scale-factor-mobile, 1));
@@ -109,7 +125,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  padding-left: calc(40px * var(--scale-factor-mobile, 1));
+  /* padding-left: calc(40px * var(--scale-factor-mobile, 1)); */
 }
 
 /* Feature Icon */
@@ -346,12 +362,115 @@
   }
 }
 
-/* Desktop: 990px+ - to be implemented later */
+/* Desktop: 990px+ */
 @media (min-width: 990px) {
   .custom-subscribe.design-scale {
-    /* Desktop tokens will be added later */
-    /* Placeholder for future desktop styles */
-    height: auto;
+    /* Desktop tokens */
+    --section-width-desktop: 1920px;
+    --section-height-desktop: 600px;
+    
+    /* Header */
+    --header-margin-top-desktop: 100px;
+    --header-margin-bottom-desktop: 84px;
+    
+    /* Title */
+    --title-font-size-desktop: 54px;
+    --title-line-height-desktop: 50px;
+    
+    /* Feature Text */
+    --feature-text-font-size-desktop: 24px;
+    --feature-text-line-height-desktop: 28px;
+    
+    /* Button */
+    --button-width-desktop: 240px;
+    --button-height-desktop: 68px;
+    --button-margin-top-desktop: 36px;
+    
+    /* Container gap */
+    --container-gap-desktop: 98px;
+    
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+    justify-content: center; /* 垂直居中 */
+  }
+
+  /* Subscribe Container - Desktop: Flex layout */
+  .subscribe-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--container-gap-desktop) * var(--scale-factor-desktop, 1));
+    width: 100%;
+    max-width: calc(var(--section-width-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+  }
+
+  /* Subscribe Content - Left Column */
+  .subscribe-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 0 auto;
+  }
+
+  /* Subscribe Header - Desktop */
+  .subscribe-header {
+    margin-top: 0;
+    margin-bottom: calc(var(--header-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  /* Section Title - Desktop */
+  .custom-subscribe .section-title {
+    font-size: calc(var(--title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--title-line-height-desktop) * var(--scale-factor-desktop, 1));
+    text-align: left;
+  }
+
+  /* Subscribe Features - Desktop */
+  .subscribe-features {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    gap: calc(40px * var(--scale-factor-desktop, 1));
+  }
+
+  .feature-item {
+    padding-left: 0;
+  }
+
+  /* Feature Text - Desktop */
+  .feature-text {
+    font-size: calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--feature-text-line-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Subscribe Form Wrapper - Desktop */
+  .subscribe-form-wrapper {
+    align-items: flex-start; /* 子元素左对齐 */
+  }
+
+  /* Subscribe Form - Desktop */
+  .subscribe-form {
+    align-items: flex-start; /* 表单内容左对齐 */
+  }
+
+  /* Subscribe Button - Desktop */
+  .subscribe-button {
+    margin-top: calc(var(--button-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    width: calc(var(--button-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--button-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+}
+
+/* Ultra-wide / 4K */
+@media (min-width: 1920px) {
+  .custom-subscribe.design-scale {
+    --scale-factor-desktop: 1;
   }
 }
 
