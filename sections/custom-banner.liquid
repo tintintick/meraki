@@ -51,8 +51,18 @@
 
           <!-- Content Container -->
           <div class="banner-content">
-            {%- if block.settings.heading -%}
-              <div class="banner-heading">{{ block.settings.heading }}</div>
+            <!-- Heading - Mobile -->
+            {%- if block.settings.heading_mobile != blank -%}
+              <div class="banner-heading banner-heading--mobile">{{ block.settings.heading_mobile }}</div>
+            {%- elsif block.settings.heading != blank -%}
+              <div class="banner-heading banner-heading--mobile">{{ block.settings.heading }}</div>
+            {%- endif -%}
+
+            <!-- Heading - Desktop -->
+            {%- if block.settings.heading_desktop != blank -%}
+              <div class="banner-heading banner-heading--desktop">{{ block.settings.heading_desktop }}</div>
+            {%- elsif block.settings.heading != blank -%}
+              <div class="banner-heading banner-heading--desktop">{{ block.settings.heading }}</div>
             {%- endif -%}
 
             {%- if block.settings.button_text -%}
@@ -192,6 +202,8 @@
 {% schema %}
 {
   "name": "Custom Banner",
+  "tag": "section",
+  "class": "section",
   "settings": [
     {
       "type": "checkbox",
@@ -226,9 +238,24 @@
           "label": "Desktop image (1920px)"
         },
         {
+          "type": "header",
+          "content": "Mobile Content"
+        },
+        {
           "type": "textarea",
-          "id": "heading",
-          "label": "Heading text",
+          "id": "heading_mobile",
+          "label": "Heading text (Mobile)",
+          "default": "Redefining Espresso\nat home"
+        },
+        {
+          "type": "header",
+          "content": "Desktop Content"
+        },
+        {
+          "type": "textarea",
+          "id": "heading_desktop",
+          "label": "Heading text (Desktop)",
+          "info": "Use \\n for line breaks",
           "default": "Redefining Espresso\nat home"
         },
         {
@@ -252,7 +279,8 @@
         {
           "type": "slide",
           "settings": {
-            "heading": "Redefining Espresso\nat home",
+            "heading_mobile": "Redefining Espresso\nat home",
+            "heading_desktop": "Redefining Espresso\nat home",
             "button_text": "Shop Now"
           }
         }
