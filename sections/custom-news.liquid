@@ -168,9 +168,24 @@
         prevButton.disabled = false;
       }
 
-      // Disable next when at totalCards - 2
-      const maxIndex = Math.max(0, totalCards - 2);
-      if (currentIndex >= maxIndex) {
+      // Check if remaining scroll distance is less than one card width
+      const container = section.querySelector('.news-cards-container');
+      if (!container) return;
+      
+      const containerWidth = container.offsetWidth;
+      const trackWidth = track.scrollWidth;
+      const scaleFactor = getScaleFactor();
+      const moveDistance = getCardMoveDistance();
+      const initialOffset = 260 * scaleFactor;
+      
+      // Current scroll position (absolute value)
+      const currentScrolled = initialOffset + (currentIndex * moveDistance);
+      
+      // Remaining scrollable distance
+      const remainingDistance = trackWidth - containerWidth - currentScrolled;
+      
+      // If remaining distance is less than one card movement, disable next
+      if (remainingDistance < moveDistance) {
         nextButton.classList.add('disabled');
         nextButton.disabled = true;
       } else {
@@ -183,8 +198,7 @@
     function goToIndex(index) {
       if (!isDesktop()) return;
 
-      const maxIndex = Math.max(0, totalCards - 2);
-      currentIndex = Math.max(0, Math.min(maxIndex, index));
+      currentIndex = Math.max(0, Math.min(totalCards - 1, index));
       const scaleFactor = getScaleFactor();
       const moveDistance = getCardMoveDistance();
       const initialOffset = -260 * scaleFactor; // Initial left offset
@@ -212,8 +226,7 @@
     });
 
     nextButton.addEventListener('click', () => {
-      const maxIndex = Math.max(0, totalCards - 2);
-      if (isDesktop() && currentIndex < maxIndex) {
+      if (isDesktop() && !nextButton.classList.contains('disabled')) {
         goToIndex(currentIndex + 1);
       }
     });
