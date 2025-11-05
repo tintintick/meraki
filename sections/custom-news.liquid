@@ -1,15 +1,32 @@
 {{ 'custom-news.css' | asset_url | stylesheet_tag }}
 
 <div class="custom-news design-scale" data-section-id="{{ section.id }}">
-  <!-- Section Title -->
+  <!-- Header: Title & Navigation -->
   <div class="news-header">
-    <h2 class="section-title">{{ section.settings.heading }}</h2>
+    <h2 class="section-title news-title">{{ section.settings.heading }}</h2>
+    
+    <!-- Navigation Switcher (Desktop only) -->
+    <div class="news-nav-switcher">
+      <button class="news-nav-button news-nav-prev" aria-label="Previous">
+        <img class="news-nav-icon news-nav-icon-active" src="{{ 'icon-previous.svg' | asset_url }}" alt="" width="60" height="60">
+        <img class="news-nav-icon news-nav-icon-disable" src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="" width="60" height="60">
+      </button>
+      <button class="news-nav-button news-nav-next" aria-label="Next">
+        <img class="news-nav-icon news-nav-icon-active" src="{{ 'icon-next.svg' | asset_url }}" alt="" width="60" height="60">
+        <img class="news-nav-icon news-nav-icon-disable" src="{{ 'icon-next-disable.svg' | asset_url }}" alt="" width="60" height="60">
+      </button>
+    </div>
   </div>
 
-  <!-- News Grid -->
-  <div class="news-grid">
+  <!-- News Cards Container -->
+  <div class="news-cards-container">
+    <!-- News Cards Track -->
+    <div class="news-cards-track">
+      <!-- Spacer (Desktop only) -->
+      <div class="news-card news-card-spacer">&nbsp;</div>
+      
     {%- if section.settings.blog != blank and section.settings.blog.articles_count > 0 -%}
-      {%- for article in section.settings.blog.articles limit: 4 -%}
+      {%- for article in section.settings.blog.articles limit: 5 -%}
         <div class="news-card">
           <!-- Card Image -->
           {%- if section.settings.show_image and article.image -%}
@@ -83,6 +100,10 @@
         </div>
       {%- endfor -%}
     {%- endif -%}
+      
+      <!-- Spacer (Desktop only) -->
+      <div class="news-card news-card-spacer">&nbsp;</div>
+    </div>
   </div>
 
   <!-- View All Button -->
@@ -96,6 +117,132 @@
     </div>
   {%- endif -%}
 </div>
+
+<script>
+(function() {
+  function initNewsCarousel() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      setTimeout(initNewsCarousel, 100);
+      return;
+    }
+
+    const track = section.querySelector('.news-cards-track');
+    const cards = section.querySelectorAll('.news-card:not(.news-card-spacer)');
+    const prevButton = section.querySelector('.news-nav-prev');
+    const nextButton = section.querySelector('.news-nav-next');
+
+    if (!track || cards.length === 0 || !prevButton || !nextButton) return;
+
+    let currentIndex = 0;
+    const totalCards = cards.length;
+
+    // Check if desktop
+    function isDesktop() {
+      return window.innerWidth >= 990;
+    }
+
+    // Get scale factor
+    function getScaleFactor() {
+      if (!isDesktop()) return 1;
+      const screenWidth = window.innerWidth;
+      return Math.min(1, screenWidth / 1920);
+    }
+
+    // Get card width (580 + 40 gap)
+    function getCardMoveDistance() {
+      const scaleFactor = getScaleFactor();
+      return 620 * scaleFactor; // 580 card + 40 gap
+    }
+
+    // Update button states
+    function updateButtons() {
+      if (!isDesktop()) return;
+
+      // Disable prev if at start
+      if (currentIndex === 0) {
+        prevButton.classList.add('disabled');
+        prevButton.disabled = true;
+      } else {
+        prevButton.classList.remove('disabled');
+        prevButton.disabled = false;
+      }
+
+      // Disable next when at totalCards - 2
+      const maxIndex = Math.max(0, totalCards - 2);
+      if (currentIndex >= maxIndex) {
+        nextButton.classList.add('disabled');
+        nextButton.disabled = true;
+      } else {
+        nextButton.classList.remove('disabled');
+        nextButton.disabled = false;
+      }
+    }
+
+    // Move to index
+    function goToIndex(index) {
+      if (!isDesktop()) return;
+
+      const maxIndex = Math.max(0, totalCards - 2);
+      currentIndex = Math.max(0, Math.min(maxIndex, index));
+      const scaleFactor = getScaleFactor();
+      const moveDistance = getCardMoveDistance();
+      const initialOffset = -260 * scaleFactor; // Initial left offset
+      const transformX = initialOffset - (currentIndex * moveDistance);
+
+      track.style.transform = `translateX(${transformX}px)`;
+      updateButtons();
+    }
+
+    // Initialize
+    function initialize() {
+      if (isDesktop()) {
+        currentIndex = 0;
+        goToIndex(0);
+      } else {
+        track.style.transform = '';
+      }
+    }
+
+    // Event listeners
+    prevButton.addEventListener('click', () => {
+      if (isDesktop() && currentIndex > 0) {
+        goToIndex(currentIndex - 1);
+      }
+    });
+
+    nextButton.addEventListener('click', () => {
+      const maxIndex = Math.max(0, totalCards - 2);
+      if (isDesktop() && currentIndex < maxIndex) {
+        goToIndex(currentIndex + 1);
+      }
+    });
+
+    // Handle resize
+    let lastIsDesktop = isDesktop();
+    function handleResize() {
+      const currentIsDesktop = isDesktop();
+      if (currentIsDesktop !== lastIsDesktop) {
+        lastIsDesktop = currentIsDesktop;
+        initialize();
+      } else if (currentIsDesktop) {
+        goToIndex(currentIndex);
+      }
+    }
+
+    window.addEventListener('resize', handleResize);
+
+    // Initial setup
+    initialize();
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initNewsCarousel);
+  } else {
+    initNewsCarousel();
+  }
+})();
+</script>
 
 {% schema %}
 {
