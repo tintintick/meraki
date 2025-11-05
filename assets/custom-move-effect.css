@@ -4,6 +4,7 @@
   position: relative;
   width: 100%;
   overflow: hidden;
+  letter-spacing: normal;
 }
 
 .custom-move-effect.design-scale {
@@ -28,101 +29,176 @@
   /* Machine */
   --machine-width: 750px;
   --machine-height: 655px;
-  --machine-start-top: 862px;
+  --machine-initial-top: 862px;
   --machine-end-top: 691px;
 
   /* UI Circles */
   --circle-size: 132.501px;
 
   /* Circle 1 - 冲煮头保温温度设置 (Inferred) */
-  --circle-1-start-left: -113px;
-  --circle-1-start-top: 365px;
+  --circle-1-initial-left: -113px;
+  --circle-1-initial-top: 365px;
+  --circle-1-initial-opacity: 0;
+  --circle-1-middle-left: -3px;
+  --circle-1-middle-top: 442px;
+  --circle-1-middle-opacity: 0.2;
   --circle-1-end-left: 23px;
   --circle-1-end-top: 466px;
+  --circle-1-end-opacity: 0.5;
 
   /* Circle 2 - 自动研磨-进行中 */
-  --circle-2-start-left: 99px;
-  --circle-2-start-top: 365px;
+  --circle-2-initial-left: 99px;
+  --circle-2-initial-top: 365px;
+  --circle-2-initial-opacity: 0;
+  --circle-2-middle-left: 159px;
+  --circle-2-middle-top: 442px;
+  --circle-2-middle-opacity: 0.3;
   --circle-2-end-left: 167px;
   --circle-2-end-top: 469px;
+  --circle-2-end-opacity: 0.8;
 
   /* Circle 3 - 手动多任务 */
-  --circle-3-start-left: 311px;
-  --circle-3-start-top: 365px;
+  --circle-3-initial-left: 311px;
+  --circle-3-initial-top: 365px;
+  --circle-3-initial-opacity: 0;
+  --circle-3-middle-left: 311px;
+  --circle-3-middle-top: 442px;
+  --circle-3-middle-opacity: 0.8;
   --circle-3-end-left: 311px;
   --circle-3-end-top: 466px;
+  --circle-3-end-opacity: 1;
 
   /* Circle 4 - 蒸汽力度设置 */
-  --circle-4-start-left: 523px;
-  --circle-4-start-top: 365px;
+  --circle-4-initial-left: 523px;
+  --circle-4-initial-top: 365px;
+  --circle-4-initial-opacity: 0;
+  --circle-4-middle-left: 463px;
+  --circle-4-middle-top: 442px;
+  --circle-4-middle-opacity: 0.3;
   --circle-4-end-left: 455px;
   --circle-4-end-top: 466px;
+  --circle-4-end-opacity: 0.8;
 
   /* Circle 5 - 反冲洗-1 (Inferred) */
-  --circle-5-start-left: 735px;
-  --circle-5-start-top: 365px;
+  --circle-5-initial-left: 735px;
+  --circle-5-initial-top: 365px;
+  --circle-5-initial-opacity: 0;
+  --circle-5-middle-left: 625px;
+  --circle-5-middle-top: 442px;
+  --circle-5-middle-opacity: 0.2;
   --circle-5-end-left: 599px;
   --circle-5-end-top: 466px;
+  --circle-5-end-opacity: 0.5;
 
   /* Circle 6 - 时间日期设置 (Inferred) */
-  --circle-6-start-left: -222px;
-  --circle-6-start-top: 577px;
+  --circle-6-initial-left: -222px;
+  --circle-6-initial-top: 577px;
+  --circle-6-initial-opacity: 0;
+  --circle-6-middle-left: -103px;
+  --circle-6-middle-top: 614px;
+  --circle-6-middle-opacity: 0.1;
   --circle-6-end-left: -51px;
   --circle-6-end-top: 615px;
+  --circle-6-end-opacity: 0.4;
 
   /* Circle 7 - 教程-1 */
-  --circle-7-start-left: -10px;
-  --circle-7-start-top: 577px;
+  --circle-7-initial-left: -10px;
+  --circle-7-initial-top: 577px;
+  --circle-7-initial-opacity: 0;
+  --circle-7-middle-left: 69px;
+  --circle-7-middle-top: 614px;
+  --circle-7-middle-opacity: 0.3;
   --circle-7-end-left: 93px;
   --circle-7-end-top: 615px;
+  --circle-7-end-opacity: 0.8;
 
   /* Circle 8 - 蒸汽主页-40% */
-  --circle-8-start-left: 202px;
-  --circle-8-start-top: 577px;
+  --circle-8-initial-left: 202px;
+  --circle-8-initial-top: 577px;
+  --circle-8-initial-opacity: 0;
+  --circle-8-middle-left: 231px;
+  --circle-8-middle-top: 614px;
+  --circle-8-middle-opacity: 0.8;
   --circle-8-end-left: 237px;
   --circle-8-end-top: 615px;
+  --circle-8-end-opacity: 0.9;
 
   /* Circle 9 - 自动研磨-主页 */
-  --circle-9-start-left: 414px;
-  --circle-9-start-top: 577px;
+  --circle-9-initial-left: 414px;
+  --circle-9-initial-top: 577px;
+  --circle-9-initial-opacity: 0;
+  --circle-9-middle-left: 389px;
+  --circle-9-middle-top: 614px;
+  --circle-9-middle-opacity: 0.8;
   --circle-9-end-left: 381px;
   --circle-9-end-top: 615px;
+  --circle-9-end-opacity: 1;
 
   /* Circle 10 - 预热时间 */
-  --circle-10-start-left: 626px;
-  --circle-10-start-top: 577px;
+  --circle-10-initial-left: 626px;
+  --circle-10-initial-top: 577px;
+  --circle-10-initial-opacity: 0;
+  --circle-10-middle-left: 551px;
+  --circle-10-middle-top: 614px;
+  --circle-10-middle-opacity: 0.3;
   --circle-10-end-left: 525px;
   --circle-10-end-top: 614px;
+  --circle-10-end-opacity: 0.8;
 
   /* Circle 11 - 4 7 (Inferred) */
-  --circle-11-start-left: 838px;
-  --circle-11-start-top: 577px;
+  --circle-11-initial-left: 838px;
+  --circle-11-initial-top: 577px;
+  --circle-11-initial-opacity: 0;
+  --circle-11-middle-left: 723px;
+  --circle-11-middle-top: 614px;
+  --circle-11-middle-opacity: 0.1;
   --circle-11-end-left: 669px;
   --circle-11-end-top: 614px;
+  --circle-11-end-opacity: 0.5;
 
   /* Circle 12 - 研磨度调节 */
-  --circle-12-start-left: -40px;
-  --circle-12-start-top: 789px;
+  --circle-12-initial-left: -40px;
+  --circle-12-initial-top: 789px;
+  --circle-12-initial-opacity: 0;
+  --circle-12-middle-left: -6px;
+  --circle-12-middle-top: 786px;
+  --circle-12-middle-opacity: 0.2;
   --circle-12-end-left: 23px;
   --circle-12-end-top: 762px;
+  --circle-12-end-opacity: 0.8;
 
   /* Circle 13 - 粉量设置 */
-  --circle-13-start-left: 172px;
-  --circle-13-start-top: 789px;
+  --circle-13-initial-left: 172px;
+  --circle-13-initial-top: 789px;
+  --circle-13-initial-opacity: 0;
+  --circle-13-middle-left: 166px;
+  --circle-13-middle-top: 786px;
+  --circle-13-middle-opacity: 0.3;
   --circle-13-end-left: 166px;
   --circle-13-end-top: 762px;
+  --circle-13-end-opacity: 0.8;
 
   /* Circle 14 - 设置页 */
-  --circle-14-start-left: 462px;
-  --circle-14-start-top: 789px;
+  --circle-14-initial-left: 462px;
+  --circle-14-initial-top: 789px;
+  --circle-14-initial-opacity: 0;
+  --circle-14-middle-left: 456px;
+  --circle-14-middle-top: 786px;
+  --circle-14-middle-opacity: 0.3;
   --circle-14-end-left: 456px;
   --circle-14-end-top: 762px;
+  --circle-14-end-opacity: 0.5;
 
   /* Circle 15 - 奶温设置 */
-  --circle-15-start-left: 674px;
-  --circle-15-start-top: 789px;
+  --circle-15-initial-left: 674px;
+  --circle-15-initial-top: 789px;
+  --circle-15-initial-opacity: 0;
+  --circle-15-middle-left: 628px;
+  --circle-15-middle-top: 786px;
+  --circle-15-middle-opacity: 0.2;
   --circle-15-end-left: 599px;
   --circle-15-end-top: 762px;
+  --circle-15-end-opacity: 0.4;
 
   /* Animation timing */
   --animation-duration: 1.2s;
@@ -173,12 +249,9 @@
   align-items: center;
   opacity: 0.5;
   will-change: top, opacity;
+  z-index: 1;
 }
 
-.move-effect-content {
-  --content-start-top: 0px;
-  --content-end-top: 100px;
-}
 
 /* Title */
 .move-effect-title {
@@ -209,7 +282,7 @@
 /* Machine Container */
 .move-effect-machine-container {
   position: absolute;
-  top: calc(var(--machine-start-top) * var(--scale-factor-mobile, 1));
+  top: calc(var(--machine-initial-top) * var(--scale-factor-mobile, 1));
   left: 50%;
   transform: translateX(-50%);
   width: calc(var(--machine-width) * var(--scale-factor-mobile, 1));
@@ -260,78 +333,78 @@
 
 /* Circle positioning - Start state */
 .move-effect-circle[data-circle="1"] {
-  left: calc(var(--circle-1-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-1-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-1-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-1-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="2"] {
-  left: calc(var(--circle-2-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-2-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-2-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-2-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="3"] {
-  left: calc(var(--circle-3-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-3-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-3-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-3-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="4"] {
-  left: calc(var(--circle-4-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-4-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-4-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-4-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="5"] {
-  left: calc(var(--circle-5-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-5-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-5-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-5-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="6"] {
-  left: calc(var(--circle-6-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-6-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-6-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-6-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="7"] {
-  left: calc(var(--circle-7-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-7-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-7-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-7-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="8"] {
-  left: calc(var(--circle-8-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-8-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-8-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-8-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="9"] {
-  left: calc(var(--circle-9-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-9-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-9-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-9-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="10"] {
-  left: calc(var(--circle-10-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-10-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-10-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-10-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="11"] {
-  left: calc(var(--circle-11-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-11-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-11-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-11-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="12"] {
-  left: calc(var(--circle-12-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-12-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-12-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-12-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="13"] {
-  left: calc(var(--circle-13-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-13-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-13-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-13-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="14"] {
-  left: calc(var(--circle-14-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-14-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-14-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-14-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 .move-effect-circle[data-circle="15"] {
-  left: calc(var(--circle-15-start-left) * var(--scale-factor-mobile, 1));
-  top: calc(var(--circle-15-start-top) * var(--scale-factor-mobile, 1));
+  left: calc(var(--circle-15-initial-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--circle-15-initial-top) * var(--scale-factor-mobile, 1));
 }
 
 /* Animated state - no longer used with scroll-based animation */
@@ -442,9 +515,279 @@
   }
 }
 
-/* Desktop overrides - to be implemented later */
+/* Desktop overrides */
 @media (min-width: 990px) {
   .custom-move-effect.design-scale {
-    /* Desktop tokens will be added later */
+    /* Desktop scale factor */
+    --scale-factor-desktop: calc(100vw / 1920);
+    
+    /* Desktop section */
+    --section-height-desktop: 1000px;
+    
+    /* Desktop title */
+    --title-font-size-desktop: 54px;
+    --title-line-height-desktop: 52px;
+    
+    /* Desktop description */
+    --desc-font-size-desktop: 24px;
+    --desc-line-height-desktop: 32px;
+    --desc-width-desktop: 585px;
+    
+    /* Desktop machine */
+    --machine-width-desktop: 888px;
+    --machine-height-desktop: 1094px;
+    
+    /* Desktop circle size */
+    --circle-size-desktop: 169.58px;
+    --circle-15-size-desktop: 171.501px;
+    
+    /* Desktop bottom mask */
+    --mask-width-desktop: 1920px;
+    --mask-height-desktop: 328px;
+    
+    /* Content positions (title & description container) */
+    --content-initial-top-desktop: 0px;
+    --content-middle-top-desktop: 100px;
+    --content-end-top-desktop: 100px;
+    
+    /* Machine positions */
+    --machine-initial-top-desktop: 541px;
+    /* --machine-initial-left-desktop: 542px; */
+    --machine-middle-top-desktop: 440px;
+    /* --machine-middle-left-desktop: 542px; */
+    --machine-end-top-desktop: 423px;
+    /* --machine-end-left-desktop: 516px; */
+    
+    /* Circle positions - relative to section top-left corner */
+    /* 按照移动端的编号和名称映射 */
+    
+    /* Circle 1 - 冲煮头保温温度设置 */
+    --circle-1-initial-left-desktop: 385px;
+    --circle-1-initial-top-desktop: 248px;
+    --circle-1-initial-opacity-desktop: 0;
+    --circle-1-middle-left-desktop: 385px;
+    --circle-1-middle-top-desktop: 277px;
+    --circle-1-middle-opacity-desktop: 0.2;
+    --circle-1-end-left-desktop: 436px;
+    --circle-1-end-top-desktop: 297px;
+    --circle-1-end-opacity-desktop: 0.5;
+    
+    /* Circle 2 - 自动研磨-进行中 */
+    --circle-2-initial-left-desktop: 618px;
+    --circle-2-initial-top-desktop: 248px;
+    --circle-2-initial-opacity-desktop: 0;
+    --circle-2-middle-left-desktop: 637px;
+    --circle-2-middle-top-desktop: 277px;
+    --circle-2-middle-opacity-desktop: 0.3;
+    --circle-2-end-left-desktop: 657px;
+    --circle-2-end-top-desktop: 297px;
+    --circle-2-end-opacity-desktop: 0.8;
+    
+    /* Circle 3 - 手动多任务 */
+    --circle-3-initial-left-desktop: 878px;
+    --circle-3-initial-top-desktop: 248px;
+    --circle-3-initial-opacity-desktop: 0;
+    --circle-3-middle-left-desktop: 878px;
+    --circle-3-middle-top-desktop: 277px;
+    --circle-3-middle-opacity-desktop: 0.8;
+    --circle-3-end-left-desktop: 878px;
+    --circle-3-end-top-desktop: 297px;
+    --circle-3-end-opacity-desktop: 1;
+    
+    /* Circle 4 - 蒸汽力度设置 */
+    --circle-4-initial-left-desktop: 1138px;
+    --circle-4-initial-top-desktop: 248px;
+    --circle-4-initial-opacity-desktop: 0;
+    --circle-4-middle-left-desktop: 1119px;
+    --circle-4-middle-top-desktop: 277px;
+    --circle-4-middle-opacity-desktop: 0.3;
+    --circle-4-end-left-desktop: 1099px;
+    --circle-4-end-top-desktop: 297px;
+    --circle-4-end-opacity-desktop: 0.8;
+    
+    /* Circle 5 - 反冲洗-1 */
+    --circle-5-initial-left-desktop: 1390px;
+    --circle-5-initial-top-desktop: 248px;
+    --circle-5-initial-opacity-desktop: 0;
+    --circle-5-middle-left-desktop: 1371px;
+    --circle-5-middle-top-desktop: 277px;
+    --circle-5-middle-opacity-desktop: 0.2;
+    --circle-5-end-left-desktop: 1320px;
+    --circle-5-end-top-desktop: 297px;
+    --circle-5-end-opacity-desktop: 0.5;
+    
+    /* Circle 6 - 时间日期设置 */
+    --circle-6-initial-left-desktop: 204px;
+    --circle-6-initial-top-desktop: 468px;
+    --circle-6-initial-opacity-desktop: 0;
+    --circle-6-middle-left-desktop: 253px;
+    --circle-6-middle-top-desktop: 487px;
+    --circle-6-middle-opacity-desktop: 0.1;
+    --circle-6-end-left-desktop: 320px;
+    --circle-6-end-top-desktop: 487.7px;
+    --circle-6-end-opacity-desktop: 0.4;
+    
+    /* Circle 7 - 教程-1 */
+    --circle-7-initial-left-desktop: 494px;
+    --circle-7-initial-top-desktop: 468px;
+    --circle-7-initial-opacity-desktop: 0;
+    --circle-7-middle-left-desktop: 542px;
+    --circle-7-middle-top-desktop: 487px;
+    --circle-7-middle-opacity-desktop: 0.3;
+    --circle-7-end-left-desktop: 542px;
+    --circle-7-end-top-desktop: 487.7px;
+    --circle-7-end-opacity-desktop: 0.8;
+    
+    /* Circle 8 - 蒸汽主页-40% */
+    --circle-8-initial-left-desktop: 764px;
+    --circle-8-initial-top-desktop: 468px;
+    --circle-8-initial-opacity-desktop: 0;
+    --circle-8-middle-left-desktop: 764px;
+    --circle-8-middle-top-desktop: 487px;
+    --circle-8-middle-opacity-desktop: 0.8;
+    --circle-8-end-left-desktop: 764px;
+    --circle-8-end-top-desktop: 487.7px;
+    --circle-8-end-opacity-desktop: 0.9;
+    
+    /* Circle 9 - 自动研磨-主页 */
+    --circle-9-initial-left-desktop: 1024px;
+    --circle-9-initial-top-desktop: 468px;
+    --circle-9-initial-opacity-desktop: 0;
+    --circle-9-middle-left-desktop: 986px;
+    --circle-9-middle-top-desktop: 487px;
+    --circle-9-middle-opacity-desktop: 0.8;
+    --circle-9-end-left-desktop: 986px;
+    --circle-9-end-top-desktop: 487.7px;
+    --circle-9-end-opacity-desktop: 1;
+    
+    /* Circle 10 - 预热时间 */
+    --circle-10-initial-left-desktop: 1294px;
+    --circle-10-initial-top-desktop: 468px;
+    --circle-10-initial-opacity-desktop: 0;
+    --circle-10-middle-left-desktop: 1227px;
+    --circle-10-middle-top-desktop: 487px;
+    --circle-10-middle-opacity-desktop: 0.3;
+    --circle-10-end-left-desktop: 1208px;
+    --circle-10-end-top-desktop: 487.7px;
+    --circle-10-end-opacity-desktop: 0.8;
+    
+    /* Circle 11 - 4 7 */
+    --circle-11-initial-left-desktop: 1497px;
+    --circle-11-initial-top-desktop: 487px;
+    --circle-11-initial-opacity-desktop: 0;
+    --circle-11-middle-left-desktop: 1497px;
+    --circle-11-middle-top-desktop: 487px;
+    --circle-11-middle-opacity-desktop: 0.1;
+    --circle-11-end-left-desktop: 1430px;
+    --circle-11-end-top-desktop: 486.42px;
+    --circle-11-end-opacity-desktop: 0.4;
+    
+    /* Circle 12 - 研磨度调节 */
+    --circle-12-initial-left-desktop: 387px;
+    --circle-12-initial-top-desktop: 697px;
+    --circle-12-initial-opacity-desktop: 0;
+    --circle-12-middle-left-desktop: 387px;
+    --circle-12-middle-top-desktop: 697px;
+    --circle-12-middle-opacity-desktop: 0.2;
+    --circle-12-end-left-desktop: 436px;
+    --circle-12-end-top-desktop: 675.2px;
+    --circle-12-end-opacity-desktop: 0.5;
+    
+    /* Circle 13 - 粉量设置 */
+    --circle-13-initial-left-desktop: 638px;
+    --circle-13-initial-top-desktop: 697px;
+    --circle-13-initial-opacity-desktop: 0;
+    --circle-13-middle-left-desktop: 638px;
+    --circle-13-middle-top-desktop: 697px;
+    --circle-13-middle-opacity-desktop: 0.3;
+    --circle-13-end-left-desktop: 657px;
+    --circle-13-end-top-desktop: 675.2px;
+    --circle-13-end-opacity-desktop: 0.8;
+    
+    /* Circle 14 - 设置页 */
+    --circle-14-initial-left-desktop: 1118px;
+    --circle-14-initial-top-desktop: 697px;
+    --circle-14-initial-opacity-desktop: 0;
+    --circle-14-middle-left-desktop: 1118px;
+    --circle-14-middle-top-desktop: 697px;
+    --circle-14-middle-opacity-desktop: 0.3;
+    --circle-14-end-left-desktop: 1099px;
+    --circle-14-end-top-desktop: 675.2px;
+    --circle-14-end-opacity-desktop: 0.8;
+    
+    /* Circle 15 - 奶温设置 */
+    --circle-15-initial-left-desktop: 1371px;
+    --circle-15-initial-top-desktop: 697px;
+    --circle-15-initial-opacity-desktop: 0;
+    --circle-15-middle-left-desktop: 1371px;
+    --circle-15-middle-top-desktop: 697px;
+    --circle-15-middle-opacity-desktop: 0.2;
+    --circle-15-end-left-desktop: 1320px;
+    --circle-15-end-top-desktop: 675.2px;
+    --circle-15-end-opacity-desktop: 0.5;
+    
+    /* Apply desktop section height */
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+  
+  .move-effect-content {
+    z-index: 1;
+  }
+
+  /* Desktop title */
+  .move-effect-title {
+    font-size: calc(var(--title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--title-line-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+  
+  /* Desktop description */
+  .move-effect-description {
+    width: calc(var(--desc-width-desktop) * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--desc-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--desc-line-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  .move-effect-circles {
+    width: 100%;
+  }
+  
+  /* Desktop machine container */
+  .move-effect-machine-container {
+    width: calc(var(--machine-width-desktop) * var(--scale-factor-desktop, 1));
+    height: auto;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  
+  /* Desktop machine image */
+  .move-effect-machine {
+    width: 100%;
+    height: auto;
+  }
+  
+  /* Desktop circles */
+  .move-effect-circle {
+    width: calc(var(--circle-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--circle-size-desktop) * var(--scale-factor-desktop, 1));
+  }
+  
+  .move-effect-circle[data-circle="15"] {
+    width: calc(var(--circle-15-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--circle-15-size-desktop) * var(--scale-factor-desktop, 1));
+  }
+  
+  /* Desktop bottom mask */
+  .move-effect-bottom-mask {
+    width: calc(var(--mask-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--mask-height-desktop) * var(--scale-factor-desktop, 1));
+    bottom: 0;
+    top: auto;
+  }
+}
+
+/* Stop scaling above 1920px */
+@media (min-width: 1920px) {
+  .custom-move-effect.design-scale {
+    --scale-factor-desktop: 1;
   }
 }

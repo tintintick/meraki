@@ -13,12 +13,15 @@
 
     <!-- Machine Container -->
     <div class="move-effect-machine-container">
-      <img
-        class="move-effect-machine"
-        src="{{ 'move_effect/machine-mb.png' | asset_url }}"
-        alt="Meraki Coffee Machine"
-        loading="lazy"
-      >
+      <picture>
+        <source media="(min-width: 990px)" srcset="{{ section.settings.machine_image_desktop | default: 'move_effect/machine-pc.png' | asset_url }}">
+        <img
+          class="move-effect-machine"
+          src="{{ section.settings.machine_image_mobile | default: 'move_effect/machine-mb.png' | asset_url }}"
+          alt="Meraki Coffee Machine"
+          loading="lazy"
+        >
+      </picture>
     </div>
 
     <!-- UI Circles -->
@@ -101,7 +104,14 @@
 
     <!-- Bottom Gradient Mask -->
     <div class="move-effect-bottom-mask">
-      <img src="{{ 'move_effect/machine-gradient-mb.png' | asset_url }}" alt="Gradient Mask" loading="lazy">
+      <picture>
+        <source media="(min-width: 990px)" srcset="{{ section.settings.mask_image_desktop | default: 'move_effect/machine-gradient-pc.png' | asset_url }}">
+        <img
+          src="{{ section.settings.mask_image_mobile | default: 'move_effect/machine-gradient-mb.png' | asset_url }}"
+          alt="Gradient Mask"
+          loading="lazy"
+        >
+      </picture>
     </div>
   </div>
 </div>
@@ -118,18 +128,37 @@
     // Get all elements to animate
     const circles = section.querySelectorAll('.move-effect-circle');
     const machineContainer = section.querySelector('.move-effect-machine-container');
-    const title = section.querySelector('.move-effect-title');
-    const description = section.querySelector('.move-effect-description');
+    const contentContainer = section.querySelector('.move-effect-content');
+    
+    let accumulatedScroll = 0;
+    const totalScrollDistance = 800; // Total scroll needed to complete animation
+    
+    // Smooth animation state
+    let currentProgress = 0; // Current animated progress
+    let targetProgress = 0; // Target progress from scroll
+    let animationFrameId = null;
+    const smoothFactor = 0.15; // Interpolation speed (0-1, higher = faster)
+    
+    // One-time animation state
+    let animationCompleted = false; // Track if animation has been completed once
 
-    // Read CSS variables (scale factor)
+    // Check if desktop
+    function isDesktop() {
+      return window.innerWidth >= 990;
+    }
+    
+    // Get scale factor
     function getScaleFactor() {
-      const value = getComputedStyle(section).getPropertyValue('--scale-factor-mobile').trim();
+      const desktop = isDesktop();
+      const varName = desktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
+      const value = getComputedStyle(section).getPropertyValue(varName).trim();
       const parsed = parseFloat(value);
       
-      // 如果 CSS 变量解析失败，手动计算缩放因子
       if (isNaN(parsed) || !parsed) {
         const screenWidth = window.innerWidth;
-        if (screenWidth < 750) {
+        if (desktop) {
+          return Math.min(1, screenWidth / 1920);
+        } else if (screenWidth < 750) {
           return Math.max(0.5, Math.min(1, screenWidth / 750));
         }
         return 1;
@@ -137,93 +166,279 @@
       
       return parsed;
     }
-
+    
     // Helper to read CSS variable
     function getCSSVar(name) {
       const value = getComputedStyle(section).getPropertyValue(name).trim();
       return parseFloat(value.replace('px', '')) || 0;
     }
+    
+    // Read position CSS variables based on viewport
+    function readPositions() {
+      const desktop = isDesktop();
+      const suffix = desktop ? '-desktop' : '';
+      const positions = {};
+      
+      for (let i = 1; i <= 15; i++) {
+        positions[`circle${i}InitialLeft`] = getCSSVar(`--circle-${i}-initial-left${suffix}`);
+        positions[`circle${i}InitialTop`] = getCSSVar(`--circle-${i}-initial-top${suffix}`);
+        positions[`circle${i}InitialOpacity`] = getCSSVar(`--circle-${i}-initial-opacity${suffix}`) || 0;
+        positions[`circle${i}MiddleLeft`] = getCSSVar(`--circle-${i}-middle-left${suffix}`);
+        positions[`circle${i}MiddleTop`] = getCSSVar(`--circle-${i}-middle-top${suffix}`);
+        positions[`circle${i}MiddleOpacity`] = getCSSVar(`--circle-${i}-middle-opacity${suffix}`) || 0;
+        positions[`circle${i}EndLeft`] = getCSSVar(`--circle-${i}-end-left${suffix}`);
+        positions[`circle${i}EndTop`] = getCSSVar(`--circle-${i}-end-top${suffix}`);
+        positions[`circle${i}EndOpacity`] = getCSSVar(`--circle-${i}-end-opacity${suffix}`) || 0.8;
+      }
 
-    // Read position CSS variables
-    const positions = {};
-    for (let i = 1; i <= 15; i++) {
-      positions[`circle${i}StartLeft`] = getCSSVar(`--circle-${i}-start-left`);
-      positions[`circle${i}StartTop`] = getCSSVar(`--circle-${i}-start-top`);
-      positions[`circle${i}EndLeft`] = getCSSVar(`--circle-${i}-end-left`);
-      positions[`circle${i}EndTop`] = getCSSVar(`--circle-${i}-end-top`);
+      // Machine and content positions
+      positions.machineInitialTop = getCSSVar(`--machine-initial-top${suffix}`) || (desktop ? 541 : 862);
+      positions.machineMiddleTop = getCSSVar(`--machine-middle-top${suffix}`) || (desktop ? 440 : 771);
+      positions.machineEndTop = getCSSVar(`--machine-end-top${suffix}`) || (desktop ? 366 : 771);
+      positions.contentInitialTop = getCSSVar(`--content-initial-top${suffix}`) || 0;
+      positions.contentMiddleTop = getCSSVar(`--content-middle-top${suffix}`) || 100;
+      positions.contentEndTop = getCSSVar(`--content-end-top${suffix}`) || 100;
+      positions.machineInitialLeft = 0;
+      positions.machineMiddleLeft = 0;
+      positions.machineEndLeft = 0;
+      
+      return positions;
     }
+    
+    let positions = readPositions();
 
-    positions.machineStartTop = getCSSVar('--machine-start-top') || 862;
-    positions.machineEndTop = getCSSVar('--machine-end-top') || 691;
-
-    // Circle opacity targets from CSS
-    const circleOpacities = [
-      null, // index 0 (unused)
-      0.5, 0.8, 1.0, 0.8, 0.5, // circles 1-5
-      0.4, 0.8, 0.9, 1.0, 0.8, // circles 6-10
-      0.5, 0.8, 0.8, 0.5, 0.4  // circles 11-15
-    ];
-
-    let animationFrameId = null;
-
-    function updateAnimation() {
+    // Apply animation at specific progress (0-1)
+    function applyAnimation(progress) {
       const scaleFactor = getScaleFactor();
-      const rect = section.getBoundingClientRect();
-      const windowHeight = window.innerHeight;
-      const sectionHeight = section.offsetHeight;
+      const desktop = isDesktop();
+      
+      // Three-stage animation
+      let currentContentTop, currentContentOpacity, currentMachineTop, currentMachineLeft;
+      
+      if (progress <= 0.5) {
+        // Stage 1 (0-50%): initial -> middle
+        const stage1Progress = progress * 2;
+        
+        currentContentTop = positions.contentInitialTop + (positions.contentMiddleTop - positions.contentInitialTop) * stage1Progress;
+        currentContentOpacity = 0.5 + (1 - 0.5) * stage1Progress;
+        currentMachineTop = positions.machineInitialTop + (positions.machineMiddleTop - positions.machineInitialTop) * stage1Progress;
+        currentMachineLeft = positions.machineInitialLeft + (positions.machineMiddleLeft - positions.machineInitialLeft) * stage1Progress;
+        
+        // Circles stage 1
+        circles.forEach((circle, index) => {
+          const circleNum = index + 1;
+          const initialLeft = positions[`circle${circleNum}InitialLeft`];
+          const initialTop = positions[`circle${circleNum}InitialTop`];
+          const initialOpacity = positions[`circle${circleNum}InitialOpacity`];
+          const middleLeft = positions[`circle${circleNum}MiddleLeft`];
+          const middleTop = positions[`circle${circleNum}MiddleTop`];
+          const middleOpacity = positions[`circle${circleNum}MiddleOpacity`];
 
-      // Calculate scroll progress (0-1)
-      // 0 when section top just touches viewport bottom (starts entering)
-      // 1 when section top reaches viewport top (fully visible)
-      const scrolledIn = windowHeight - rect.top;
-      const progress = Math.max(0, Math.min(1, scrolledIn / windowHeight));
+          const currentLeft = initialLeft + (middleLeft - initialLeft) * stage1Progress;
+          const currentTop = initialTop + (middleTop - initialTop) * stage1Progress;
+          const currentOpacity = initialOpacity + (middleOpacity - initialOpacity) * stage1Progress;
 
-      // Update content container (title & description follow)
-      const contentContainer = section.querySelector('.move-effect-content');
-      const contentStartTop = getCSSVar('--content-start-top') || 0;
-      const contentEndTop = getCSSVar('--content-end-top') || 100;
+          circle.style.left = (currentLeft * scaleFactor) + 'px';
+          circle.style.top = (currentTop * scaleFactor) + 'px';
+          circle.style.opacity = currentOpacity;
+        });
+      } else {
+        // Stage 2 (50-100%): middle -> end
+        const stage2Progress = (progress - 0.5) * 2;
+        
+        currentContentTop = positions.contentMiddleTop + (positions.contentEndTop - positions.contentMiddleTop) * stage2Progress;
+        currentContentOpacity = 1;
+        currentMachineTop = positions.machineMiddleTop + (positions.machineEndTop - positions.machineMiddleTop) * stage2Progress;
+        currentMachineLeft = positions.machineMiddleLeft + (positions.machineEndLeft - positions.machineMiddleLeft) * stage2Progress;
+        
+        // Circles stage 2
+        circles.forEach((circle, index) => {
+          const circleNum = index + 1;
+          const middleLeft = positions[`circle${circleNum}MiddleLeft`];
+          const middleTop = positions[`circle${circleNum}MiddleTop`];
+          const middleOpacity = positions[`circle${circleNum}MiddleOpacity`];
+          const endLeft = positions[`circle${circleNum}EndLeft`];
+          const endTop = positions[`circle${circleNum}EndTop`];
+          const endOpacity = positions[`circle${circleNum}EndOpacity`];
 
-      const currentContentTop = contentStartTop + (contentEndTop - contentStartTop) * progress;
-      const currentContentOpacity = 0.5 + (1 - 0.5) * progress; // 0.5 to 1
+          const currentLeft = middleLeft + (endLeft - middleLeft) * stage2Progress;
+          const currentTop = middleTop + (endTop - middleTop) * stage2Progress;
+          const currentOpacity = middleOpacity + (endOpacity - middleOpacity) * stage2Progress;
 
+          circle.style.left = (currentLeft * scaleFactor) + 'px';
+          circle.style.top = (currentTop * scaleFactor) + 'px';
+          circle.style.opacity = currentOpacity;
+        });
+      }
+
+      // Apply content and machine positions
       contentContainer.style.top = (currentContentTop * scaleFactor) + 'px';
       contentContainer.style.opacity = currentContentOpacity;
-
-      // Update machine
-      const machineTop = positions.machineStartTop + (positions.machineEndTop - positions.machineStartTop) * progress;
-      machineContainer.style.top = (machineTop * scaleFactor) + 'px';
-
-      // Update circles
-      circles.forEach((circle, index) => {
-        const circleNum = index + 1;
-        const startLeft = positions[`circle${circleNum}StartLeft`];
-        const startTop = positions[`circle${circleNum}StartTop`];
-        const endLeft = positions[`circle${circleNum}EndLeft`];
-        const endTop = positions[`circle${circleNum}EndTop`];
-
-        const currentLeft = startLeft + (endLeft - startLeft) * progress;
-        const currentTop = startTop + (endTop - startTop) * progress;
-        const currentOpacity = circleOpacities[circleNum] * progress;
-
-        circle.style.left = (currentLeft * scaleFactor) + 'px';
-        circle.style.top = (currentTop * scaleFactor) + 'px';
-        circle.style.opacity = currentOpacity;
-      });
+      machineContainer.style.top = (currentMachineTop * scaleFactor) + 'px';
+      
+      // Desktop: machine stays centered (no left animation)
+      // Mobile: also centered via CSS
     }
-
-    function scheduleUpdate() {
-      if (animationFrameId) {
-        cancelAnimationFrame(animationFrameId);
+    
+    // Smooth animation loop using requestAnimationFrame
+    function smoothAnimate() {
+      // Interpolate current progress towards target progress
+      const diff = targetProgress - currentProgress;
+      
+      // Only animate if there's a meaningful difference
+      if (Math.abs(diff) > 0.001) {
+        currentProgress += diff * smoothFactor;
+        applyAnimation(currentProgress);
+        animationFrameId = requestAnimationFrame(smoothAnimate);
+      } else {
+        // Snap to target when close enough
+        currentProgress = targetProgress;
+        applyAnimation(currentProgress);
+        animationFrameId = null;
+        
+        // Mark as completed if reached 100%
+        if (currentProgress >= 1) {
+          animationCompleted = true;
+        }
       }
-      animationFrameId = requestAnimationFrame(updateAnimation);
+    }
+    
+    // Update target progress and start animation loop if needed
+    function updateProgress(progress) {
+      targetProgress = Math.max(0, Math.min(1, progress));
+      
+      // Start animation loop if not already running
+      if (animationFrameId === null) {
+        animationFrameId = requestAnimationFrame(smoothAnimate);
+      }
+    }
+    
+    // Check if section is at top
+    function isSectionAtTop() {
+      const rect = section.getBoundingClientRect();
+      return rect.top <= 0 && rect.bottom > 0;
+    }
+    
+    // Handle wheel event (desktop)
+    function handleWheel(e) {
+      // If animation already completed, don't interact anymore
+      if (animationCompleted) {
+        return;
+      }
+      
+      // Only lock scrolling when section is at top
+      if (!isSectionAtTop()) {
+        return;
+      }
+      
+      const delta = e.deltaY;
+      const newScroll = accumulatedScroll + delta;
+      
+      // Boundary check - unlock at edges
+      if (newScroll < 0 && delta < 0) {
+        // At 0%, scrolling up -> unlock, allow normal page scroll up
+        accumulatedScroll = 0;
+        updateProgress(0);
+        return;
+      }
+      if (newScroll > totalScrollDistance && delta > 0) {
+        // At 100%, scrolling down -> unlock, allow normal page scroll down
+        accumulatedScroll = totalScrollDistance;
+        updateProgress(1);
+        return;
+      }
+      
+      // Within animation range -> lock scroll
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Update accumulated scroll with clamping
+      accumulatedScroll = Math.max(0, Math.min(newScroll, totalScrollDistance));
+      const progress = accumulatedScroll / totalScrollDistance;
+      updateProgress(progress);
+    }
+    
+    // Handle touch events (mobile)
+    let touchStartY = 0;
+    let touchLastY = 0;
+    
+    function handleTouchStart(e) {
+      touchStartY = e.touches[0].clientY;
+      touchLastY = touchStartY;
+    }
+    
+    function handleTouchMove(e) {
+      // If animation already completed, don't interact anymore
+      if (animationCompleted) {
+        return;
+      }
+      
+      // Only lock scrolling when section is at top
+      if (!isSectionAtTop()) {
+        return;
+      }
+      
+      const currentY = e.touches[0].clientY;
+      const deltaY = touchLastY - currentY; // positive = down, negative = up
+      
+      if (deltaY === 0) {
+        return;
+      }
+      
+      const newScroll = accumulatedScroll + deltaY;
+      
+      // Boundary check - unlock at edges
+      if (newScroll < 0 && deltaY < 0) {
+        // At 0%, scrolling up -> unlock, allow normal page scroll up
+        accumulatedScroll = 0;
+        updateProgress(0);
+        touchLastY = currentY;
+        return;
+      }
+      if (newScroll > totalScrollDistance && deltaY > 0) {
+        // At 100%, scrolling down -> unlock, allow normal page scroll down
+        accumulatedScroll = totalScrollDistance;
+        updateProgress(1);
+        touchLastY = currentY;
+        return;
+      }
+      
+      // Within animation range -> lock scroll
+      e.preventDefault();
+      e.stopPropagation();
+      
+      // Update accumulated scroll with clamping
+      accumulatedScroll = Math.max(0, Math.min(newScroll, totalScrollDistance));
+      const progress = accumulatedScroll / totalScrollDistance;
+      updateProgress(progress);
+      
+      touchLastY = currentY;
+    }
+    
+    // Handle resize
+    let lastIsDesktop = isDesktop();
+    function handleResize() {
+      const currentIsDesktop = isDesktop();
+      if (currentIsDesktop !== lastIsDesktop) {
+        lastIsDesktop = currentIsDesktop;
+        positions = readPositions();
+      }
+      
+      // Reapply animation at current progress (instant, no smooth transition on resize)
+      const progress = accumulatedScroll / totalScrollDistance;
+      currentProgress = progress;
+      targetProgress = progress;
+      applyAnimation(progress);
     }
 
-    // Listen to scroll and resize events
-    window.addEventListener('scroll', scheduleUpdate, { passive: true });
-    window.addEventListener('resize', scheduleUpdate);
+    // Listen to events
+    window.addEventListener('wheel', handleWheel, { passive: false });
+    window.addEventListener('touchstart', handleTouchStart, { passive: false });
+    window.addEventListener('touchmove', handleTouchMove, { passive: false });
+    window.addEventListener('resize', handleResize);
 
-    // Initial update
-    updateAnimation();
+    // Initial state
+    applyAnimation(0);
   }
 
   if (document.readyState === 'loading') {
@@ -249,6 +464,30 @@
       "id": "description",
       "label": "Description",
       "default": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
+    },
+    {
+      "type": "image_picker",
+      "id": "machine_image_desktop",
+      "label": "Machine Image (Desktop)",
+      "info": "Recommended: 888x1094px"
+    },
+    {
+      "type": "image_picker",
+      "id": "machine_image_mobile",
+      "label": "Machine Image (Mobile)",
+      "info": "Recommended: 750x655px"
+    },
+    {
+      "type": "image_picker",
+      "id": "mask_image_desktop",
+      "label": "Bottom Mask (Desktop)",
+      "info": "Recommended: 1920x328px"
+    },
+    {
+      "type": "image_picker",
+      "id": "mask_image_mobile",
+      "label": "Bottom Mask (Mobile)",
+      "info": "Recommended: 750x328px"
     }
   ],
   "presets": [
