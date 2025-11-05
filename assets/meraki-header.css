@@ -1,0 +1,799 @@
+/* ===== Custom Header Styles with Responsive Scaling (Mobile-First) ===== */
+
+/* ===== CSS Variables ===== */
+:root {
+  --color-header-text-light: #ffffff;
+  --color-header-text-dark: #000000;
+  --color-header-bg-dark: #282828;
+  --color-header-bg-light: #ffffff;
+}
+
+/* ===== Reusable Utility Classes ===== */
+/* Shared transition for header state changes */
+.header-transition,
+.meraki-header.design-scale,
+.meraki-header.design-scale .meraki-header-wrapper,
+.scrolled-past-header .meraki-header.design-scale .meraki-header-wrapper,
+.menu-open .meraki-header,
+.menu-open .meraki-header.design-scale .meraki-header-wrapper {
+  transition: background-color var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease), 
+              backdrop-filter var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease), 
+              -webkit-backdrop-filter var(--header-transition-duration, 0.3s) var(--header-transition-timing, ease);
+}
+
+/* Base icon styling */
+.header-icon-base {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-icon-base .icon,
+.header-icon-base svg {
+  width: 100%;
+  height: 100%;
+  stroke: currentColor;
+  fill: none;
+}
+
+/* Desktop icon size */
+.header-icon-desktop-size {
+  width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+  height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+}
+
+/* Mobile icon size (44px) */
+.header-icon-mobile-size {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+}
+
+.meraki-header.design-scale {
+  /* Mobile design tokens (750px mock) */
+  --header-height: 118px;
+  --logo-left: 33px;
+  --logo-top: 33px;
+  --logo-width: 133px;
+  --logo-height: 52px;
+  --order-button-height: 60px;
+  --order-button-padding-x: 24px;
+  --order-button-padding-y: 13px;
+  --order-button-font-size: 24px;
+  --order-button-border: 2px;
+  --order-button-radius: 4px;
+  --order-button-gap: 31px;
+  --order-button-spacing: 27px;
+  --menu-button-size: 48px;
+
+  /* Transition timing */
+  --header-transition-duration: 0.3s;
+  --header-interaction-transition-duration: 0.3s;
+  --header-transition-timing: ease;
+
+  /* Mobile styles (base) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  height: calc(var(--header-height) * var(--scale-factor-mobile, 1));
+  padding: 0 !important;
+  background-color: transparent;
+  color: var(--color-header-text-light);
+}
+
+.meraki-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: relative;
+  background-color: transparent;
+}
+
+/* Mobile component styles */
+.meraki-header.design-scale .meraki-header-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.meraki-header.design-scale.page-width {
+  padding: 0 calc(34px * var(--scale-factor-mobile, 1)) !important;
+}
+
+.meraki-header.design-scale .header__logo {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.meraki-header.design-scale .header__heading-link {
+  display: flex;
+  align-items: center;
+  padding: 0;
+}
+
+.meraki-header.design-scale .meraki-header-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: calc(var(--logo-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--logo-height) * var(--scale-factor-mobile, 1));
+  display: block;
+  transition: filter var(--header-transition-duration) var(--header-transition-timing);
+}
+
+.meraki-header.design-scale .header__mobile-elements {
+  display: flex;
+  align-items: center;
+  gap: calc(var(--order-button-gap) * var(--scale-factor-mobile, 1));
+  margin-left: auto;
+}
+
+.meraki-header.design-scale .header__order-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: calc(var(--order-button-gap) * var(--scale-factor-mobile, 1));
+  height: calc(var(--order-button-height) * var(--scale-factor-mobile, 1));
+  padding: calc(var(--order-button-padding-y) * var(--scale-factor-mobile, 1)) calc(var(--order-button-padding-x) * var(--scale-factor-mobile, 1));
+  border: var(--order-button-border) solid var(--color-header-text-light);
+  border-radius: var(--order-button-radius);
+  font-size: calc(var(--order-button-font-size) * var(--scale-factor-mobile, 1));
+  font-weight: 400;
+  font-family: 'Kanit', sans-serif;
+  line-height: normal;
+  letter-spacing: normal;
+  color: var(--color-header-text-light);
+  text-decoration: none;
+  background-color: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all var(--header-interaction-transition-duration) var(--header-transition-timing);
+}
+
+.meraki-header.design-scale .header__order-button:hover {
+  opacity: 0.8;
+}
+
+.meraki-header.design-scale header-drawer,
+.meraki-header.design-scale .header__icon--menu {
+  width: calc(var(--menu-button-size) * var(--scale-factor-mobile, 1));
+  height: calc(var(--menu-button-size) * var(--scale-factor-mobile, 1));
+}
+
+.meraki-header.design-scale .header__icon--menu {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+.meraki-header.design-scale .meraki-header-menu-icon {
+  width: calc(var(--menu-button-size) * var(--scale-factor-mobile, 1));
+  height: calc(var(--menu-button-size) * var(--scale-factor-mobile, 1));
+  display: block;
+  transition: all var(--header-interaction-transition-duration) var(--header-transition-timing);
+}
+
+.meraki-header.design-scale .header__icon--menu.focus-inset:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* Hide desktop elements on mobile */
+.meraki-header.design-scale .header__desktop-elements,
+.header__desktop-elements {
+  display: none;
+}
+
+/* Hide desktop navigation in menu open state and on mobile */
+.meraki-header .header__desktop-nav {
+  display: none;
+}
+
+/* Header icon styling */
+.meraki-header.design-scale .header__icon {
+  color: var(--color-header-text-light);
+}
+
+.meraki-header.design-scale .header__icon .icon,
+.meraki-header.design-scale .header__icon svg {
+  color: var(--color-header-text-light);
+  stroke: var(--color-header-text-light);
+}
+
+.meraki-header.design-scale .header__icon--menu .icon,
+.meraki-header.design-scale .header__icon--menu svg {
+  color: var(--color-header-text-light);
+  stroke: var(--color-header-text-light);
+}
+
+/* Menu Drawer Full Width (Mobile) */
+.meraki-header.design-scale ~ .menu-drawer,
+.meraki-header.design-scale + * .menu-drawer {
+  width: 100% !important;
+}
+
+/* Fallback for non-design-scale headers */
+.meraki-header-wrapper {
+  background: transparent !important;
+  background-color: transparent !important;
+}
+
+.meraki-header-logo {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  transition: filter 0.3s ease;
+}
+
+/* ===== Tablet Scaling (750px+) ===== */
+@media (min-width: 750px) {
+  /* Tablet scaling rules can be added here if needed */
+}
+
+/* ===== Desktop Overrides (990px+) ===== */
+@media (min-width: 990px) {
+  .meraki-header.design-scale {
+    --header-height: 80px;
+    --header-padding-x: 320px;
+    --logo-width: 82px;
+    --logo-height: 32px;
+    --nav-margin-left: 167px;
+    --nav-font-size: 18px;
+    --nav-font-weight: 600;
+    --nav-gap: 50px;
+    --nav-local-gap: 90px;
+    --local-gap: 32px;
+    --utility-gap: 30px;
+    --local-utility-gap: 40px;
+    --icon-size: 28px;
+    
+    display: flex;
+    align-items: center;
+    height: calc(var(--header-height) * var(--scale-factor-desktop, 1));
+    padding-left: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
+    padding-right: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1));
+    background-color: var(--color-header-bg-dark);
+    color: var(--color-header-text-light);
+  }
+  
+  /* 覆盖 page-width 的宽度限制，让 header 铺满 */
+  .meraki-header.design-scale.page-width {
+    max-width: 100% !important;
+    padding-left: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1)) !important;
+    padding-right: calc(var(--header-padding-x) * var(--scale-factor-desktop, 1)) !important;
+  }
+  
+  /* 隐藏移动端元素 */
+  .meraki-header.design-scale .header__mobile-elements,
+  .meraki-header.design-scale .header__close-button {
+    display: none;
+  }
+  
+  .meraki-header.design-scale .menu-open-only {
+    display: none !important;
+  }
+  
+  /* Logo */
+  .meraki-header.design-scale .header__logo {
+    flex-shrink: 0;
+    position: relative;
+    top: 0;
+    margin-left: 0;
+  }
+  
+  .meraki-header.design-scale .meraki-header-logo {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: calc(var(--logo-width) * var(--scale-factor-desktop, 1));
+    height: calc(var(--logo-height) * var(--scale-factor-desktop, 1));
+  }
+  
+  /* 桌面端隐藏黑色 logo */
+  .meraki-header.design-scale .header__logo .menu-open-only {
+    display: none !important;
+  }
+  
+  /* Desktop Elements 容器 */
+  .meraki-header.design-scale .header__desktop-elements {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+  
+  /* Navigation */
+  .meraki-header.design-scale .header__desktop-nav {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: calc(var(--nav-margin-left) * var(--scale-factor-desktop, 1));
+  }
+  
+  .meraki-header.design-scale .header__desktop-menu {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--nav-gap) * var(--scale-factor-desktop, 1));
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .meraki-header.design-scale .header__desktop-menu-item {
+    margin: 0;
+  }
+  
+  .meraki-header.design-scale .header__desktop-menu-link {
+    font-family: 'Kanit', sans-serif;
+    font-size: calc(var(--nav-font-size) * var(--scale-factor-desktop, 1));
+    font-weight: var(--nav-font-weight);
+    color: var(--color-header-text-light);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: opacity 0.3s ease;
+  }
+  
+  .meraki-header.design-scale .header__desktop-menu-link:hover {
+    opacity: 0.8;
+  }
+  
+  .meraki-header.design-scale .header__desktop-menu-link--active {
+    text-decoration: underline;
+  }
+  
+  /* 禁用 nav 链接的 focus outline */
+  .meraki-header.design-scale .header__desktop-menu-link:focus,
+  .meraki-header.design-scale .header__desktop-menu-link:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* Localization 区域 */
+  .meraki-header.design-scale .header__desktop-local {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--local-gap) * var(--scale-factor-desktop, 1));
+    margin-left: 90px;
+  }
+  
+  .meraki-header.design-scale .header__desktop-local .localization-form {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  
+  /* localization-form 按钮：垂直居中，国旗和 caret 无间隔 */
+  .meraki-header.design-scale .header__desktop-local .localization-form__select {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    font-family: 'Kanit', sans-serif;
+    font-size: calc(var(--nav-font-size) * var(--scale-factor-desktop, 1));
+    font-weight: var(--nav-font-weight);
+    color: var(--color-header-text-light);
+    background: transparent;
+    padding: 0;
+    width: fit-content;
+  }
+  
+  /* 删除 localization-form 相关元素的所有边框和阴影 */
+  .meraki-header.design-scale .header__desktop-local .localization-form *,
+  .meraki-header.design-scale .header__desktop-local .localization-form *:focus,
+  .meraki-header.design-scale .header__desktop-local .localization-form *:hover,
+  .meraki-header.design-scale .header__desktop-local .localization-form *:focus-visible {
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  
+  /* 删除伪元素 */
+  .meraki-header.design-scale .header__desktop-local .localization-form *::before,
+  .meraki-header.design-scale .header__desktop-local .localization-form *::after {
+    display: none !important;
+  }
+  
+  /* 国旗图标：28px */
+  .meraki-header.design-scale .header__desktop-local .country-flag-wrapper {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  
+  .meraki-header.design-scale .header__desktop-local .country-flag-wrapper img {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    object-fit: contain;
+  }
+  
+  /* caret 箭头：垂直居中，紧贴国旗/文字 */
+  .meraki-header.design-scale .header__desktop-local .localization-form__select svg {
+    width: auto;
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    margin-left: 0;
+  }
+  
+  /* language-localization 的文字部分 */
+  .meraki-header.design-scale .header__desktop-local .localization-form__select > span:not(.country-flag-wrapper) {
+    display: inline-block;
+    line-height: 1;
+  }
+  
+  /* 桌面端：菜单向下弹出 */
+  .meraki-header.design-scale .header__desktop-local .disclosure__list-wrapper {
+    position: absolute;
+    top: 100% !important;
+    bottom: auto !important;
+    transform: translateY(0.5rem) !important;
+    left: 0;
+    right: auto;
+    margin-top: 0;
+  }
+  
+  .meraki-header.design-scale .header__desktop-local .disclosure__list-wrapper.country-selector,
+  .meraki-header.design-scale .header__desktop-local .disclosure__list-wrapper.language-selector {
+    top: 100% !important;
+    bottom: auto !important;
+    transform: translateY(0.5rem) !important;
+  }
+  
+  /* Utility 区域 */
+  .meraki-header.design-scale .header__desktop-utility {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--utility-gap) * var(--scale-factor-desktop, 1));
+    margin-left: calc(var(--local-utility-gap) * var(--scale-factor-desktop, 1));
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .header__icon {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    color: var(--color-header-text-light);
+    padding: 0;
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .header__icon .icon,
+  .meraki-header.design-scale .header__desktop-utility .header__icon svg {
+    width: 100%;
+    height: 100%;
+    color: var(--color-header-text-light);
+    stroke: var(--color-header-text-light);
+    fill: none;
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .svg-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .svg-wrapper svg {
+    width: 100%;
+    height: 100%;
+  }
+  
+  /* Search component styling */
+  .meraki-header.design-scale .header__desktop-utility .header__search {
+    display: inline-flex;
+    align-items: center;
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .header__search .header__icon--search {
+    width: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size) * var(--scale-factor-desktop, 1));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-header-text-light);
+  }
+  
+  .meraki-header.design-scale .header__desktop-utility .header__search .header__icon--search svg {
+    width: 100%;
+    height: 100%;
+    color: var(--color-header-text-light);
+    stroke: var(--color-header-text-light);
+  }
+  
+  /* 禁用 utility 图标的 focus outline */
+  .meraki-header.design-scale .header__desktop-utility .header__icon:focus,
+  .meraki-header.design-scale .header__desktop-utility .header__icon:focus-visible,
+  .meraki-header.design-scale .header__desktop-utility .header__search:focus,
+  .meraki-header.design-scale .header__desktop-utility .header__search:focus-visible,
+  .meraki-header.design-scale .header__desktop-utility .header__search summary:focus,
+  .meraki-header.design-scale .header__desktop-utility .header__search summary:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* ===== Ultra-wide Scaling (1920px+) ===== */
+@media (min-width: 1920px) {
+  /* Ultra-wide scaling rules can be added here if needed */
+}
+
+
+/* ===== Scrolled State ===== */
+.scrolled-past-header .meraki-header.design-scale {
+  background-color: var(--color-header-bg-light);
+}
+
+.scrolled-past-header .meraki-header.design-scale .meraki-header-wrapper {
+  background-color: var(--color-header-bg-light) !important;
+  background: var(--color-header-bg-light) !important;
+}
+
+.scrolled-past-header .meraki-header.design-scale .header__order-button {
+  border-color: var(--color-header-text-dark);
+  color: var(--color-header-text-dark);
+}
+
+.scrolled-past-header .meraki-header.design-scale .header__icon {
+  color: var(--color-header-text-dark);
+}
+
+.scrolled-past-header .meraki-header.design-scale .header__icon .icon,
+.scrolled-past-header .meraki-header.design-scale .header__icon svg {
+  color: var(--color-header-text-dark);
+  stroke: var(--color-header-text-dark);
+  fill: none;
+}
+
+/* Desktop: dark background always */
+@media (min-width: 990px) {
+  .scrolled-past-header .meraki-header.design-scale {
+    background-color: var(--color-header-bg-dark);
+  }
+
+  .scrolled-past-header .meraki-header.design-scale .header__order-button {
+    border-color: var(--color-header-text-light);
+    color: var(--color-header-text-light);
+  }
+
+  .scrolled-past-header .meraki-header.design-scale .header__icon {
+    color: var(--color-header-text-light);
+  }
+
+  .scrolled-past-header .meraki-header.design-scale .header__icon .icon,
+  .scrolled-past-header .meraki-header.design-scale .header__icon svg {
+    color: var(--color-header-text-light);
+    stroke: var(--color-header-text-light);
+    fill: none;
+  }
+}
+
+/* ===== Accessibility ===== */
+.header__order-button:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.header__desktop-menu-link:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+.header__icon:focus {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}
+
+/* ===== Cart Count Bubble ===== */
+.cart-count-bubble {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  min-width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: rgb(var(--color-button));
+  color: rgb(var(--color-button-text));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 4px;
+}
+
+/* ===== Header Overlay Layout ===== */
+/* Make header overlay the first section (banner) */
+.shopify-section.section-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  margin-bottom: 0;
+}
+
+/* Compensate for header height in main content */
+main#MainContent {
+  padding-top: var(--header-height, 118px);
+}
+
+/* First section (banner) moves up to be under header */
+main#MainContent>.shopify-section:first-child {
+  margin-top: calc(-1 * var(--header-height, 118px));
+}
+
+/* ===== Menu Open State - Header Transformation ===== */
+
+/* Default: hide menu-open-only elements */
+.menu-open-only {
+  display: none !important;
+}
+
+/* Menu open: header transformation - white background and flex layout */
+.menu-open .meraki-header {
+  background-color: var(--color-header-bg-light) !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 calc(34px * var(--scale-factor-mobile, 1));
+}
+
+.menu-open .meraki-header.design-scale .meraki-header-wrapper {
+  background-color: var(--color-header-bg-light) !important;
+  background: var(--color-header-bg-light) !important;
+}
+
+/* Menu open: hide default elements */
+.menu-open .meraki-header-logo,
+.menu-open .header__order-button,
+.menu-open .header__icon--menu {
+  display: none !important;
+}
+
+/* Menu open 时隐藏 mobile elements - 需要更高优先级 */
+.section-header.menu-open .header.meraki-header.design-scale header-drawer {
+  width: 0;
+  height: 0;
+}
+
+/* Menu open: show menu-open-only elements */
+.menu-open .menu-open-only {
+  display: block !important;
+}
+
+/* Menu open时显示黑色logo */
+.menu-open .meraki-header-logo-menu-open.menu-open-only {
+  display: block !important;
+  visibility: visible !important;
+}
+
+/* Logo container - position relative for absolute positioning of both logos */
+.header__logo .header__heading-link {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+/* 黑色logo：相对定位，在文档流中占据空间 */
+/* 需要同时覆盖 .menu-open-only 的 display: none */
+.meraki-header-logo-menu-open.menu-open-only {
+  position: relative !important;
+  width: calc(133px * var(--scale-factor-mobile, 1));
+  height: calc(52px * var(--scale-factor-mobile, 1));
+  display: block !important; /* 覆盖 menu-open-only 的 display: none，确保占据空间 */
+  visibility: hidden; /* 占据空间但不可见 */
+}
+
+/* Close button styling */
+.header__close-button {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  padding: 0;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.header__close-button img {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  display: block;
+}
+
+
+/* Menu open: logo centered using flex */
+.menu-open .header__logo {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  margin-left: calc(233px * var(--scale-factor-mobile, 1));
+}
+
+.menu-open .header__logo .header__heading-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Menu open: show desktop-icons (mobile) and style them for mobile design */
+.menu-open .header__desktop-elements {
+  display: flex !important;
+  align-items: center;
+}
+
+/* Menu open: hide localization, show utility (search and cart only) */
+.menu-open .header__desktop-local {
+  display: none !important;
+}
+
+.menu-open .header__desktop-utility {
+  display: flex !important;
+  align-items: center;
+  width: calc(130px * var(--scale-factor-mobile, 1));
+  gap: calc(42px * var(--scale-factor-mobile, 1));
+  margin-left: auto;
+}
+
+/* Menu open: utility icons styling - mobile design (44px icons, black) */
+.menu-open .header__desktop-utility .header__icon {
+  width: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  height: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-header-text-dark) !important;
+  padding: 0;
+}
+
+.menu-open .header__desktop-utility .header__icon .svg-wrapper {
+  width: calc(44px * var(--scale-factor-mobile, 1));
+  height: calc(44px * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.menu-open .header__desktop-utility .header__icon .icon,
+.menu-open .header__desktop-utility .header__icon svg {
+  width: 100%;
+  height: 100%;
+  color: var(--color-header-text-dark) !important;
+  stroke: var(--color-header-text-dark) !important;
+}
+
+/* Hide account icon in menu-open state - only show search and cart */
+.menu-open .header__desktop-utility .header__icon--account {
+  display: none !important;
+}
+
+/* Hide app blocks in menu-open state */
+.menu-open .header__desktop-utility > *:not(.header__search):not(.header__icon--cart) {
+  display: none !important;
+}
+
+/* Ensure search is visible in menu-open state - override base.css rule */
+.menu-open .header__desktop-utility .header__search {
+  display: inline-flex !important;
+}
+
+.menu-open .header__desktop-utility .header__search .header__icon--search {
+  display: flex !important;
+  width: calc(44px * var(--scale-factor-mobile, 1)) !important;
+  height: calc(44px * var(--scale-factor-mobile, 1)) !important;
+}
+
+/* Ensure search icon is always visible in menu-open state */
+.menu-open .header__desktop-utility .header__search .svg-wrapper {
+  display: flex !important;
+}

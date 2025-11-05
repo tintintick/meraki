@@ -11,8 +11,8 @@
   "name": "t:sections.footer.name",
   "type": "footer",
   "sections": {
-    "custom-footer": {
-      "type": "custom-footer",
+    "meraki-footer": {
+      "type": "meraki-footer",
       "settings": {
         "show_social": true,
         "show_payment": true
@@ -20,6 +20,6 @@
     }
   },
   "order": [
-    "custom-footer"
+    "meraki-footer"
   ]
 }

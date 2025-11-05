@@ -75,9 +75,9 @@ if (!customElements.get('custom-footer')) {
 
 // Initialize footer when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
-  const footer = document.querySelector('.custom-footer');
-  if (footer && !footer.classList.contains('custom-footer-initialized')) {
-    footer.classList.add('custom-footer-initialized');
+  const footer = document.querySelector('.meraki-footer');
+  if (footer && !footer.classList.contains('meraki-footer-initialized')) {
+    footer.classList.add('meraki-footer-initialized');
 
     // 直接处理 details 元素
     const details = footer.querySelectorAll('.footer-details');

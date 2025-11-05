@@ -1,6 +1,6 @@
-{{ 'custom-news.css' | asset_url | stylesheet_tag }}
+{{ 'meraki-news.css' | asset_url | stylesheet_tag }}
 
-<div class="custom-news design-scale" data-section-id="{{ section.id }}">
+<div class="meraki-news design-scale" data-section-id="{{ section.id }}">
   <!-- Header: Title & Navigation -->
   <div class="news-header">
     <h2 class="section-title news-title">{{ section.settings.heading }}</h2>
@@ -259,7 +259,7 @@
 
 {% schema %}
 {
-  "name": "Custom News",
+  "name": "Meraki News",
   "settings": [
     {
       "type": "blog",
@@ -305,7 +305,7 @@
   ],
   "presets": [
     {
-      "name": "Custom News"
+      "name": "Meraki News"
     }
   ]
 }

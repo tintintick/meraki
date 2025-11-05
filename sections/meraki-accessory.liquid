@@ -1,0 +1,419 @@
+{{ 'meraki-accessory.css' | asset_url | stylesheet_tag }}
+
+<div class="meraki-accessory design-scale" data-section-id="{{ section.id }}">
+  <!-- Content Container -->
+  <div class="content-container">
+    <!-- Title - Mobile -->
+    {%- if section.settings.title_mobile != blank -%}
+      <h2 class="section-title section-title--mobile">{{ section.settings.title_mobile }}</h2>
+    {%- elsif section.settings.title != blank -%}
+      <h2 class="section-title section-title--mobile">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <!-- Title - Desktop -->
+    {%- if section.settings.title_desktop != blank -%}
+      <h2 class="section-title section-title--desktop">{{ section.settings.title_desktop }}</h2>
+    {%- elsif section.settings.title != blank -%}
+      <h2 class="section-title section-title--desktop">{{ section.settings.title }}</h2>
+    {%- endif -%}
+
+    <p class="section-description">{{ section.settings.description }}</p>
+  </div>
+
+  <!-- Accessory Wrapper -->
+  <div class="accessory-wrapper">
+    <!-- Images Container -->
+    <div class="accessory-imgs">
+      <div class="accessory-imgs-track">
+        <!-- Left Spacer -->
+        <div class="accessory-img-spacer">&nbsp;</div>
+
+        {% for block in section.blocks %}
+          <div class="accessory-img {% if forloop.first %}is-center{% endif %}">
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}">
+            {%- endif -%}
+            {%- if block.settings.image != blank -%}
+              <img
+                src="{{ block.settings.image | image_url: width: 640 }}"
+                alt="{{ block.settings.name }}"
+                loading="lazy"
+              >
+            {%- else -%}
+              <img
+                src="{{ 'accessory/' | append: forloop.index | append: '.png' | asset_url }}"
+                alt="{{ block.settings.name }}"
+                loading="lazy"
+              >
+            {%- endif -%}
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- endif -%}
+          </div>
+        {% endfor %}
+
+        <!-- Right Spacer -->
+        <div class="accessory-img-spacer">&nbsp;</div>
+      </div>
+    </div>
+
+    <!-- Content Container -->
+    <div class="accessory-content">
+      <div class="accessory-content-track">
+        {% for block in section.blocks %}
+          <div class="accessory-content-item">
+            <h3 class="accessory-title">{{ block.settings.name }}</h3>
+            <p class="accessory-text">{{ block.settings.description }}</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="accessory-switcher">
+      <!-- Previous Button -->
+      <button class="nav-button nav-prev" data-direction="prev" aria-label="Previous Accessory">
+        <img src="{{ 'icon-previous.svg' | asset_url }}" alt="Previous" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="Previous (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+
+      <!-- Next Button -->
+      <button class="nav-button nav-next" data-direction="next" aria-label="Next Accessory">
+        <img src="{{ 'icon-next.svg' | asset_url }}" alt="Next" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-next-disable.svg' | asset_url }}" alt="Next (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+    </div>
+  </div>
+
+  <!-- View All Button Container -->
+  <div class="accessory-view-all-container">
+    <a href="{{ section.settings.view_all_link }}" class="accessory-view-all">View All</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initAccessory() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      requestAnimationFrame(initAccessory);
+      return;
+    }
+
+    const prevBtn = section.querySelector('.nav-prev');
+    const nextBtn = section.querySelector('.nav-next');
+    const imgsContainer = section.querySelector('.accessory-imgs');
+    const imgTrack = section.querySelector('.accessory-imgs-track');
+    const contentContainer = section.querySelector('.accessory-content');
+    const contentTrack = contentContainer.querySelector('.accessory-content-track');
+    const imgItems = imgTrack ? Array.from(imgTrack.querySelectorAll('.accessory-img')) : [];
+    const totalItems = imgItems.length;
+
+    if (!prevBtn || !nextBtn || !imgsContainer || !imgTrack || !contentContainer || !contentTrack || totalItems === 0) {
+      return;
+    }
+
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    // Get scale factor
+    function getScaleFactor() {
+      const isDesktop = window.innerWidth >= 990;
+      const property = isDesktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
+      const value = getComputedStyle(section).getPropertyValue(property).trim();
+      return parseFloat(value) || 1;
+    }
+
+    // Get item widths from actual DOM elements
+    function getItemWidths() {
+      const scaleFactor = getScaleFactor();
+      const isDesktop = window.innerWidth >= 990;
+      
+      // 优先使用实际 DOM 元素的宽度
+      const firstContentItem = contentTrack.querySelector('.accessory-content-item');
+      let contentWidth = firstContentItem ? firstContentItem.offsetWidth : 
+        parseFloat(getComputedStyle(section).getPropertyValue('--content-width').trim()) * scaleFactor;
+      
+      // 桌面端：使用图片宽度+间隔来计算移动距离，与图片保持一致
+      if (isDesktop) {
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        contentWidth = imgSize + imgGap;
+      }
+      
+      // 图片宽度仍使用 CSS 计算（用于样式控制，不影响滑动距离）
+      const imgCenterWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-center-width').trim()) * scaleFactor;
+      const imgSideWidth = parseFloat(getComputedStyle(section).getPropertyValue('--img-side-width').trim()) * scaleFactor;
+      const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--img-gap').trim()) * scaleFactor;
+
+      return {
+        imgCenterWidth,
+        imgSideWidth,
+        imgGap,
+        contentWidth
+      };
+    }
+
+    // Update button states
+    function updateButtons() {
+      prevBtn.classList.toggle('disabled', currentIndex === 0);
+      
+      // 桌面端：一次显示 3 张，当最后一张进入可视区域时禁用右翻页
+      const isDesktop = window.innerWidth >= 990;
+      if (isDesktop) {
+        nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 3);
+      } else {
+        nextBtn.classList.toggle('disabled', currentIndex >= totalItems - 1);
+      }
+    }
+
+    // Update image states
+    function updateImageStates() {
+      imgItems.forEach((img, index) => {
+        img.classList.remove('is-center', 'is-side', 'is-hidden', 'is-left', 'is-right');
+
+        if (index === currentIndex) {
+          img.classList.add('is-center');
+        } else if (index === currentIndex - 1 || index === currentIndex + 1) {
+          img.classList.add('is-side');
+          img.classList.add(index < currentIndex ? 'is-left' : 'is-right');
+        } else {
+          img.classList.add('is-hidden');
+        }
+      });
+    }
+
+    function setContentOffset(index, animate = true) {
+      const widths = getItemWidths();
+      
+      // 桌面端：限制 content track 的移动范围与 img track 一致
+      const isDesktop = window.innerWidth >= 990;
+      let clampedIndex = index;
+      if (isDesktop) {
+        // 桌面端最多移动到 totalItems - 3，使 content track 与 img track 同步
+        clampedIndex = Math.max(0, Math.min(index, totalItems - 3));
+      } else {
+        // 移动端保持原有逻辑
+        clampedIndex = Math.max(0, Math.min(index, totalItems - 1));
+      }
+      
+      const translate = clampedIndex * widths.contentWidth;
+      if (!animate) {
+        contentTrack.style.transition = 'none';
+      }
+      contentTrack.style.transform = `translateX(-${translate}px)`;
+      if (!animate) {
+        // Force reflow
+        void contentTrack.offsetWidth;
+        contentTrack.style.transition = '';
+      }
+    }
+
+    function goToIndex(index) {
+      if (index < 0 || index >= totalItems || isAnimating || index === currentIndex) {
+        return;
+      }
+
+      isAnimating = true;
+      currentIndex = index;
+
+      updateButtons();
+      updateImageStates();
+
+      // 计算目标滚动位置
+      const isDesktop = window.innerWidth >= 990;
+      const scaleFactor = getScaleFactor();
+      let scrollLeft;
+
+      if (isDesktop) {
+        // 桌面端：通过索引直接计算（避免 spacer 影响）
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        scrollLeft = index * (imgSize + imgGap);
+      } else {
+        // 移动端：使用 offsetLeft（包含 spacer）
+        const targetImg = imgItems[index];
+        if (targetImg) {
+          const containerCenter = imgsContainer.offsetWidth / 2;
+          const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+          scrollLeft = imgCenter - containerCenter;
+          
+          // 限制最小值为 0，防止左侧 spacer 显示
+          scrollLeft = Math.max(0, scrollLeft);
+        } else {
+          isAnimating = false;
+          return;
+        }
+      }
+      
+      // 桌面端和移动端都使用 CSS transform 移动（与 content track 一致）
+      imgTrack.style.transform = `translateX(-${scrollLeft}px)`;
+
+      // Sync content
+      setContentOffset(currentIndex, true);
+
+      // Reset animation flag after scroll completes
+      setTimeout(() => {
+        isAnimating = false;
+      }, 450);
+    }
+
+    function jumpToIndex(index) {
+      if (index < 0 || index >= totalItems) {
+        return;
+      }
+
+      currentIndex = index;
+      updateButtons();
+      updateImageStates();
+
+      // 计算目标滚动位置
+      const isDesktop = window.innerWidth >= 990;
+      const scaleFactor = getScaleFactor();
+      let scrollLeft;
+
+      if (isDesktop) {
+        // 桌面端：通过索引直接计算（避免 spacer 影响）
+        const imgSize = parseFloat(getComputedStyle(section).getPropertyValue('--img-size-desktop').trim()) * scaleFactor;
+        const imgGap = parseFloat(getComputedStyle(section).getPropertyValue('--content-item-gap-desktop').trim()) * scaleFactor;
+        scrollLeft = index * (imgSize + imgGap);
+      } else {
+        // 移动端：使用 offsetLeft（包含 spacer）
+        const targetImg = imgItems[index];
+        if (targetImg) {
+          const containerCenter = imgsContainer.offsetWidth / 2;
+          const imgCenter = targetImg.offsetLeft + targetImg.offsetWidth / 2;
+          scrollLeft = imgCenter - containerCenter;
+          
+          // 限制最小值为 0，防止左侧 spacer 显示
+          scrollLeft = Math.max(0, scrollLeft);
+        } else {
+          return;
+        }
+      }
+      
+      // 统一使用 transform 移动（无动画）
+      imgTrack.style.transition = 'none';
+      imgTrack.style.transform = `translateX(-${scrollLeft}px)`;
+      // Force reflow
+      void imgTrack.offsetWidth;
+      imgTrack.style.transition = '';
+
+      setContentOffset(currentIndex, false);
+    }
+
+    // Initialize - wait for layout to complete
+    function initialize() {
+      // Reset scroll position (虽然不再使用 scrollLeft，但保留以防万一)
+      imgsContainer.scrollLeft = 0;
+      
+      // Wait for next frame to ensure layout is complete
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          updateButtons();
+          updateImageStates();
+          jumpToIndex(0);
+        });
+      });
+    }
+    
+    initialize();
+
+    // Button click handlers
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        goToIndex(currentIndex - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < totalItems - 1) {
+        goToIndex(currentIndex + 1);
+      }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+      jumpToIndex(currentIndex);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAccessory);
+  } else {
+    initAccessory();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meraki Accessory",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Mobile Content"
+    },
+    {
+      "type": "textarea",
+      "id": "title_mobile",
+      "label": "Title (Mobile)",
+      "default": "Crafted Accessories\nBrew Elevated"
+    },
+    {
+      "type": "header",
+      "content": "Desktop Content"
+    },
+    {
+      "type": "textarea",
+      "id": "title_desktop",
+      "label": "Title (Desktop)",
+      "info": "Use \\n for line breaks",
+      "default": "Crafted Accessories Brew Elevated"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text",
+      "id": "view_all_link",
+      "label": "View All Link"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accessory_item",
+      "name": "Accessory Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "text",
+          "id": "name",
+          "label": "Name"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Product Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki Accessory"
+    }
+  ]
+}
+{% endschema %}

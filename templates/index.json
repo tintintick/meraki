@@ -1,7 +1,7 @@
 {
   "sections": {
-    "custom_banner": {
-      "type": "custom-banner",
+    "meraki_banner": {
+      "type": "meraki-banner",
       "blocks": {
         "slide_1": {
           "type": "slide",
@@ -29,8 +29,8 @@
         "rotation_speed": 5000
       }
     },
-    "custom_sell_points": {
-      "type": "custom-sell-points",
+    "meraki_sell_points": {
+      "type": "meraki-sell-points",
       "settings": {
         "section_title": "Precision Brewing, Every Cup",
         "point1_title": "Dual-Boiler System:\nBarista Heat Control",
@@ -41,15 +41,15 @@
         "point3_description": "Takes the guesswork out of new beans and delivers the right grind and brew instantly."
       }
     },
-    "custom_move_effect": {
-      "type": "custom-move-effect",
+    "meraki_move_effect": {
+      "type": "meraki-move-effect",
       "settings": {
         "title": "Streamlined Workflow\nOn Screen",
         "description": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
       }
     },
-    "custom_feature": {
-      "type": "custom-feature",
+    "meraki_feature": {
+      "type": "meraki-feature",
       "settings": {
         "title": "Café Performance, At Home",
         "description": "Enjoy your daily coffee ritual elevated, with café-quality espresso and creamy milk made easy.",
@@ -59,14 +59,14 @@
         "button2_link": "https://www.merakitech.com/pages/about-us"
       }
     },
-    "custom_awards": {
-      "type": "custom-awards",
+    "meraki_awards": {
+      "type": "meraki-awards",
       "settings": {
         "title": "Awards and Recognition"
       }
     },
-    "custom_prs": {
-      "type": "custom-prs",
+    "meraki_prs": {
+      "type": "meraki-prs",
       "blocks": {
         "pr_card_1": {
           "type": "pr_card",
@@ -87,15 +87,19 @@
           }
         }
       },
-      "block_order": ["pr_card_1", "pr_card_2", "pr_card_3"],
+      "block_order": [
+        "pr_card_1",
+        "pr_card_2",
+        "pr_card_3"
+      ],
       "settings": {}
     },
-    "custom_exhibition_cards": {
-      "type": "custom-exhibition-cards",
+    "meraki_exhibition_cards": {
+      "type": "meraki-exhibition-cards",
       "settings": {}
     },
-    "custom_video": {
-      "type": "custom-video",
+    "meraki_video": {
+      "type": "meraki-video",
       "blocks": {
         "video_1": {
           "type": "video_item",
@@ -138,11 +142,17 @@
           }
         }
       },
-      "block_order": ["video_1", "video_2", "video_3", "video_4", "video_5"],
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5"
+      ],
       "settings": {}
     },
-    "custom_accessory": {
-      "type": "custom-accessory",
+    "meraki_accessory": {
+      "type": "meraki-accessory",
       "blocks": {
         "accessory_1": {
           "type": "accessory_item",
@@ -185,15 +195,21 @@
           }
         }
       },
-      "block_order": ["accessory_1", "accessory_2", "accessory_3", "accessory_4", "accessory_5"],
+      "block_order": [
+        "accessory_1",
+        "accessory_2",
+        "accessory_3",
+        "accessory_4",
+        "accessory_5"
+      ],
       "settings": {
         "title": "Crafted Accessories\nBrew Elevated",
         "description": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality.",
         "view_all_link": "https://www.merakitech.com/collections/accessories"
       }
-    }, 
-    "custom_news": {
-      "type": "custom-news",
+    },
+    "meraki_news": {
+      "type": "meraki-news",
       "settings": {
         "blog": "news",
         "heading": "Latest News",
@@ -204,8 +220,8 @@
         "view_all_link": "https://www.merakitech.com/blogs/newsroom"
       }
     },
-    "custom_subscribe": {
-      "type": "custom-subscribe",
+    "meraki_subscribe": {
+      "type": "meraki-subscribe",
       "settings": {
         "heading": "Stay Inspired with Meraki",
         "feature1_text": "<p>Join Meraki and enjoy exclusive offers and promotions.</p>",
@@ -217,8 +233,8 @@
         "success_message": "Thank you for subscribing!"
       }
     },
-    "custom_support": {
-      "type": "custom-support",
+    "meraki_support": {
+      "type": "meraki-support",
       "blocks": {
         "support_card_1": {
           "type": "support_card",
@@ -257,24 +273,29 @@
           }
         }
       },
-      "block_order": ["support_card_1", "support_card_2", "support_card_3", "support_card_4"],
+      "block_order": [
+        "support_card_1",
+        "support_card_2",
+        "support_card_3",
+        "support_card_4"
+      ],
       "settings": {
         "title": "After-Sales Support"
       }
     }
   },
   "order": [
-    "custom_banner",
-    "custom_sell_points",
-    "custom_move_effect",
-    "custom_feature",
-    "custom_awards",
-    "custom_prs",
-    "custom_exhibition_cards",
-    "custom_video",
-    "custom_accessory",
-    "custom_news",
-    "custom_subscribe",
-    "custom_support"
+    "meraki_banner",
+    "meraki_sell_points",
+    "meraki_move_effect",
+    "meraki_feature",
+    "meraki_awards",
+    "meraki_prs",
+    "meraki_exhibition_cards",
+    "meraki_video",
+    "meraki_accessory",
+    "meraki_news",
+    "meraki_subscribe",
+    "meraki_support"
   ]
 }

@@ -1,0 +1,365 @@
+/* Custom Sell Points (mobile-first) */
+
+.meraki-sell-points {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.meraki-sell-points.design-scale {
+  /* mobile tokens based on 750px mock */
+  --section-height: 3107px;
+  --section-bg: #f0f0f0;
+  --section-padding-x: 40px;
+  --section-title-font-size: 48px;
+  --section-title-line-height: 1.2;
+  --section-title-padding: 54px;
+  --section-title-margin-top: 46px;
+  --card-width: 670px;
+  --card-height: 920px;
+  --card-gap: 40px;
+  --card-radius: 10px;
+  --card-title-font-size: 40px;
+  --card-title-line-height: 46px;
+  --card-title-top: 654px;
+  --card-desc-font-size: 32px;
+  --card-desc-line-height: 40px;
+  --card-desc-top: 776px;
+  --card-desc-width: 600px;
+
+  width: 100%;
+  height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+  /* padding: 0 calc(var(--section-padding-x) * var(--scale-factor-mobile, 1)); */
+}
+
+/* Header Container */
+.sell-points-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Section Title */
+.sell-points-title {
+  width: 100%;
+  padding: calc(var(--section-title-padding) * var(--scale-factor-mobile, 1)) 0;
+  margin-top: calc(var(--section-title-margin-top) * var(--scale-factor-mobile, 1));
+  margin-bottom: 0;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--section-title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: var(--section-title-line-height);
+  color: #000000;
+  text-align: center;
+}
+
+/* Navigation Buttons - Hidden on mobile */
+.sell-points-switch {
+  display: none;
+}
+
+/* Sell Point Items Container */
+.sell-points-container {
+  padding: 0 calc(var(--section-padding-x) * var(--scale-factor-mobile, 1));
+}
+
+/* Sell Point Items Track */
+.sell-points-track {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--card-gap) * var(--scale-factor-mobile, 1));
+  width: 100%;
+}
+
+/* Individual Sell Point Card */
+.sell-point-item {
+  position: relative;
+  width: 100%;
+  height: calc(var(--card-height) * var(--scale-factor-mobile, 1));
+  border-radius: calc(var(--card-radius) * var(--scale-factor-mobile, 1));
+  overflow: hidden;
+}
+
+/* Spacer - Hidden on mobile */
+.sell-point-spacer {
+  display: none;
+}
+
+/* Video Background */
+.sell-point-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+/* First card video - special handling on mobile */
+.sell-point-item[data-card="1"] .sell-point-video {
+  width: 100%;
+  height: auto;
+  /* object-fit: cover; */
+}
+
+/* Hide desktop video on mobile */
+.sell-point-video-desktop {
+  display: none;
+}
+
+/* Gradient Overlay (for third card) */
+.sell-point-gradient {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50%;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1));
+  pointer-events: none;
+}
+
+/* Text Content */
+.sell-point-content {
+  position: absolute;
+  /* bottom: 64px; */
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  z-index: 2;
+  gap: 30px;
+}
+
+.sell-point-title {
+  position: absolute;
+  top: calc(var(--card-title-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 500;
+  font-size: calc(var(--card-title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--card-title-line-height) * var(--scale-factor-mobile, 1));
+  color: #ffffff;
+  text-align: center;
+  white-space: pre-line;
+}
+
+.sell-point-description {
+  position: absolute;
+  top: calc(var(--card-desc-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  /* width: clamp(280px, calc(var(--card-desc-width) * var(--scale-factor-mobile, 1)), 90%); */
+  width: 93%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  font-size: calc(var(--card-desc-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--card-desc-line-height) * var(--scale-factor-mobile, 1));
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  margin: 0;
+}
+
+/* Specific card backgrounds */
+.sell-point-item[data-card="1"] {
+  background-color: #000000;
+}
+
+.sell-point-item[data-card="2"] {
+  background-color: #0b0b0b;
+}
+
+.sell-point-item[data-card="3"] {
+  background-color: #000000;
+}
+
+/* Tablet: 750px mock applies at full scale */
+@media (min-width: 750px) {
+  /* Tablet scaling rules can be added here if needed */
+}
+
+/* Desktop overrides */
+@media (min-width: 990px) {
+  .meraki-sell-points.design-scale {
+    /* 桌面端 tokens 基于 1920px 视口 */
+    --section-height-desktop: 960px;
+    --header-width-desktop: 1060px;
+    --header-margin-top-desktop: 119px;
+    --header-margin-bottom-desktop: 69px;
+    --title-font-size-desktop: 54px;
+    --title-line-height-desktop: normal;
+    --nav-button-size-desktop: 60px;
+    --nav-button-gap-desktop: 32px;
+    --item-width-desktop: 1068px;
+    --item-height-desktop: 620px;
+    --item-gap-desktop: 60px;
+    --content-top-desktop: 200px;
+    --content-left-desktop: 60px;
+    --content-gap-desktop: 32px;
+    --content-title-font-size-desktop: 40px;
+    --content-title-line-height-desktop: 46px;
+    --content-desc-font-size-desktop: 24px;
+    --content-desc-line-height-desktop: 32px;
+    --scale-factor-desktop: calc(100vw / 1920);
+
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Header */
+  .sell-points-header {
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(var(--header-width-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+    margin-top: calc(var(--header-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: calc(var(--header-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Section Title */
+  .sell-points-title {
+    width: auto;
+    padding: 0;
+    margin: 0;
+    font-size: calc(var(--title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: var(--title-line-height-desktop);
+    text-align: left;
+  }
+
+  /* Navigation Buttons - Show on desktop */
+  .sell-points-switch {
+    width: auto;
+    height: auto;
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--nav-button-gap-desktop) * var(--scale-factor-desktop, 1));
+    align-items: center;
+  }
+
+  .sell-point-nav-button {
+    position: relative;
+    width: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.3s ease;
+    flex-shrink: 0;
+    padding: 0;
+  }
+
+  .sell-point-nav-icon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .sell-point-nav-icon-active {
+    opacity: 1;
+  }
+
+  .sell-point-nav-icon-disable {
+    opacity: 0;
+  }
+
+  .sell-point-nav-button.disabled {
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .sell-point-nav-button.disabled .sell-point-nav-icon-active {
+    opacity: 0;
+  }
+
+  .sell-point-nav-button.disabled .sell-point-nav-icon-disable {
+    opacity: 1;
+  }
+
+  .sell-point-nav-button:not(.disabled):hover {
+    opacity: 0.8;
+  }
+
+  /* Container - Viewport for carousel */
+  .sell-points-container {
+    padding: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  /* Track - Horizontal layout with transform */
+  .sell-points-track {
+    flex-direction: row;
+    gap: calc(var(--item-gap-desktop) * var(--scale-factor-desktop, 1));
+    transform: translateX(calc(-702px * var(--scale-factor-desktop, 1)));
+    transition: transform 0.45s ease;
+  }
+
+  /* Individual Sell Point Card */
+  .sell-point-item {
+    flex-shrink: 0;
+    width: calc(var(--item-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--item-height-desktop) * var(--scale-factor-desktop, 1));
+    border-radius: calc(var(--card-radius) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Spacer - Show on desktop */
+  .sell-point-spacer {
+    display: block;
+    background: #F0F0F0;
+  }
+
+  /* Hide mobile video on desktop */
+  .sell-point-video-mobile {
+    display: none;
+  }
+
+  /* Show desktop video on desktop */
+  .sell-point-video-desktop {
+    display: block;
+  }
+
+  /* Content - Absolute positioning */
+  .sell-point-content {
+    top: calc(var(--content-top-desktop) * var(--scale-factor-desktop, 1));
+    left: calc(var(--content-left-desktop) * var(--scale-factor-desktop, 1));
+    width: auto;
+    height: auto;
+    align-items: flex-start;
+    gap: calc(var(--content-gap-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  .sell-point-title {
+    position: static;
+    transform: none;
+    width: auto;
+    font-size: calc(var(--content-title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--content-title-line-height-desktop) * var(--scale-factor-desktop, 1));
+    text-align: left;
+  }
+
+  .sell-point-description {
+    position: static;
+    transform: none;
+    width: calc(410px * var(--scale-factor-desktop, 1));;
+    font-size: calc(var(--content-desc-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--content-desc-line-height-desktop) * var(--scale-factor-desktop, 1));
+    text-align: left;
+  }
+}
+
+/* 1920px 以上停止缩放 */
+@media (min-width: 1920px) {
+  .meraki-sell-points.design-scale {
+    --scale-factor-desktop: 1;
+  }
+}

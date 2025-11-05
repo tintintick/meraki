@@ -1,6 +1,6 @@
-{{ 'custom-support.css' | asset_url | stylesheet_tag }}
+{{ 'meraki-support.css' | asset_url | stylesheet_tag }}
 
-<div class="custom-support design-scale" data-section-id="{{ section.id }}">
+<div class="meraki-support design-scale" data-section-id="{{ section.id }}">
   <!-- Section Title -->
   <div class="support-header">
     <h2 class="section-title">{{ section.settings.title | default: 'After-Sales Support' }}</h2>
@@ -34,7 +34,7 @@
 
 {% schema %}
 {
-  "name": "Custom Support",
+  "name": "Meraki Support",
   "tag": "section",
   "class": "section",
   "settings": [
@@ -84,7 +84,7 @@
   ],
   "presets": [
     {
-      "name": "Custom Support",
+      "name": "Meraki Support",
       "blocks": [
         {
           "type": "support_card",

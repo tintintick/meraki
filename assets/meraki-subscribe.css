@@ -1,12 +1,12 @@
 /* Custom Subscribe Section (mobile-first) */
 
-.custom-subscribe {
+.meraki-subscribe {
   position: relative;
   width: 100%;
   overflow: hidden;
 }
 
-.custom-subscribe.design-scale {
+.meraki-subscribe.design-scale {
   /* Mobile tokens based on 750px design mock */
   --section-width: 750px;
   --section-bg: #f0f0f0;
@@ -98,7 +98,7 @@
 }
 
 /* Section Title */
-.custom-subscribe .section-title {
+.meraki-subscribe .section-title {
   font-family: 'Kanit', sans-serif;
   font-weight: 600;
   font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
@@ -357,14 +357,12 @@
 
 /* Tablet: 750px - 990px (not inclusive) */
 @media (min-width: 750px) and (max-width: 989px) {
-  .custom-subscribe.design-scale {
-    --scale-factor-mobile: clamp(1, calc(100vw / 750px), 1.2);
-  }
+  /* Tablet scaling rules can be added here if needed */
 }
 
 /* Desktop: 990px+ */
 @media (min-width: 990px) {
-  .custom-subscribe.design-scale {
+  .meraki-subscribe.design-scale {
     /* Desktop tokens */
     --section-width-desktop: 1920px;
     --section-height-desktop: 600px;
@@ -424,7 +422,7 @@
   }
 
   /* Section Title - Desktop */
-  .custom-subscribe .section-title {
+  .meraki-subscribe .section-title {
     font-size: calc(var(--title-font-size-desktop) * var(--scale-factor-desktop, 1));
     line-height: calc(var(--title-line-height-desktop) * var(--scale-factor-desktop, 1));
     text-align: left;
@@ -469,7 +467,7 @@
 
 /* Ultra-wide / 4K */
 @media (min-width: 1920px) {
-  .custom-subscribe.design-scale {
+  .meraki-subscribe.design-scale {
     --scale-factor-desktop: 1;
   }
 }

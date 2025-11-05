@@ -1,0 +1,260 @@
+/* Custom Feature (mobile-first) */
+
+.meraki-feature {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.meraki-feature.design-scale {
+  /* mobile tokens based on 750px mock */
+  --section-bg: #f0f0f0;
+  --section-height: 1415px;
+
+  /* Content positioning */
+  --content-gap: 40px;
+  --title-top: 100px;
+  --title-font-size: 48px;
+  --title-line-height: 52px;
+  --title-color: #ffffff;
+
+  --desc-top: 192px;
+  --desc-font-size: 32px;
+  --desc-line-height: 40px;
+  --desc-width: 704px;
+  --desc-color: rgba(255, 255, 255, 0.75);
+
+  --buttons-top: 312px;
+  --button-width: 240px;
+  --button-height: 80px;
+  --button-font-size: 28px;
+  --button-gap: 20px;
+  --button-radius: 6px;
+
+  width: 100%;
+  height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+  letter-spacing: normal;
+}
+
+/* Feature Container */
+.feature-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Background Image */
+.feature-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  z-index: 1;
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+.feature-background img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Content Container */
+.feature-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: calc(var(--content-gap) * var(--scale-factor-mobile, 1));
+  padding-top: calc(var(--title-top) * var(--scale-factor-mobile, 1));
+}
+
+/* Title */
+.feature-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  color: var(--title-color);
+  white-space: pre-line;
+  margin: 0;
+}
+
+.feature-title--mobile {
+  width: 100%;
+  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--title-line-height) * var(--scale-factor-mobile, 1));
+  text-align: center;
+  display: block;
+}
+
+.feature-title--desktop {
+  display: none;
+}
+
+/* Description */
+.feature-description {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  color: var(--desc-color);
+  white-space: pre-line;
+  margin: 0;
+  padding: 0;
+}
+
+.feature-description--mobile {
+  width: 100%;
+  font-size: calc(var(--desc-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--desc-line-height) * var(--scale-factor-mobile, 1));
+  text-align: center;
+  padding: 0 calc(23px * var(--scale-factor-mobile, 1));
+  display: block;
+}
+
+.feature-description--desktop {
+  display: none;
+}
+
+/* Buttons Container */
+.feature-buttons {
+  pointer-events: auto;
+  display: flex;
+  gap: calc(40px * var(--scale-factor-mobile, 1));
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Button Base Styles */
+.feature-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: calc(var(--button-height) * var(--scale-factor-mobile, 1));
+  width: calc(var(--button-width) * var(--scale-factor-mobile, 1));
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--button-font-size) * var(--scale-factor-mobile, 1));
+  line-height: normal;
+  text-decoration: none;
+  border-radius: calc(var(--button-radius) * var(--scale-factor-mobile, 1));
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+/* Primary Button - Orange */
+.feature-button--primary {
+  background-color: #ff6f00;
+  color: #ffffff;
+}
+
+.feature-button--primary:hover {
+  opacity: 0.9;
+}
+
+/* Secondary Button - White */
+.feature-button--secondary {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.feature-button--secondary:hover {
+  opacity: 0.9;
+}
+
+/* Tablet: 750px mock applies at full scale */
+@media (min-width: 750px) {
+  /* Tablet scaling rules can be added here if needed */
+}
+
+/* Desktop overrides */
+@media (min-width: 990px) {
+  .meraki-feature.design-scale {
+    /* Desktop tokens based on 1920px design */
+    --section-height: 1000px;
+    
+    /* Content positioning */
+    --content-gap: 22px;
+    --title-width: 500px;
+    --title-font-size: 54px;
+    --title-line-height: 1.2;
+    
+    --desc-width: 702px;
+    --desc-font-size: 24px;
+    --desc-line-height: 1.4;
+    
+    --buttons-margin-top: 50px;
+    --button-width: 220px;
+    --button-height: 68px;
+    --button-font-size: 24px;
+    --button-gap: 32px;
+
+    height: calc(var(--section-height) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Content left-aligned on desktop */
+  .feature-content {
+    align-items: flex-start;
+    justify-content: flex-start;
+    padding-left: calc(320px * var(--scale-factor-desktop, 1));
+    padding-top: calc(160px * var(--scale-factor-desktop, 1));
+    gap: calc(var(--content-gap) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Hide mobile content on desktop */
+  .feature-title--mobile,
+  .feature-description--mobile {
+    display: none;
+  }
+
+  /* Show desktop content on desktop */
+  .feature-title--desktop {
+    display: block;
+    width: calc(var(--title-width) * var(--scale-factor-desktop, 1));
+    height: calc(108px * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--title-font-size) * var(--scale-factor-desktop, 1));
+    line-height: 54px;
+    text-align: left;
+  }
+
+  .feature-description--desktop {
+    display: block;
+    width: calc(var(--desc-width) * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--desc-font-size) * var(--scale-factor-desktop, 1));
+    line-height: var(--desc-line-height);
+    text-align: left;
+    padding: 0;
+  }
+
+  /* Buttons container desktop styles */
+  .feature-buttons {
+    flex-direction: row;
+    justify-content: flex-start;
+    gap: calc(var(--button-gap) * var(--scale-factor-desktop, 1));
+    margin-top: calc(var(--buttons-margin-top) * var(--scale-factor-desktop, 1));
+    width: auto;
+  }
+
+  /* Button desktop sizes */
+  .feature-button {
+    width: calc(var(--button-width) * var(--scale-factor-desktop, 1));
+    height: calc(var(--button-height) * var(--scale-factor-desktop, 1));
+    font-size: calc(var(--button-font-size) * var(--scale-factor-desktop, 1));
+  }
+}
+
+/* Ultra-wide / 4K */
+@media (min-width: 1920px) {
+  /* Ultra-wide scaling rules can be added here if needed */
+}

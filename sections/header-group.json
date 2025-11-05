@@ -12,7 +12,7 @@
   "type": "header",
   "sections": {
     "header": {
-      "type": "custom-header",
+      "type": "meraki-header",
       "settings": {
         "logo_position": "middle-left",
         "mobile_logo_position": "center",
