@@ -61,6 +61,16 @@
   width: 100%;
   height: calc(var(--card-height) * var(--scale-factor-mobile, 1));
   position: relative;
+  overflow: hidden;
+}
+
+/* PRS Track */
+.prs-track {
+  display: flex;
+  flex-direction: row;
+  gap: 0;
+  position: relative;
+  height: 100%;
 }
 
 /* PR Card */
@@ -207,16 +217,114 @@
   }
 }
 
-/* Desktop overrides - to be implemented later */
+/* Desktop overrides */
 @media (min-width: 990px) {
   .custom-prs.design-scale {
-    /* Desktop tokens will be added later */
+    /* 桌面端 tokens 基于 1920px 视口 */
+    --section-height-desktop: 500px;
+    --card-width-desktop: 410px;
+    --card-height-desktop: 500px;
+    --card-gap-desktop: 25px;
+    --icon-height-desktop: 80px;
+    --icon-margin-top-desktop: 44px;
+    --icon-margin-left-desktop: 20px;
+    --content-width-desktop: 380px;
+    --content-margin-top-desktop: 63px;
+    --content-font-size-desktop: 24px;
+    --content-line-height-desktop: 32px;
+    --nav-group-width-desktop: 1448px;
+    --nav-button-size-desktop: 60px;
+    --scale-factor-desktop: calc(100vw / 1920);
+
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  .prs-wrapper {
+    padding-top: 0;
+    gap: 0;
+    position: relative;
+  }
+
+  .pr-container {
+    width: calc(1280px * var(--scale-factor-desktop, 1));
+    height: calc(var(--card-height-desktop) * var(--scale-factor-desktop, 1));
+    overflow: hidden;
+  }
+
+  .prs-track {
+    display: flex;
+    flex-direction: row;
+    gap: calc(var(--card-gap-desktop) * var(--scale-factor-desktop, 1));
+    transform: translateX(0);
+    transition: transform 0.45s ease;
+  }
+
+  /* 重置卡片为流式布局 */
+  .pr-card {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: calc(var(--card-width-desktop) * var(--scale-factor-desktop, 1));
+    height: 100%;
+    opacity: 1;
+    pointer-events: auto;
+    flex-shrink: 0;
+    padding-top: calc(44px * var(--scale-factor-desktop, 1));
+    padding-left: calc(20px * var(--scale-factor-desktop, 1));
+    gap: 0;
+  }
+
+  /* 重置移动端状态类 */
+  .pr-card.is-active,
+  .pr-card.is-left,
+  .pr-card.is-right {
+    position: relative;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* Icon 调整 */
+  .pr-icon {
+    height: calc(var(--icon-height-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: calc(63px * var(--scale-factor-desktop, 1));
+    /* margin-left: calc(var(--icon-margin-left-desktop) * var(--scale-factor-desktop, 1)); */
+  }
+
+  /* Content 调整 */
+  .pr-content {
+    width: calc(var(--content-width-desktop) * var(--scale-factor-desktop, 1));
+    /* margin-top: calc(var(--content-margin-top-desktop) * var(--scale-factor-desktop, 1)); */
+  }
+
+  .pr-text {
+    width: 100%;
+    font-size: calc(var(--content-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--content-line-height-desktop) * var(--scale-factor-desktop, 1));
+    font-style: italic;
+  }
+
+  /* 导航按钮绝对定位 */
+  .icon-group {
+    position: absolute;
+    width: calc(var(--nav-group-width-desktop) * var(--scale-factor-desktop, 1));
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    justify-content: space-between;
+    z-index: 10;
+  }
+
+  .nav-button {
+    width: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
   }
 }
 
-/* Ultra-wide / 4K */
+/* 1920px 以上停止缩放 */
 @media (min-width: 1920px) {
   .custom-prs.design-scale {
-    --scale-factor-desktop: clamp(1, calc(100vw / 1920px), 2);
+    --scale-factor-desktop: 1;
   }
 }

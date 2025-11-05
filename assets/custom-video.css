@@ -209,6 +209,11 @@
   overflow: hidden;
 }
 
+/* Video Spacer - Hidden on mobile */
+.video-spacer {
+  display: none;
+}
+
 /* Video Element */
 .video-element {
   width: 100%;
@@ -417,6 +422,7 @@
 
   /* Video Spacer - Desktop */
   .video-spacer {
+    display: block;
     background: #F0F0F0;
     flex-shrink: 0;
   }

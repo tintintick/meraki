@@ -4,31 +4,33 @@
   <div class="prs-wrapper">
     <!-- PR Container -->
     <div class="pr-container">
-      {% for block in section.blocks %}
-        <div class="pr-card" data-block-id="{{ block.id }}">
-          <!-- PR Icon -->
-          <div class="pr-icon">
-            {%- if block.settings.icon != blank -%}
-              <img
-                src="{{ block.settings.icon | image_url: width: 150 }}"
-                alt="PR Logo {{ forloop.index }}"
-                loading="lazy"
-              >
-            {%- else -%}
-              <img
-                src="{{ 'prs/pr' | append: forloop.index | append: '.png' | asset_url }}"
-                alt="PR Logo {{ forloop.index }}"
-                loading="lazy"
-              >
-            {%- endif -%}
-          </div>
+      <div class="prs-track">
+        {% for block in section.blocks %}
+          <div class="pr-card" data-block-id="{{ block.id }}">
+            <!-- PR Icon -->
+            <div class="pr-icon">
+              {%- if block.settings.icon != blank -%}
+                <img
+                  src="{{ block.settings.icon | image_url: width: 150 }}"
+                  alt="PR Logo {{ forloop.index }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <img
+                  src="{{ 'prs/pr' | append: forloop.index | append: '.png' | asset_url }}"
+                  alt="PR Logo {{ forloop.index }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
 
-          <!-- PR Content -->
-          <div class="pr-content">
-            <p class="pr-text">{{ block.settings.text }}</p>
+            <!-- PR Content -->
+            <div class="pr-content">
+              <p class="pr-text">{{ block.settings.text }}</p>
+            </div>
           </div>
-        </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     <!-- Navigation Icons -->
@@ -83,34 +85,63 @@
     const prevBtn = section.querySelector('.nav-prev');
     const nextBtn = section.querySelector('.nav-next');
     const prContainer = section.querySelector('.pr-container');
+    const prsTrack = section.querySelector('.prs-track');
     const cards = Array.from(section.querySelectorAll('.pr-card'));
     const totalPRs = cards.length;
 
-    if (!prevBtn || !nextBtn || !prContainer || totalPRs === 0) {
+    if (!prevBtn || !nextBtn || !prContainer || !prsTrack || totalPRs === 0) {
       return;
     }
 
     let currentIndex = 0;
     let isAnimating = false;
 
+    function isDesktop() {
+      return window.innerWidth >= 990;
+    }
+
+    function getScaleFactor() {
+      if (isDesktop()) {
+        return Math.min(window.innerWidth / 1920, 1);
+      }
+      return 1;
+    }
+
     // Touch gesture variables
     let touchStartX = 0;
     let touchStartTime = 0;
     const SWIPE_THRESHOLD = 80; // Minimum swipe distance in pixels
 
-    cards.forEach((card, index) => {
-      if (index === 0) {
-        applyState(card, 'is-active', true);
-      } else {
-        applyState(card, 'is-right', true);
-      }
-    });
+    // 初始化
+    if (isDesktop()) {
+      // 桌面端：移除所有状态类，使用流式布局
+      cards.forEach(card => {
+        card.classList.remove('is-active', 'is-left', 'is-right');
+      });
+      prsTrack.style.transform = 'translateX(0)';
+    } else {
+      // 移动端：保持原有初始化逻辑
+      cards.forEach((card, index) => {
+        if (index === 0) {
+          applyState(card, 'is-active', true);
+        } else {
+          applyState(card, 'is-right', true);
+        }
+      });
+    }
 
     updateButtons();
 
     function updateButtons() {
-      prevBtn.classList.toggle('disabled', currentIndex === 0);
-      nextBtn.classList.toggle('disabled', currentIndex >= totalPRs - 1);
+      if (isDesktop()) {
+        // 桌面端：显示3张，所以最多到 totalPRs - 3
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+        nextBtn.classList.toggle('disabled', currentIndex >= totalPRs - 3);
+      } else {
+        // 移动端：显示1张
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+        nextBtn.classList.toggle('disabled', currentIndex >= totalPRs - 1);
+      }
     }
 
     function finalizePositions() {
@@ -134,12 +165,41 @@
 
       const targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
 
-      if (targetIndex < 0 || targetIndex >= totalPRs) {
-        return;
+      if (isDesktop()) {
+        if (targetIndex < 0 || targetIndex >= totalPRs - 2) {
+          return;
+        }
+      } else {
+        if (targetIndex < 0 || targetIndex >= totalPRs) {
+          return;
+        }
       }
 
       isAnimating = true;
 
+      if (isDesktop()) {
+        handleDesktopNav(targetIndex);
+      } else {
+        handleMobileNav(direction, targetIndex);
+      }
+    }
+
+    function handleDesktopNav(targetIndex) {
+      const scaleFactor = getScaleFactor();
+      const moveDistance = (410 + 25) * scaleFactor; // card宽度 + gap
+      const offset = -targetIndex * moveDistance;
+
+      prsTrack.style.transform = `translateX(${offset}px)`;
+
+      setTimeout(() => {
+        currentIndex = targetIndex;
+        updateButtons();
+        isAnimating = false;
+      }, 450);
+    }
+
+    function handleMobileNav(direction, targetIndex) {
+      // 保持原有移动端逻辑
       const outgoing = cards[currentIndex];
       const incoming = cards[targetIndex];
       const incomingStart = direction === 'next' ? 'is-right' : 'is-left';
@@ -179,28 +239,54 @@
     prevBtn.addEventListener('click', () => handleNav('prev'));
     nextBtn.addEventListener('click', () => handleNav('next'));
 
-    // Touch gesture support
-    prContainer.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-    }, { passive: true });
+    // Touch gesture support (仅移动端)
+    if (!isDesktop()) {
+      prContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartTime = Date.now();
+      }, { passive: true });
 
-    prContainer.addEventListener('touchend', (e) => {
-      const touchEndX = e.changedTouches[0].clientX;
-      const deltaX = touchEndX - touchStartX;
-      const deltaTime = Date.now() - touchStartTime;
+      prContainer.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const deltaX = touchEndX - touchStartX;
+        const deltaTime = Date.now() - touchStartTime;
 
-      // Only trigger if swipe is significant and not too slow
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
-        if (deltaX > 0) {
-          // Swipe right - go to previous
-          handleNav('prev');
-        } else {
-          // Swipe left - go to next
-          handleNav('next');
+        // Only trigger if swipe is significant and not too slow
+        if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
+          if (deltaX > 0) {
+            // Swipe right - go to previous
+            handleNav('prev');
+          } else {
+            // Swipe left - go to next
+            handleNav('next');
+          }
         }
-      }
-    }, { passive: true });
+      }, { passive: true });
+    }
+
+    // 窗口 resize 时重新初始化
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        currentIndex = 0;
+        if (isDesktop()) {
+          cards.forEach(card => {
+            card.classList.remove('is-active', 'is-left', 'is-right');
+          });
+          prsTrack.style.transform = 'translateX(0)';
+        } else {
+          cards.forEach((card, index) => {
+            if (index === 0) {
+              applyState(card, 'is-active', true);
+            } else {
+              applyState(card, 'is-right', true);
+            }
+          });
+        }
+        updateButtons();
+      }, 100);
+    });
   }
 
   if (document.readyState === 'loading') {
