@@ -97,6 +97,13 @@
   object-position: center;
 }
 
+/* First card video - special handling on mobile */
+.sell-point-item[data-card="1"] .sell-point-video {
+  width: 100%;
+  height: auto;
+  /* object-fit: cover; */
+}
+
 /* Hide desktop video on mobile */
 .sell-point-video-desktop {
   display: none;

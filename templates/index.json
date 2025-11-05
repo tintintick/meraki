@@ -200,7 +200,8 @@
         "show_image": true,
         "show_date": true,
         "show_excerpt": true,
-        "show_view_all": true
+        "show_view_all": true,
+        "view_all_link": "https://www.merakitech.com/blogs/newsroom"
       }
     },
     "custom_subscribe": {

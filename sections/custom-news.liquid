@@ -86,9 +86,13 @@
   </div>
 
   <!-- View All Button -->
-  {%- if section.settings.blog != blank and section.settings.show_view_all -%}
+  {%- if section.settings.show_view_all -%}
     <div class="news-view-all-container">
-      <a href="{{ section.settings.blog.url }}" class="news-view-all">View All</a>
+      {%- if section.settings.view_all_link != blank -%}
+        <a href="{{ section.settings.view_all_link }}" class="news-view-all">View All</a>
+      {%- elsif section.settings.blog != blank -%}
+        <a href="{{ section.settings.blog.url }}" class="news-view-all">View All</a>
+      {%- endif -%}
     </div>
   {%- endif -%}
 </div>
@@ -131,6 +135,12 @@
       "id": "show_view_all",
       "label": "Show view all button",
       "default": true
+    },
+    {
+      "type": "url",
+      "id": "view_all_link",
+      "label": "View all link",
+      "info": "Custom URL for the view all button. Leave blank to use blog URL."
     }
   ],
   "presets": [
