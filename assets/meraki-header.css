@@ -617,6 +617,12 @@
   width: 100%;
   z-index: 10;
   margin-bottom: 0;
+  transition: top 0.15s ease-out;
+}
+
+/* 向下滚动时隐藏 header */
+.shopify-section.section-header.shopify-section-header-hidden {
+  top: calc(-1 * var(--header-height));
 }
 
 /* Compensate for header height in main content */
