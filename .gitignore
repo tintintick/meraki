@@ -27,6 +27,7 @@ build/
 
 # Custom directories
 other/
+.other/
 docs/
 .claude/
 .codex/
