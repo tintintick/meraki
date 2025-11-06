@@ -112,9 +112,6 @@
 }
 
 .meraki-header.design-scale .meraki-header-logo {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: calc(var(--logo-width) * var(--scale-factor-mobile, 1));
   height: calc(var(--logo-height) * var(--scale-factor-mobile, 1));
   display: block;
@@ -219,13 +216,6 @@
   background-color: transparent !important;
 }
 
-.meraki-header-logo {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: block;
-  transition: filter 0.3s ease;
-}
 
 /* ===== Tablet Scaling (750px+) ===== */
 @media (min-width: 750px) {
@@ -284,17 +274,10 @@
   }
   
   .meraki-header.design-scale .meraki-header-logo {
-    position: relative;
-    top: 0;
-    left: 0;
     width: calc(var(--logo-width) * var(--scale-factor-desktop, 1));
     height: calc(var(--logo-height) * var(--scale-factor-desktop, 1));
   }
   
-  /* 桌面端隐藏黑色 logo */
-  .meraki-header.design-scale .header__logo .menu-open-only {
-    display: none !important;
-  }
   
   /* Desktop Elements 容器 */
   .meraki-header.design-scale .header__desktop-elements {
@@ -536,8 +519,9 @@
 }
 
 .scrolled-past-header .meraki-header.design-scale .header__order-button {
-  border-color: var(--color-header-text-dark);
-  color: var(--color-header-text-dark);
+  background-color: #000000;
+  border-color: #000000;
+  color: #ffffff;
 }
 
 .scrolled-past-header .meraki-header.design-scale .header__icon {
@@ -635,6 +619,36 @@ main#MainContent>.shopify-section:first-child {
   margin-top: calc(-1 * var(--header-height, 118px));
 }
 
+/* ===== Logo 和 Menu Icon 的黑白切换 ===== */
+
+/* 黑色版本默认隐藏（提高权重以覆盖 .meraki-header.design-scale .meraki-header-logo 的 display: block） */
+.meraki-header.design-scale .meraki-header-logo-black,
+.meraki-header.design-scale .meraki-header-menu-icon-black {
+  display: none;
+}
+
+/* 移动端滚动后：切换为黑色 */
+@media (max-width: 989px) {
+  .scrolled-past-header .meraki-header.design-scale .meraki-header-logo-white,
+  .scrolled-past-header .meraki-header.design-scale .meraki-header-menu-icon-white {
+    display: none;
+  }
+  
+  .scrolled-past-header .meraki-header.design-scale .meraki-header-logo-black,
+  .scrolled-past-header .meraki-header.design-scale .meraki-header-menu-icon-black {
+    display: block;
+  }
+}
+
+/* Menu 展开时：显示黑色 logo */
+.menu-open .meraki-header.design-scale .meraki-header-logo-white {
+  display: none;
+}
+
+.menu-open .meraki-header.design-scale .meraki-header-logo-black {
+  display: block;
+}
+
 /* ===== Menu Open State - Header Transformation ===== */
 
 /* Default: hide menu-open-only elements */
@@ -662,7 +676,10 @@ main#MainContent>.shopify-section:first-child {
 }
 
 /* Menu open: hide default elements */
-.menu-open .meraki-header-logo,
+.menu-open .meraki-header-logo-white {
+  display: none;
+}
+
 .menu-open .header__order-button,
 .menu-open .header__icon--menu {
   display: none !important;
@@ -682,29 +699,6 @@ main#MainContent>.shopify-section:first-child {
 /* Menu open: hide menu-default-only elements */
 .menu-open .menu-default-only {
   display: none !important;
-}
-
-/* Menu open时显示黑色logo */
-.menu-open .meraki-header-logo-menu-open.menu-open-only {
-  display: block !important;
-  visibility: visible !important;
-}
-
-/* Logo container - position relative for absolute positioning of both logos */
-.header__logo .header__heading-link {
-  position: relative;
-  display: flex;
-  align-items: center;
-}
-
-/* 黑色logo：相对定位，在文档流中占据空间 */
-/* 需要同时覆盖 .menu-open-only 的 display: none */
-.meraki-header-logo-menu-open.menu-open-only {
-  position: relative !important;
-  width: calc(133px * var(--scale-factor-mobile, 1));
-  height: calc(52px * var(--scale-factor-mobile, 1));
-  display: block !important; /* 覆盖 menu-open-only 的 display: none，确保占据空间 */
-  visibility: hidden; /* 占据空间但不可见 */
 }
 
 /* Close button styling */

@@ -134,38 +134,37 @@
         <h1 class="header__heading">
       {%- endif -%}
       <a href="{{ routes.root_url }}" class="header__heading-link link link--text focus-inset">
-        {%- comment -%} Logo (White - Default) {%- endcomment -%}
+        {%- comment -%} 白色 logo（默认 + 桌面端） {%- endcomment -%}
         {%- if section.settings.logo_white != blank -%}
           {%- assign logo_white_alt = shop.name | escape -%}
           {{
             section.settings.logo_white
             | image_url: width: 266
             | image_tag:
-              class: 'meraki-header-logo',
+              class: 'meraki-header-logo meraki-header-logo-white',
               width: 133,
               height: 52,
               alt: logo_white_alt,
-              loading: 'eager',
-              preload: true
+              loading: 'eager'
           }}
         {%- else -%}
           <img
             src="{{ 'header/logo-white.svg' | asset_url }}"
             alt="{{ shop.name | escape }}"
-            class="meraki-header-logo"
+            class="meraki-header-logo meraki-header-logo-white"
             width="133"
             height="52"
           >
         {%- endif -%}
 
-        {%- comment -%} Logo (Black - Menu Open) {%- endcomment -%}
+        {%- comment -%} 黑色 logo（滚动 + Menu-open） {%- endcomment -%}
         {%- if section.settings.logo_black != blank -%}
           {%- assign logo_black_alt = shop.name | escape -%}
           {{
             section.settings.logo_black
             | image_url: width: 266
             | image_tag:
-              class: 'meraki-header-logo-menu-open menu-open-only',
+              class: 'meraki-header-logo meraki-header-logo-black',
               width: 133,
               height: 52,
               alt: logo_black_alt,
@@ -175,7 +174,7 @@
           <img
             src="{{ 'header/logo-black.svg' | asset_url }}"
             alt="{{ shop.name | escape }}"
-            class="meraki-header-logo-menu-open menu-open-only"
+            class="meraki-header-logo meraki-header-logo-black"
             width="133"
             height="52"
           >
@@ -197,11 +196,19 @@
               class="header__icon header__icon--menu header__icon--summary link focus-inset"
               aria-label="{{ 'sections.header.menu' | t }}"
             >
+              {%- comment -%} 白色汉堡图标 {%- endcomment -%}
               <img
-                src="{{ 'menu-white.svg' | asset_url }}"
+                src="{{ 'header/menu-white.svg' | asset_url }}"
                 alt="Menu"
-                class="meraki-header-menu-icon"
-                data-menu-icon
+                class="meraki-header-menu-icon meraki-header-menu-icon-white"
+                width="48"
+                height="48"
+              >
+              {%- comment -%} 黑色汉堡图标 {%- endcomment -%}
+              <img
+                src="{{ 'header/menu-black.svg' | asset_url }}"
+                alt="Menu"
+                class="meraki-header-menu-icon meraki-header-menu-icon-black"
                 width="48"
                 height="48"
               >
@@ -366,16 +373,7 @@
       window.addEventListener('scroll', this.onScrollHandler, false);
 
       this.createObserver();
-      this.switchIcons();
-      this.setupLogoWatcher();
-      this.setupMenuIconWatcher();
       this.setupMenuDrawerWatcher();
-
-      // Handle logo and menu icon on window resize for desktop/mobile switching
-      window.addEventListener('resize', () => {
-        this.switchIcons();
-      });
-      this.switchIcons();
     }
 
     setHeaderHeight() {
@@ -396,63 +394,6 @@
       observer.observe(this.header);
     }
 
-    setupLogoWatcher() {
-      const logoImg = document.querySelector('.meraki-header-logo');
-      if (!logoImg) return;
-
-      const observer = new MutationObserver(() => {
-        this.switchIcons();
-      });
-
-      observer.observe(this.header, { attributes: true, attributeFilter: ['class'] });
-    }
-
-    setupMenuIconWatcher() {
-      const menuIcon = document.querySelector('.meraki-header-menu-icon');
-      if (!menuIcon) return;
-
-      const observer = new MutationObserver(() => {
-        this.switchIcons();
-      });
-
-      observer.observe(this.header, { attributes: true, attributeFilter: ['class'] });
-    }
-
-    switchIcons() {
-      const isMobile = window.innerWidth < 990;
-      const isScrolled = this.header.classList.contains('scrolled-past-header');
-
-      // Switch Logo
-      const logoImg = document.querySelector('.meraki-header-logo');
-      if (logoImg) {
-        const currentSrc = logoImg.src;
-        if (isMobile) {
-          // Mobile: white at top, black when scrolled
-          if (isScrolled && currentSrc.includes('logo-white')) {
-            logoImg.src = currentSrc.replace('logo-white', 'logo-black');
-          } else if (!isScrolled && currentSrc.includes('logo-black')) {
-            logoImg.src = currentSrc.replace('logo-black', 'logo-white');
-          }
-        } else {
-          // Desktop: always white
-          if (currentSrc.includes('logo-black')) {
-            logoImg.src = currentSrc.replace('logo-black', 'logo-white');
-          }
-        }
-      }
-
-      // Switch Menu Icon (mobile only)
-      const menuIcon = document.querySelector('.meraki-header-menu-icon');
-      if (menuIcon && isMobile) {
-        const currentSrc = menuIcon.src;
-        // Mobile: white at top, black when scrolled
-        if (isScrolled && currentSrc.includes('menu-white')) {
-          menuIcon.src = currentSrc.replace('menu-white', 'menu-black');
-        } else if (!isScrolled && currentSrc.includes('menu-black')) {
-          menuIcon.src = currentSrc.replace('menu-black', 'menu-white');
-        }
-      }
-    }
 
     setupMenuDrawerWatcher() {
       const menuDrawerContainer = document.querySelector('#Details-menu-drawer-container');
@@ -551,7 +492,6 @@
         'animate'
       );
       this.currentScrollTop = window.pageYOffset || document.documentElement.scrollTop || 0;
-      this.switchIcons();
     }
 
     onScroll() {
