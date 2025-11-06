@@ -40,7 +40,7 @@ class LiteYouTube extends HTMLElement {
     iframe.title = 'YouTube video player';
     iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
     iframe.allowFullscreen = true;
-    iframe.src = `https://www.youtube.com/embed/${this.videoId}?autoplay=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
+    iframe.src = `https://www.youtube.com/embed/${this.videoId}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&enablejsapi=1`;
 
     // Replace content with iframe
     this.innerHTML = '';
