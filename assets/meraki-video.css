@@ -191,7 +191,7 @@
   position: relative;
   scrollbar-width: none;
   -ms-overflow-style: none;
-  overscroll-behavior: none; /* 确保完全禁用滚动行为 */
+  /* overscroll-behavior 已移除，允许页面正常滚动 */
 }
 
 .video-player-container::-webkit-scrollbar {
