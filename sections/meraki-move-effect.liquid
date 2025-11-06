@@ -336,7 +336,18 @@
       
       // Boundary check - unlock at edges
       if (newScroll < 0 && delta < 0) {
-        // At 0%, scrolling up -> unlock, allow normal page scroll up
+        // At 0%, scrolling up -> 检查是否已经在页面绝对顶部
+        const pageScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (pageScrollTop <= 0) {
+          // 已经在页面最顶部，阻止继续向上
+          e.preventDefault();
+          accumulatedScroll = 0;
+          updateProgress(0);
+          return;
+        }
+        
+        // 还没到页面顶部，允许向上滚动
         accumulatedScroll = 0;
         updateProgress(0);
         return;
@@ -389,7 +400,19 @@
       
       // Boundary check - unlock at edges
       if (newScroll < 0 && deltaY < 0) {
-        // At 0%, scrolling up -> unlock, allow normal page scroll up
+        // At 0%, scrolling up -> 检查是否已经在页面绝对顶部
+        const pageScrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        if (pageScrollTop <= 0) {
+          // 已经在页面最顶部，阻止继续向上
+          e.preventDefault();
+          accumulatedScroll = 0;
+          updateProgress(0);
+          touchLastY = currentY;
+          return;
+        }
+        
+        // 还没到页面顶部，允许向上滚动
         accumulatedScroll = 0;
         updateProgress(0);
         touchLastY = currentY;
