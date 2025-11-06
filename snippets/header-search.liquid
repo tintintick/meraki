@@ -15,9 +15,14 @@
       aria-haspopup="dialog"
       aria-label="{{ 'general.search.search' | t }}"
     >
+        <!-- 默认白色图标 -->
         <span class="svg-wrapper">
         {{- 'header/search-white.svg' | inline_asset_content -}}
-      </span>
+        </span>
+        <!-- Menu 展开时的黑色图标 -->
+        <span class="svg-wrapper menu-open-only">
+        {{- 'header/Search.svg' | inline_asset_content -}}
+        </span>
     </summary>
     <div
       class="search-modal modal__content gradient"

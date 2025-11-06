@@ -17,7 +17,8 @@
                 class="banner-image banner-image-mobile"
                 src="{{ block.settings.mobile_image | image_url: width: 917 }}"
                 alt="{{ block.settings.heading | escape }}"
-                loading="lazy"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                {% if forloop.first %}fetchpriority="high"{% endif %}
               >
             {%- else -%}
               {%- assign default_mobile_image = 'banner-mobile.jpg' -%}
@@ -28,7 +29,8 @@
                 class="banner-image banner-image-mobile"
                 src="{{ default_mobile_image | asset_url }}"
                 alt="{{ block.settings.heading | default: 'Banner' }}"
-                loading="lazy"
+                loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                {% if forloop.first %}fetchpriority="high"{% endif %}
               >
             {%- endif -%}
 

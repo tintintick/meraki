@@ -293,21 +293,28 @@
   .sell-points-container {
     padding: 0;
     width: 100%;
+    height: calc(var(--item-height-desktop) * var(--scale-factor-desktop, 1));
     overflow: hidden;
   }
 
   /* Track - Horizontal layout with transform */
   .sell-points-track {
+    display: flex;
     flex-direction: row;
     gap: calc(var(--item-gap-desktop) * var(--scale-factor-desktop, 1));
+    height: 100%;
     transform: translateX(calc(-702px * var(--scale-factor-desktop, 1)));
     transition: transform 0.45s ease;
+    will-change: transform;
   }
 
   /* Individual Sell Point Card */
   .sell-point-item {
     flex-shrink: 0;
+    flex-grow: 0;
     width: calc(var(--item-width-desktop) * var(--scale-factor-desktop, 1));
+    min-width: calc(var(--item-width-desktop) * var(--scale-factor-desktop, 1));
+    max-width: calc(var(--item-width-desktop) * var(--scale-factor-desktop, 1));
     height: calc(var(--item-height-desktop) * var(--scale-factor-desktop, 1));
     border-radius: calc(var(--card-radius) * var(--scale-factor-desktop, 1));
   }
@@ -330,30 +337,43 @@
 
   /* Content - Absolute positioning */
   .sell-point-content {
+    display: flex;
+    flex-direction: column;
     top: calc(var(--content-top-desktop) * var(--scale-factor-desktop, 1));
     left: calc(var(--content-left-desktop) * var(--scale-factor-desktop, 1));
     width: auto;
     height: auto;
     align-items: flex-start;
     gap: calc(var(--content-gap-desktop) * var(--scale-factor-desktop, 1));
+    pointer-events: none;
   }
 
   .sell-point-title {
     position: static;
     transform: none;
     width: auto;
+    font-family: 'Kanit', sans-serif;
+    font-weight: 500;
     font-size: calc(var(--content-title-font-size-desktop) * var(--scale-factor-desktop, 1));
     line-height: calc(var(--content-title-line-height-desktop) * var(--scale-factor-desktop, 1));
     text-align: left;
+    color: #ffffff;
+    white-space: pre-line;
+    -webkit-font-smoothing: antialiased;
   }
 
   .sell-point-description {
     position: static;
     transform: none;
-    width: calc(410px * var(--scale-factor-desktop, 1));;
+    width: calc(410px * var(--scale-factor-desktop, 1));
+    font-family: 'Kanit', sans-serif;
+    font-weight: 300;
     font-size: calc(var(--content-desc-font-size-desktop) * var(--scale-factor-desktop, 1));
     line-height: calc(var(--content-desc-line-height-desktop) * var(--scale-factor-desktop, 1));
     text-align: left;
+    color: rgba(255, 255, 255, 0.6);
+    -webkit-font-smoothing: antialiased;
+    margin: 0;
   }
 }
 

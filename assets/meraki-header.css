@@ -636,6 +636,11 @@ main#MainContent>.shopify-section:first-child {
   display: none !important;
 }
 
+/* Default: show menu-default-only elements */
+.menu-default-only {
+  display: block;
+}
+
 /* Menu open: header transformation - white background and flex layout */
 .menu-open .meraki-header {
   background-color: var(--color-header-bg-light) !important;
@@ -666,6 +671,11 @@ main#MainContent>.shopify-section:first-child {
 /* Menu open: show menu-open-only elements */
 .menu-open .menu-open-only {
   display: block !important;
+}
+
+/* Menu open: hide menu-default-only elements */
+.menu-open .menu-default-only {
+  display: none !important;
 }
 
 /* Menu open时显示黑色logo */
@@ -764,12 +774,16 @@ main#MainContent>.shopify-section:first-child {
   justify-content: center;
 }
 
+/* Menu open: 隐藏白色图标（非 menu-open-only） */
+.menu-open .header__desktop-utility .header__icon .svg-wrapper:not(.menu-open-only) {
+  display: none;
+}
+
 .menu-open .header__desktop-utility .header__icon .icon,
 .menu-open .header__desktop-utility .header__icon svg {
   width: 100%;
   height: 100%;
-  color: var(--color-header-text-dark) !important;
-  stroke: var(--color-header-text-dark) !important;
+  /* 使用黑色实心 SVG，不需要 stroke */
 }
 
 /* Hide account icon in menu-open state - only show search and cart */
@@ -793,7 +807,7 @@ main#MainContent>.shopify-section:first-child {
   height: calc(44px * var(--scale-factor-mobile, 1)) !important;
 }
 
-/* Ensure search icon is always visible in menu-open state */
-.menu-open .header__desktop-utility .header__search .svg-wrapper {
+/* Ensure search and cart black icons are visible in menu-open state */
+.menu-open .header__desktop-utility .header__icon .svg-wrapper.menu-open-only {
   display: flex !important;
 }

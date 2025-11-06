@@ -305,11 +305,11 @@
 
         {%- comment -%} Cart Icon {%- endcomment -%}
         <a href="{{ routes.cart_url }}" class="header__icon header__icon--cart link focus-inset" id="cart-icon-bubble">
-          {% if cart == empty %}
-            <span class="svg-wrapper">{{ 'header/cart-white.svg' | inline_asset_content }}</span>
-          {% else %}
-            <span class="svg-wrapper">{{ 'header/cart-white.svg' | inline_asset_content }}</span>
-          {% endif %}
+          <!-- 默认白色图标 -->
+          <span class="svg-wrapper">{{ 'header/cart-white.svg' | inline_asset_content }}</span>
+          <!-- Menu 展开时的黑色图标 -->
+          <span class="svg-wrapper menu-open-only">{{ 'header/Cart.svg' | inline_asset_content }}</span>
+          
           <span class="visually-hidden">{{ 'templates.cart.cart' | t }}</span>
           {%- if cart != empty -%}
             <div class="cart-count-bubble">
@@ -496,18 +496,16 @@
         } else {
           // Menu closed - only handle if not already handled by close button
           if (!this.closeHandledByButton) {
-            requestAnimationFrame(() => {
-              if (!this.wasScrolledBeforeMenu && !this.menuCloseHandledEarly) {
-                // If header was not scrolled before menu opened, restore top state
-                this.header.classList.remove('scrolled-past-header');
-              }
-              // 立即移除 menu-open 类
-              this.header.classList.remove('menu-open');
-              document.body.classList.remove('menu-open');
-              this.menuShouldResetOnClose = false;
-              this.menuCloseHandledEarly = false;
-              this.switchIcons();
-            });
+            if (!this.wasScrolledBeforeMenu && !this.menuCloseHandledEarly) {
+              // If header was not scrolled before menu opened, restore top state
+              this.header.classList.remove('scrolled-past-header');
+            }
+            // 立即移除 menu-open 类
+            this.header.classList.remove('menu-open');
+            document.body.classList.remove('menu-open');
+            this.menuShouldResetOnClose = false;
+            this.menuCloseHandledEarly = false;
+            this.switchIcons();
           }
           // Reset flag
           this.closeHandledByButton = false;

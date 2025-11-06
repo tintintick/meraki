@@ -24,23 +24,25 @@
     <div class="sell-point-item" data-card="1">
       <video
         class="sell-point-video sell-point-video-mobile"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp1-mb-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point1_video_mobile | default: 'sell_points/sp1-mb.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point1_video_mobile | default: 'sell_points/sp1-mb.mp4' | asset_url }}" type="video/mp4">
       </video>
       <video
         class="sell-point-video sell-point-video-desktop"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp1-pc-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point1_video_desktop | default: 'sell_points/sp1-pc.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point1_video_desktop | default: 'sell_points/sp1-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <div class="sell-point-content">
@@ -54,23 +56,25 @@ Barista Heat Control" }}</div>
     <div class="sell-point-item" data-card="2">
       <video
         class="sell-point-video sell-point-video-mobile"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp2-mb-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point2_video_mobile | default: 'sell_points/sp2-mb.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point2_video_mobile | default: 'sell_points/sp2-mb.mp4' | asset_url }}" type="video/mp4">
       </video>
       <video
         class="sell-point-video sell-point-video-desktop"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp2-pc-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point2_video_desktop | default: 'sell_points/sp2-pc.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point2_video_desktop | default: 'sell_points/sp2-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <div class="sell-point-content">
@@ -84,23 +88,25 @@ Precise Ratios" }}</div>
     <div class="sell-point-item" data-card="3">
       <video
         class="sell-point-video sell-point-video-mobile"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp3-mb-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point3_video_mobile | default: 'sell_points/sp3-mb.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point3_video_mobile | default: 'sell_points/sp3-mb.mp4' | asset_url }}" type="video/mp4">
       </video>
       <video
         class="sell-point-video sell-point-video-desktop"
-        autoplay
         loop
         muted
         playsinline
-        preload="auto"
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points/sp3-pc-poster.jpg' | asset_url }}"
       >
-        <source src="{{ section.settings.point3_video_desktop | default: 'sell_points/sp3-pc.mp4' | asset_url }}" type="video/mp4">
+        <source data-src="{{ section.settings.point3_video_desktop | default: 'sell_points/sp3-pc.mp4' | asset_url }}" type="video/mp4">
       </video>
 
       <!-- Gradient overlay for third card -->
@@ -121,6 +127,62 @@ Perfect First Shot" }}</div>
 (function() {
   const section = document.querySelector('.meraki-sell-points');
   if (!section) return;
+
+  // ========== 视频懒加载功能 ==========
+  function initLazyVideos() {
+    const lazyVideos = section.querySelectorAll('video[data-lazy-video]');
+
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const video = entry.target;
+            const sources = video.querySelectorAll('source[data-src]');
+
+            // 加载视频源
+            sources.forEach(source => {
+              source.src = source.dataset.src;
+              source.removeAttribute('data-src');
+            });
+
+            // 加载视频
+            video.load();
+
+            // 视频加载后自动播放
+            video.addEventListener('loadeddata', () => {
+              video.play().catch(e => console.log('Video autoplay prevented:', e));
+            }, { once: true });
+
+            // 移除懒加载标记并停止观察
+            video.removeAttribute('data-lazy-video');
+            videoObserver.unobserve(video);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '50px', // 提前50px开始加载
+        threshold: 0.1
+      });
+
+      lazyVideos.forEach(video => {
+        videoObserver.observe(video);
+      });
+    } else {
+      // 不支持 IntersectionObserver 的降级方案：立即加载所有视频
+      lazyVideos.forEach(video => {
+        const sources = video.querySelectorAll('source[data-src]');
+        sources.forEach(source => {
+          source.src = source.dataset.src;
+        });
+        video.load();
+        video.play().catch(e => console.log('Video autoplay prevented:', e));
+      });
+    }
+  }
+
+  // 初始化懒加载
+  initLazyVideos();
+  // ========== 视频懒加载功能结束 ==========
 
   const track = section.querySelector('.sell-points-track');
   const prevButton = section.querySelector('.sell-point-nav-prev');
