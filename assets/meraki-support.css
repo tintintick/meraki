@@ -215,9 +215,16 @@
     --card-padding-top-desktop: 60px;
     --card-gap-desktop: 40px;
     
+    /* Title */
+    --card-title-font-size-desktop: 32px;
+    --card-title-line-height-desktop: 32px;
+
     /* Description */
     --description-font-size-desktop: 24px;
     --description-line-height-desktop: 32px;
+
+    /* Icon */
+    --icon-size-desktop: 68px;
     
     height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
   }
@@ -226,6 +233,11 @@
   .support-header {
     margin-top: calc(var(--header-margin-top-desktop) * var(--scale-factor-desktop, 1));
     margin-bottom: calc(var(--header-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  .support-header .section-title {
+    font-size: calc(54px * var(--scale-factor-desktop, 1));
+    line-height: calc(50px * var(--scale-factor-desktop, 1));
   }
 
   /* Support Cards Container - Desktop: Grid layout */
@@ -259,7 +271,15 @@
 
   /* Support Icon - Desktop */
   .support-icon {
+    width: calc(var(--icon-size-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--icon-size-desktop) * var(--scale-factor-desktop, 1));
     margin-right: calc(24px * var(--scale-factor-desktop, 1));
+  }
+
+  .support-title {
+    font-size: calc(var(--card-title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--card-title-line-height-desktop) * var(--scale-factor-desktop, 1));
+    margin-bottom: calc(24px * var(--scale-factor-desktop, 1));
   }
 
   /* Support Description - Desktop */
@@ -269,10 +289,5 @@
   }
 }
 
-/* Ultra-wide / 4K */
-@media (min-width: 1920px) {
-  .meraki-support.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Ultra-wide / 4K - 由 JS 控制 */
 

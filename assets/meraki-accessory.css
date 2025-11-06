@@ -478,6 +478,10 @@
     margin: 0 auto;
   }
 
+  .accessory-imgs {
+    height: calc(var(--img-size-desktop) * var(--scale-factor-desktop, 1));
+  }
+
   .accessory-imgs-track {
     gap: calc(var(--img-gap-desktop) * var(--scale-factor-desktop, 1));
     transition: transform 0.45s ease;
@@ -513,10 +517,15 @@
     border-bottom-right-radius: var(--border-radius);
   }
 
+  .accessory-switcher {
+    width: 1448px * var(--scale-factor-desktop, 1);
+  }
+
   /* Content Container */
   .accessory-content {
     margin-top: calc(var(--accessory-content-margin-top-desktop) * var(--scale-factor-desktop, 1));
     width: 100%;
+    min-height: auto;
   }
 
   /* Content Track */
@@ -542,6 +551,7 @@
     font-size: calc(var(--content-text-font-size-desktop) * var(--scale-factor-desktop, 1));
     line-height: calc(var(--content-text-line-height-desktop) * var(--scale-factor-desktop, 1));
     text-align: left;
+    /* height: 84px * var(--scale-factor-desktop, 1); */
   }
 
   /* View All Container */
@@ -567,11 +577,12 @@
     padding-left: calc(236px * var(--scale-factor-desktop, 1));
     padding-right: calc(236px * var(--scale-factor-desktop, 1));
   }
-}
 
-/* Ultra-wide / 4K */
-@media (min-width: 1920px) {
-  .meraki-accessory.design-scale {
-    --scale-factor-desktop: 1;
+  /* Navigation Button - Desktop */
+  .nav-button {
+    width: max(40px, calc(60px * var(--scale-factor-desktop, 1)));
+    height: max(40px, calc(60px * var(--scale-factor-desktop, 1)));
   }
 }
+
+/* Ultra-wide / 4K - 由 JS 控制 */

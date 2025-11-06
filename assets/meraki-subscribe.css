@@ -161,7 +161,7 @@
   height: calc(56px * var(--scale-factor-mobile, 1));
   font-family: 'Kanit', sans-serif;
   font-weight: 400;
-  font-size: calc(var(--feature-text-font-size-large) * var(--scale-factor-mobile, 1));
+  font-size: calc(var(--feature-text-font-size-small) * var(--scale-factor-mobile, 1));
   line-height: calc(var(--feature-text-line-height) * var(--scale-factor-mobile, 1));
   color: #000000;
   letter-spacing: normal;
@@ -170,10 +170,10 @@
 }
 
 /* Adjust text size for items 2 and 3 */
-.feature-item:nth-child(2) .feature-text,
+/* .feature-item:nth-child(2) .feature-text,
 .feature-item:nth-child(3) .feature-text {
   font-size: calc(var(--feature-text-font-size-small) * var(--scale-factor-mobile, 1));
-}
+} */
 
 .feature-text p {
   margin: 0;
@@ -409,6 +409,7 @@
     flex-direction: column;
     align-items: flex-start;
     flex: 0 0 auto;
+    width: calc(625px * var(--scale-factor-desktop, 1));
   }
 
   /* Subscribe Header - Desktop */
@@ -443,13 +444,14 @@
 
   /* Feature Text - Desktop */
   .feature-text {
-    font-size: calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1));
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
     line-height: calc(var(--feature-text-line-height-desktop) * var(--scale-factor-desktop, 1));
   }
 
   /* Subscribe Form Wrapper - Desktop */
   .subscribe-form-wrapper {
     align-items: flex-start; /* 子元素左对齐 */
+    width: calc(625px * var(--scale-factor-desktop, 1));
   }
 
   /* Subscribe Form - Desktop */
@@ -457,18 +459,26 @@
     align-items: flex-start; /* 表单内容左对齐 */
   }
 
+  .subscribe-input-wrapper {
+    width: calc(560px * var(--scale-factor-desktop, 1));
+    height: calc(80px * var(--scale-factor-desktop, 1));
+    border-radius: calc(6px * var(--scale-factor-desktop, 1));
+  }
+
   /* Subscribe Button - Desktop */
+  .subscribe-input {
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
+    line-height: calc(28px * var(--scale-factor-desktop, 1));
+  }
+
   .subscribe-button {
     margin-top: calc(var(--button-margin-top-desktop) * var(--scale-factor-desktop, 1));
     width: calc(var(--button-width-desktop) * var(--scale-factor-desktop, 1));
     height: calc(var(--button-height-desktop) * var(--scale-factor-desktop, 1));
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
+    line-height: calc(64px * var(--scale-factor-desktop, 1));
   }
 }
 
-/* Ultra-wide / 4K */
-@media (min-width: 1920px) {
-  .meraki-subscribe.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Ultra-wide / 4K - 由 JS 控制 */
 

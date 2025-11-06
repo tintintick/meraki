@@ -206,7 +206,6 @@
     --content-title-line-height-desktop: 46px;
     --content-desc-font-size-desktop: 24px;
     --content-desc-line-height-desktop: 32px;
-    --scale-factor-desktop: calc(100vw / 1920);
 
     height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
   }
@@ -244,8 +243,8 @@
 
   .sell-point-nav-button {
     position: relative;
-    width: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
-    height: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    width: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
+    height: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
     border: none;
     background: transparent;
     cursor: pointer;
@@ -377,9 +376,4 @@
   }
 }
 
-/* 1920px 以上停止缩放 */
-@media (min-width: 1920px) {
-  .meraki-sell-points.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* 1920px 以上停止缩放 - 由 JS 控制 */

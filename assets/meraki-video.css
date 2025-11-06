@@ -400,8 +400,8 @@
 
   /* Navigation Button - Desktop */
   .nav-button {
-    width: calc(var(--button-size-desktop) * var(--scale-factor-desktop, 1));
-    height: calc(var(--button-size-desktop) * var(--scale-factor-desktop, 1));
+    width: max(40px, calc(var(--button-size-desktop) * var(--scale-factor-desktop, 1)));
+    height: max(40px, calc(var(--button-size-desktop) * var(--scale-factor-desktop, 1)));
   }
 
   /* Player Container - Desktop */
@@ -431,12 +431,7 @@
   }
 }
 
-/* Ultra-wide / 4K */
-@media (min-width: 1920px) {
-  .meraki-video.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Ultra-wide / 4K - 由 JS 控制 */
 
 /* ========================================
    Lite YouTube Embed Styles

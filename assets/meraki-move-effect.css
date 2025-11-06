@@ -516,8 +516,7 @@
 /* Desktop overrides */
 @media (min-width: 990px) {
   .meraki-move-effect.design-scale {
-    /* Desktop scale factor */
-    --scale-factor-desktop: calc(100vw / 1920);
+    /* Desktop scale factor - 由 JS 控制 */
     
     /* Desktop section */
     --section-height-desktop: 1000px;
@@ -783,9 +782,4 @@
   }
 }
 
-/* Stop scaling above 1920px */
-@media (min-width: 1920px) {
-  .meraki-move-effect.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Stop scaling above 1920px - 由 JS 控制 */

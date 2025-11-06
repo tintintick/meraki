@@ -311,8 +311,7 @@
 /* Desktop overrides */
 @media (min-width: 990px) {
   .meraki-news.design-scale {
-    /* Desktop scale factor */
-    --scale-factor-desktop: calc(100vw / 1920);
+    /* Desktop scale factor - 由 JS 控制 */
     
     /* Desktop section */
     --section-height-desktop: 1032px;
@@ -364,7 +363,7 @@
     --view-all-margin-top-desktop: 60px;
     --view-all-width-desktop: 180px;
     --view-all-height-desktop: 68px;
-    --view-all-font-size-desktop: 32px;
+    --view-all-font-size-desktop: 24px;
     
     /* Apply desktop section height */
     min-height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
@@ -399,8 +398,8 @@
   /* Navigation Button */
   .news-nav-button {
     position: relative;
-    width: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
-    height: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    width: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
+    height: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
     border: none;
     background: transparent;
     cursor: pointer;
@@ -516,6 +515,10 @@
   /* Card Footer */
   .news-card-footer {
     margin-top: calc(var(--card-footer-margin-top-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  .news-card-footer .news-card-date, 
+  .news-card-footer .news-card-link {
     font-size: calc(var(--card-footer-font-size-desktop) * var(--scale-factor-desktop, 1));
     line-height: calc(var(--card-footer-line-height-desktop) * var(--scale-factor-desktop, 1));
   }
@@ -533,10 +536,5 @@
   }
 }
 
-/* Stop scaling above 1920px */
-@media (min-width: 1920px) {
-  .meraki-news.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Stop scaling above 1920px - 由 JS 控制 */
 

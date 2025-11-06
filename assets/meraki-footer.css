@@ -403,7 +403,7 @@ details[open] .icon-expanded {
     display: grid;
     grid-template-columns: auto 1fr;
     grid-template-rows: auto auto;
-    width: 1280px;
+    width: calc(var(--divider-width-desktop) * var(--scale-factor-desktop, 1));
     margin: 0 auto;
     /* padding-left: calc(var(--logo-margin-left-desktop) * var(--scale-factor-desktop, 1)); */
   }
@@ -568,7 +568,7 @@ details[open] .icon-expanded {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-    width: 1280px;
+    width: calc(1280px * var(--scale-factor-desktop, 1));
     margin: 0 auto;
     gap: 40px;
   }
@@ -602,10 +602,5 @@ details[open] .icon-expanded {
   }
 }
 
-/* Ultra-wide / 4K */
-@media (min-width: 1920px) {
-  .meraki-footer.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* Ultra-wide / 4K - 由 JS 控制 */
 

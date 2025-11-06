@@ -235,7 +235,6 @@
     --content-line-height-desktop: 32px;
     --nav-group-width-desktop: 1448px;
     --nav-button-size-desktop: 60px;
-    --scale-factor-desktop: calc(100vw / 1920);
 
     height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
   }
@@ -318,14 +317,9 @@
   }
 
   .nav-button {
-    width: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
-    height: calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1));
+    width: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
+    height: max(40px, calc(var(--nav-button-size-desktop) * var(--scale-factor-desktop, 1)));
   }
 }
 
-/* 1920px 以上停止缩放 */
-@media (min-width: 1920px) {
-  .meraki-prs.design-scale {
-    --scale-factor-desktop: 1;
-  }
-}
+/* 1920px 以上停止缩放 - 由 JS 控制 */
