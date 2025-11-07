@@ -1,0 +1,23 @@
+/* ==================== 
+   Meraki Sections 公共样式
+   仅用于 Meraki 主题的 sections
+   ==================== */
+
+/* 导航按钮：移除鼠标/触摸点击时的焦点轮廓，保留键盘导航时的轮廓（无障碍） */
+button.nav-button:focus:not(:focus-visible):not(.focused),
+button.sell-point-nav-button:focus:not(:focus-visible):not(.focused),
+button.news-nav-button:focus:not(:focus-visible):not(.focused),
+button[class*="-nav-button"]:focus:not(:focus-visible):not(.focused) {
+  outline: none;
+  box-shadow: none;
+}
+
+/* 键盘导航时的焦点样式（可选，默认浏览器样式已足够） */
+button.nav-button:focus-visible,
+button.sell-point-nav-button:focus-visible,
+button.news-nav-button:focus-visible,
+button[class*="-nav-button"]:focus-visible {
+  outline: 0.2rem solid rgba(0, 0, 0, 0.5);
+  outline-offset: 0.2rem;
+}
+

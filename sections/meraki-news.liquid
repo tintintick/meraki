@@ -1,3 +1,4 @@
+{{ 'meraki-common.css' | asset_url | stylesheet_tag }}
 {{ 'meraki-news.css' | asset_url | stylesheet_tag }}
 
 <div class="meraki-news design-scale" data-section-id="{{ section.id }}">
@@ -121,9 +122,14 @@
 <script>
 (function() {
   function initNewsCarousel() {
-    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    const section = document.querySelector('.meraki-news[data-section-id="{{ section.id }}"]');
     if (!section) {
-      setTimeout(initNewsCarousel, 100);
+      requestAnimationFrame(initNewsCarousel);
+      return;
+    }
+
+    if (!window.MerakiCarousel) {
+      console.error('MerakiCarousel not loaded');
       return;
     }
 
@@ -134,119 +140,58 @@
 
     if (!track || cards.length === 0 || !prevButton || !nextButton) return;
 
-    let currentIndex = 0;
-    const totalCards = cards.length;
-
-    // Check if desktop
-    function isDesktop() {
-      return window.innerWidth >= 990;
-    }
-
-    // Get scale factor
-    function getScaleFactor() {
-      if (!isDesktop()) return 1;
-      const screenWidth = window.innerWidth;
-      return Math.min(1, screenWidth / 1920);
-    }
-
-    // Get card width (580 + 40 gap)
-    function getCardMoveDistance() {
-      const scaleFactor = getScaleFactor();
-      return 620 * scaleFactor; // 580 card + 40 gap
-    }
-
-    // Update button states
-    function updateButtons() {
-      if (!isDesktop()) return;
-
-      // Disable prev if at start
-      if (currentIndex === 0) {
-        prevButton.classList.add('disabled');
-        prevButton.disabled = true;
-      } else {
-        prevButton.classList.remove('disabled');
-        prevButton.disabled = false;
-      }
-
-      // Check if remaining scroll distance is less than one card width
-      const container = section.querySelector('.news-cards-container');
-      if (!container) return;
+    // 使用 MerakiCarousel 组件
+    new MerakiCarousel({
+      container: section,
+      track: track,
+      items: cards,
+      prevButton: prevButton,
+      nextButton: nextButton,
       
-      const containerWidth = container.offsetWidth;
-      const trackWidth = track.scrollWidth;
-      const scaleFactor = getScaleFactor();
-      const moveDistance = getCardMoveDistance();
-      const initialOffset = 260 * scaleFactor;
+      // 使用 slide 模式
+      mode: 'slide',
       
-      // Current scroll position (absolute value)
-      const currentScrolled = initialOffset + (currentIndex * moveDistance);
+      // 动态计算 itemWidth（card + gap）
+      itemWidth: function(scale) {
+        if (window.innerWidth >= 990) {
+          return (580 + 40) * scale; // 桌面端：card 580px + gap 40px
+        }
+        return 0;
+      },
       
-      // Remaining scrollable distance
-      const remainingDistance = trackWidth - containerWidth - currentScrolled;
+      // Gap
+      gap: 40,
       
-      // If remaining distance is less than one card movement, disable next
-      if (remainingDistance < moveDistance) {
-        nextButton.classList.add('disabled');
-        nextButton.disabled = true;
-      } else {
-        nextButton.classList.remove('disabled');
-        nextButton.disabled = false;
-      }
-    }
-
-    // Move to index
-    function goToIndex(index) {
-      if (!isDesktop()) return;
-
-      currentIndex = Math.max(0, Math.min(totalCards - 1, index));
-      const scaleFactor = getScaleFactor();
-      const moveDistance = getCardMoveDistance();
-      const initialOffset = -260 * scaleFactor; // Initial left offset
-      const transformX = initialOffset - (currentIndex * moveDistance);
-
-      track.style.transform = `translateX(${transformX}px)`;
-      updateButtons();
-    }
-
-    // Initialize
-    function initialize() {
-      if (isDesktop()) {
-        currentIndex = 0;
-        goToIndex(0);
-      } else {
-        track.style.transform = '';
-      }
-    }
-
-    // Event listeners
-    prevButton.addEventListener('click', () => {
-      if (isDesktop() && currentIndex > 0) {
-        goToIndex(currentIndex - 1);
-      }
+      // 动态计算初始偏移（spacer 设计）
+      initialOffset: function() {
+        if (window.innerWidth >= 990) {
+          const scaleFactor = parseFloat(getComputedStyle(section).getPropertyValue('--scale-factor-desktop').trim()) || 1;
+          return -260 * scaleFactor; // spacer 初始偏移
+        }
+        return 0;
+      },
+      
+      // 动态计算可见 items 数量
+      itemsVisible: function() {
+        if (window.innerWidth >= 990) {
+          const container = section.querySelector('.news-cards-container');
+          if (container) {
+            const containerWidth = container.offsetWidth;
+            const scaleFactor = parseFloat(getComputedStyle(section).getPropertyValue('--scale-factor-desktop').trim()) || 1;
+            const cardWidth = 620 * scaleFactor; // 580 + 40
+            return Math.floor(containerWidth / cardWidth);
+          }
+          return 3; // 默认显示 3 个
+        }
+        return 1;
+      },
+      
+      // 仅桌面端启用
+      desktopOnly: true,
+      
+      // 不启用触摸手势
+      enableTouch: false
     });
-
-    nextButton.addEventListener('click', () => {
-      if (isDesktop() && !nextButton.classList.contains('disabled')) {
-        goToIndex(currentIndex + 1);
-      }
-    });
-
-    // Handle resize
-    let lastIsDesktop = isDesktop();
-    function handleResize() {
-      const currentIsDesktop = isDesktop();
-      if (currentIsDesktop !== lastIsDesktop) {
-        lastIsDesktop = currentIsDesktop;
-        initialize();
-      } else if (currentIsDesktop) {
-        goToIndex(currentIndex);
-      }
-    }
-
-    window.addEventListener('resize', handleResize);
-
-    // Initial setup
-    initialize();
   }
 
   if (document.readyState === 'loading') {
