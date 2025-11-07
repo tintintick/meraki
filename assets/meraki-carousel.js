@@ -32,7 +32,7 @@ class MerakiCarousel {
     // 行为配置
     this.desktopOnly = config.desktopOnly !== false;
     this.desktopBreakpoint = config.desktopBreakpoint || 990;
-    this.transitionDuration = config.transitionDuration || '0.45s';
+    this.transitionDuration = config.transitionDuration || '0.2s';
     this.transitionEasing = config.transitionEasing || 'ease';
 
     // 按钮配置
@@ -401,8 +401,14 @@ class MerakiCarousel {
     // 根据模式初始化
     if (this.mode === 'stack-fade') {
       this.initStackFade();
+      this.updateButtons();  // 手动调用更新按钮状态
     } else {
-      this.goToIndex(0, false);
+      // 清除所有状态类（从 stack-fade 切换到其他模式时）
+      this.items.forEach(item => {
+        item.classList.remove('is-active', 'is-left', 'is-right');
+        item.style.zIndex = '';
+      });
+      this.goToIndex(0, false);  // goToIndex 内部会调用 updateButtons()
     }
   }
 
