@@ -104,28 +104,27 @@
 <script>
 (function() {
   function initVideo() {
-    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    const section = document.querySelector('.meraki-video[data-section-id="{{ section.id }}"]');
     if (!section) {
       requestAnimationFrame(initVideo);
       return;
     }
 
-    const prevBtn = section.querySelector('.nav-prev');
-    const nextBtn = section.querySelector('.nav-next');
-    const playerContainer = section.querySelector('.video-player-container');
-    const videoWrappers = Array.from(section.querySelectorAll('[data-video-wrapper]'));
-    const totalVideos = videoWrappers.length;
-
-    if (!prevBtn || !nextBtn || !playerContainer || totalVideos === 0) {
+    if (!window.MerakiCarousel) {
+      console.error('MerakiCarousel not loaded');
       return;
     }
 
-    let currentIndex = 0;
-    let isTransitioning = false;
-    let touchStartX = 0;
-    let touchStartTime = 0;
+    const track = section.querySelector('.video-players-track');
+    const videoWrappers = Array.from(section.querySelectorAll('[data-video-wrapper]'));
+    const prevBtn = section.querySelector('.nav-prev');
+    const nextBtn = section.querySelector('.nav-next');
 
-    // Get scale factor from CSS variable
+    if (!track || !videoWrappers.length || !prevBtn || !nextBtn) {
+      return;
+    }
+
+    // 获取缩放因子
     function getScaleFactor() {
       const isDesktop = window.innerWidth >= 990;
       const varName = isDesktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
@@ -133,7 +132,7 @@
       return parseFloat(value) || 1;
     }
 
-    // Get gap from CSS variable
+    // 获取 gap
     function getGap() {
       const isDesktop = window.innerWidth >= 990;
       if (isDesktop) {
@@ -144,37 +143,33 @@
       return 0; // Mobile has no gap
     }
 
-    // Get player width + gap for scrolling distance
+    // 获取播放器宽度
     function getPlayerWidth() {
-      const firstItem = playerContainer.querySelector('.video-player-item:not(.video-spacer)');
+      const firstItem = section.querySelector('.video-player-item:not(.video-spacer)');
       if (firstItem) {
-        const gap = getGap();
-        return firstItem.offsetWidth + gap;
+        return firstItem.offsetWidth;
       }
-      
-      // Fallback: 使用 CSS 计算
-      const isDesktop = window.innerWidth >= 990;
-      const varName = isDesktop ? '--player-width-desktop' : '--player-width';
-      const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue(varName).trim());
-      const scaleFactor = getScaleFactor();
-      const gap = getGap();
-      return playerWidth * scaleFactor + gap;
+      return 0;
     }
 
-    // Update button states
-    function updateButtons() {
-      prevBtn.classList.toggle('disabled', currentIndex === 0);
-      nextBtn.classList.toggle('disabled', currentIndex >= totalVideos - 1);
+    // 获取初始偏移（1920设计稿中向左偏移1020px）
+    function getInitialOffset() {
+      if (window.innerWidth >= 990) {
+        const scaleFactor = getScaleFactor();
+        return -1020 * scaleFactor;
+      }
+      return 0;
     }
 
-    // Stop all videos (pause and reset to beginning)
+    // 停止所有正在播放的视频
     function stopAllVideos() {
-      videoWrappers.forEach((wrapper, index) => {
-        if (index === currentIndex) return; // Skip current video
-
+      videoWrappers.forEach((wrapper) => {
+        // 只处理正在播放的视频
+        if (!wrapper.classList.contains('is-playing')) return;
+        
         // Stop YouTube videos
         const liteYouTube = wrapper.querySelector('lite-youtube');
-        if (liteYouTube) {
+        if (liteYouTube && liteYouTube.classList.contains('lyt-activated')) {
           if (typeof liteYouTube.reset === 'function') {
             liteYouTube.reset();
           }
@@ -183,16 +178,16 @@
 
         // Stop regular video elements
         const video = wrapper.querySelector('video');
-        if (video) {
+        if (video && !video.paused) {
           video.pause();
-          video.currentTime = 0; // Reset to beginning
+          video.currentTime = 0;
           wrapper.classList.remove('is-playing');
           video.removeAttribute('controls');
         }
       });
     }
 
-    // Initialize controls for regular video elements (fallback)
+    // 初始化视频控制（非 YouTube 视频）
     videoWrappers.forEach((wrapper) => {
       const video = wrapper.querySelector('video');
       if (!video) return;
@@ -200,36 +195,30 @@
       const playButton = wrapper.querySelector('[data-play-button]');
       if (!playButton) return;
 
-      // Initially hide controls
       video.removeAttribute('controls');
 
-      // Play button click
       playButton.addEventListener('click', () => {
         video.play();
       });
 
-      // When video starts playing
       video.addEventListener('play', () => {
         video.setAttribute('controls', '');
         wrapper.classList.add('is-playing');
       });
 
-      // When video pauses
       video.addEventListener('pause', () => {
         video.removeAttribute('controls');
         wrapper.classList.remove('is-playing');
       });
 
-      // When video ends
       video.addEventListener('ended', () => {
         video.removeAttribute('controls');
         wrapper.classList.remove('is-playing');
       });
     });
 
-    // Listen for YouTube activation
+    // 监听 YouTube 激活事件
     section.addEventListener('lyt-activated', (e) => {
-      // Add is-playing class to the activated wrapper for video-info hiding
       const activatedElement = e.target;
       if (activatedElement && activatedElement.tagName === 'LITE-YOUTUBE') {
         const wrapper = activatedElement.closest('[data-video-wrapper]');
@@ -237,115 +226,38 @@
           wrapper.classList.add('is-playing');
         }
       }
-      // Note: Don't call stopAllVideos() here - it's already called in scrollToIndex()
-      // when user switches videos. Here we just play the current video.
     });
 
-    // Scroll to index with smooth animation
-    function scrollToIndex(index) {
-      if (index < 0 || index >= totalVideos || isTransitioning) {
-        return;
-      }
-
-      const playerWidth = getPlayerWidth();
-      isTransitioning = true;
-
-      // Smooth scroll animation
-      playerContainer.scrollTo({
-        left: index * playerWidth,
-        behavior: 'smooth'
-      });
-
-      currentIndex = index;
-      updateButtons();
-      stopAllVideos();
-
-      // Wait for animation to complete (typically 300-500ms)
-      setTimeout(() => {
-        isTransitioning = false;
-      }, 500);
-    }
-
-    // ===== TOUCH SWIPE DISABLED =====
-    // Touch event handlers for swipe detection (disabled to avoid conflicts with YouTube iframe on mobile)
-    // Uncomment when ready to re-enable swipe navigation
-    /*
-    let touchEndX = 0;
-    const SWIPE_THRESHOLD = 50; // Minimum swipe distance in pixels
-
-    playerContainer.addEventListener('touchstart', (e) => {
-      touchStartX = e.touches[0].clientX;
-      touchStartTime = Date.now();
-    }, { passive: true });
-
-    // Prevent native scroll during touch move
-    playerContainer.addEventListener('touchmove', (e) => {
-      // Prevent native inertia scrolling
-      e.preventDefault();
-    }, { passive: false });
-
-    playerContainer.addEventListener('touchend', (e) => {
-      touchEndX = e.changedTouches[0].clientX;
-      const deltaX = touchEndX - touchStartX;
-      const deltaTime = Date.now() - touchStartTime;
-
-      // Only trigger if swipe is significant and not too slow
-      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
-        if (deltaX > 0 && currentIndex > 0) {
-          // Swipe right - go to previous
-          scrollToIndex(currentIndex - 1);
-        } else if (deltaX < 0 && currentIndex < totalVideos - 1) {
-          // Swipe left - go to next
-          scrollToIndex(currentIndex + 1);
-        }
-      }
-    }, { passive: true });
-    */
-    // ===== END TOUCH SWIPE SECTION =====
-
-    // ===== WHEEL SCROLL DISABLED =====
-    // Wheel event handler disabled - only button navigation is allowed
-    // Uncomment when ready to re-enable wheel navigation
-    /*
-    let wheelTimeout;
-    playerContainer.addEventListener('wheel', (e) => {
-      e.preventDefault();
-
-      clearTimeout(wheelTimeout);
-      wheelTimeout = setTimeout(() => {
-        if (isTransitioning) return;
-
-        if (e.deltaX > 30 && currentIndex < totalVideos - 1) {
-          // Scroll right - go to next
-          scrollToIndex(currentIndex + 1);
-        } else if (e.deltaX < -30 && currentIndex > 0) {
-          // Scroll left - go to previous
-          scrollToIndex(currentIndex - 1);
-        } else if (e.deltaY > 30 && currentIndex < totalVideos - 1) {
-          // Scroll down - go to next (for vertical scroll wheels)
-          scrollToIndex(currentIndex + 1);
-        } else if (e.deltaY < -30 && currentIndex > 0) {
-          // Scroll up - go to previous
-          scrollToIndex(currentIndex - 1);
-        }
-      }, 50); // Debounce wheel events slightly
-    }, { passive: false });
-    */
-    // ===== END WHEEL SCROLL SECTION =====
-
-    // Initialize
-    updateButtons();
-
-    // Button click handlers
-    prevBtn.addEventListener('click', () => {
-      if (currentIndex > 0) {
-        scrollToIndex(currentIndex - 1);
-      }
-    });
-
-    nextBtn.addEventListener('click', () => {
-      if (currentIndex < totalVideos - 1) {
-        scrollToIndex(currentIndex + 1);
+    // 使用通用 Carousel 组件
+    new MerakiCarousel({
+      container: section,
+      track: track,
+      items: videoWrappers,
+      prevButton: prevBtn,
+      nextButton: nextBtn,
+      
+      // 使用 slide-fade 模式（滑动+淡化）
+      mode: 'slide-fade',
+      
+      // 播放器宽度 + gap
+      itemWidth: () => getPlayerWidth() + getGap(),
+      
+      // Gap（桌面端40px，移动端0）
+      gap: 0,  // gap已包含在itemWidth中
+      
+      // 初始偏移（抵消 spacer）
+      initialOffset: () => getInitialOffset(),
+      
+      // 移动端和桌面端都启用
+      desktopOnly: false,
+      
+      // 启用 Touch 手势（移动端横向划动）
+      enableTouch: true,
+      touchThreshold: 80,
+      
+      // 切换后停止所有视频
+      onAfterChange: function() {
+        stopAllVideos();
       }
     });
   }

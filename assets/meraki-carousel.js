@@ -229,7 +229,7 @@ class MerakiCarousel {
       if (i === index) {
         item.style.opacity = '1';
       } else if (Math.abs(i - index) === 1) {
-        item.style.opacity = '0.3'; // 相邻item半透明
+        item.style.opacity = '0.75'; // 相邻item半透明
       } else {
         item.style.opacity = '0';
       }
