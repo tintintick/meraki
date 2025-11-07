@@ -1,6 +1,6 @@
 {{ 'meraki-sell-points.css' | asset_url | stylesheet_tag }}
 
-<div class="meraki-sell-points design-scale">
+<div class="meraki-sell-points design-scale" data-section-id="{{ section.id }}">
   <div class="sell-points-header">
     {%- if section.settings.section_title != blank -%}
       <h2 class="sell-points-title">{{ section.settings.section_title }}</h2>
@@ -125,8 +125,17 @@ Perfect First Shot" }}</div>
 
 <script>
 (function() {
-  const section = document.querySelector('.meraki-sell-points');
-  if (!section) return;
+  function initSellPoints() {
+    const section = document.querySelector('.meraki-sell-points[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      requestAnimationFrame(initSellPoints);
+      return;
+    }
+
+    if (!window.MerakiCarousel) {
+      console.error('MerakiCarousel not loaded');
+      return;
+    }
 
   // ========== 视频懒加载功能 ==========
   function initLazyVideos() {
@@ -180,122 +189,65 @@ Perfect First Shot" }}</div>
     }
   }
 
-  // 初始化懒加载
-  initLazyVideos();
-  // ========== 视频懒加载功能结束 ==========
+    // 初始化懒加载
+    initLazyVideos();
+    // ========== 视频懒加载功能结束 ==========
 
-  const track = section.querySelector('.sell-points-track');
-  const prevButton = section.querySelector('.sell-point-nav-prev');
-  const nextButton = section.querySelector('.sell-point-nav-next');
-  const items = section.querySelectorAll('.sell-point-item:not(.sell-point-spacer)');
-  
-  if (!track || !prevButton || !nextButton || items.length === 0) return;
-
-  let currentIndex = 0;
-  const totalItems = items.length;
-
-  function getScaleFactor() {
-    if (window.innerWidth >= 990) {
-      const scale = Math.min(window.innerWidth / 1920, 1);
-      return scale;
-    }
-    return 1;
-  }
-
-  function getItemWidth() {
-    const scaleFactor = getScaleFactor();
-    if (window.innerWidth >= 990) {
-      // 桌面端: item宽度1068px + gap 60px
-      return (1068 + 60) * scaleFactor;
-    }
-    return 0;
-  }
-
-  function updateButtons() {
-    if (window.innerWidth < 990) {
-      return; // 移动端不需要更新按钮
-    }
-
-    // 桌面端逻辑
-    prevButton.disabled = currentIndex <= 0;
-    nextButton.disabled = currentIndex >= totalItems - 1;
-
-    if (prevButton.disabled) {
-      prevButton.classList.add('disabled');
-    } else {
-      prevButton.classList.remove('disabled');
-    }
-
-    if (nextButton.disabled) {
-      nextButton.classList.add('disabled');
-    } else {
-      nextButton.classList.remove('disabled');
-    }
-  }
-
-  function goToIndex(index, animate = true) {
-    if (window.innerWidth < 990) return;
-
-    currentIndex = Math.max(0, Math.min(index, totalItems - 1));
+    // ========== 轮播功能 ==========
+    const track = section.querySelector('.sell-points-track');
+    const prevButton = section.querySelector('.sell-point-nav-prev');
+    const nextButton = section.querySelector('.sell-point-nav-next');
+    const items = section.querySelectorAll('.sell-point-item:not(.sell-point-spacer)');
     
-    const itemWidth = getItemWidth();
-    const scaleFactor = getScaleFactor();
-    const initialOffset = -702 * scaleFactor; // 初始偏移 (1068 - 366)
-    const offset = initialOffset - (currentIndex * itemWidth);
+    if (!track || !prevButton || !nextButton || items.length === 0) return;
 
-    if (!animate) {
-      track.style.transition = 'none';
-    } else {
-      track.style.transition = 'transform 0.45s ease';
-    }
-
-    track.style.transform = `translateX(${offset}px)`;
-
-    if (!animate) {
-      requestAnimationFrame(() => {
-        track.style.transition = '';
-      });
-    }
-
-    updateButtons();
+    // 使用 MerakiCarousel 组件
+    new MerakiCarousel({
+      container: section,
+      track: track,
+      items: items,
+      prevButton: prevButton,
+      nextButton: nextButton,
+      
+      // 使用 slide 模式
+      mode: 'slide',
+      
+      // 动态计算 itemWidth（item + gap）
+      itemWidth: function(scale) {
+        if (window.innerWidth >= 990) {
+          return (1068 + 60) * scale; // 桌面端：item 1068px + gap 60px
+        }
+        return 0;
+      },
+      
+      // Gap
+      gap: 60,
+      
+      // 动态计算初始偏移（设计稿：spacer 露出 366px）
+      initialOffset: function() {
+        if (window.innerWidth >= 990) {
+          const scaleFactor = parseFloat(getComputedStyle(section).getPropertyValue('--scale-factor-desktop').trim()) || 1;
+          return -702 * scaleFactor; // 1068 - 366 = 702（spacer 左边露出 366px）
+        }
+        return 0;
+      },
+      
+      // 每次显示 1 个 item
+      itemsVisible: 1,
+      
+      // 仅桌面端启用
+      desktopOnly: true,
+      
+      // 不启用触摸手势（桌面端用按钮）
+      enableTouch: false
+    });
   }
 
-  function jumpToIndex(index) {
-    goToIndex(index, false);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSellPoints);
+  } else {
+    initSellPoints();
   }
-
-  prevButton.addEventListener('click', () => {
-    if (currentIndex > 0) {
-      goToIndex(currentIndex - 1);
-    }
-  });
-
-  nextButton.addEventListener('click', () => {
-    if (currentIndex < totalItems - 1) {
-      goToIndex(currentIndex + 1);
-    }
-  });
-
-  // 初始化
-  function initialize() {
-    if (window.innerWidth >= 990) {
-      jumpToIndex(0);
-    } else {
-      track.style.transform = '';
-      track.style.transition = '';
-    }
-  }
-
-  // 窗口大小改变时重新初始化
-  let resizeTimer;
-  window.addEventListener('resize', () => {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      initialize();
-    }, 100);
-  });
-
-  initialize();
 })();
 </script>
 
