@@ -262,6 +262,7 @@
 
     {%- comment -%} 全局响应式缩放 JS - 必须在 CSS 之前加载 {%- endcomment -%}
     <script src="{{ 'meraki-global-scale.js' | asset_url }}"></script>
+    <script src="{{ 'meraki-carousel.js' | asset_url }}" defer></script>
 
     {{ 'base.css' | asset_url | stylesheet_tag }}
     <link rel="stylesheet" href="{{ 'component-cart-items.css' | asset_url }}" media="print" onload="this.media='all'">
