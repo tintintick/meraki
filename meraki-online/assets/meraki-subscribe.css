@@ -1,0 +1,484 @@
+/* Custom Subscribe Section (mobile-first) */
+
+.meraki-subscribe {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.meraki-subscribe.design-scale {
+  /* Mobile tokens based on 750px design mock */
+  --section-width: 750px;
+  --section-bg: #f0f0f0;
+  
+  /* Header */
+  --header-margin-top: 100px;
+  --header-margin-bottom: 70px;
+  
+  /* Title */
+  --title-font-size: 48px;
+  --title-line-height: 50px;
+  
+  /* Features */
+  --features-margin: 0 40px;
+  --feature-gap: 30px;
+  
+  /* Feature Item */
+  --feature-icon-size-large: 48px;
+  --feature-icon-size-small: 42px;
+  --feature-icon-margin-right: 24px;
+  --feature-text-font-size-large: 28px;
+  --feature-text-font-size-small: 26px;
+  --feature-text-line-height: 28px;
+  --feature-text-width: 670px;
+  
+  /* Form */
+  --form-margin-top: 70px;
+  --form-padding: 0 40px;
+  
+  /* Input */
+  --input-wrapper-width: 670px;
+  --input-wrapper-height: 88px;
+  --input-bg: #ffffff;
+  --input-border-radius: 0px;
+  --input-font-size: 24px;
+  --input-line-height: 28px;
+  --input-padding-left: 112px;
+  
+  /* Email Icon */
+  --email-icon-size: 32px;
+  --email-icon-left: 64px;
+  
+  /* Button */
+  --button-margin-top: 70px;
+  --button-width: 260px;
+  --button-height: 80px;
+  --button-bg: #ff6f00;
+  --button-border-radius: 6px;
+  --button-font-size: 32px;
+  --button-line-height: 64px;
+  
+  /* Message */
+  --message-margin-top: 20px;
+  --message-font-size: 24px;
+  
+  width: 100%;
+  height: calc(840px * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  letter-spacing: normal;   
+}
+
+/* Subscribe Container - Mobile: Keep vertical layout */
+.subscribe-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* Subscribe Content - Mobile */
+.subscribe-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* width: 100%; */
+}
+
+/* Subscribe Header */
+.subscribe-header {
+  margin-top: calc(var(--header-margin-top) * var(--scale-factor-mobile, 1));
+  margin-bottom: calc(var(--header-margin-bottom) * var(--scale-factor-mobile, 1));
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Section Title */
+.meraki-subscribe .section-title {
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--title-line-height) * var(--scale-factor-mobile, 1));
+  color: #000000;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  letter-spacing: normal;
+}
+
+/* Subscribe Features */
+.subscribe-features {
+  width: 100%;
+  max-width: calc(var(--section-width) * var(--scale-factor-mobile, 1));
+  margin: calc(var(--features-margin) * var(--scale-factor-mobile, 1));
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--feature-gap) * var(--scale-factor-mobile, 1));
+}
+
+/* Feature Item */
+.feature-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  /* padding-left: calc(40px * var(--scale-factor-mobile, 1)); */
+}
+
+/* Feature Icon */
+.feature-icon {
+  flex-shrink: 0;
+  width: calc(var(--feature-icon-size-large) * var(--scale-factor-mobile, 1));
+  height: calc(var(--feature-icon-size-large) * var(--scale-factor-mobile, 1));
+  margin-right: calc(var(--feature-icon-margin-right) * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.feature-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: auto;
+}
+
+/* Adjust icon size for items 2 and 3 */
+.feature-item:nth-child(2) .feature-icon,
+.feature-item:nth-child(3) .feature-icon {
+  width: calc(var(--feature-icon-size-small) * var(--scale-factor-mobile, 1));
+  height: calc(var(--feature-icon-size-small) * var(--scale-factor-mobile, 1));
+}
+
+/* Feature Text */
+.feature-text {
+  width: calc(580px * var(--scale-factor-mobile, 1));
+  height: calc(56px * var(--scale-factor-mobile, 1));
+  font-family: 'Kanit', sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--feature-text-font-size-small) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--feature-text-line-height) * var(--scale-factor-mobile, 1));
+  color: #000000;
+  letter-spacing: normal;
+  display: flex;
+  align-items: center;
+}
+
+/* Adjust text size for items 2 and 3 */
+/* .feature-item:nth-child(2) .feature-text,
+.feature-item:nth-child(3) .feature-text {
+  font-size: calc(var(--feature-text-font-size-small) * var(--scale-factor-mobile, 1));
+} */
+
+.feature-text p {
+  margin: 0;
+  padding: 0;
+}
+
+/* Subscribe Form Wrapper */
+.subscribe-form-wrapper {
+  width: 100%;
+  max-width: calc(var(--section-width) * var(--scale-factor-mobile, 1));
+  margin-top: calc(var(--form-margin-top) * var(--scale-factor-mobile, 1));
+  padding: 0 calc(40px * var(--scale-factor-mobile, 1));
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Subscribe Form */
+.subscribe-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Subscribe Input Wrapper */
+.subscribe-input-wrapper {
+  position: relative;
+  width: calc(var(--input-wrapper-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--input-wrapper-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--input-bg);
+  border-radius: calc(var(--input-border-radius) * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  padding-left: calc(26.67px * var(--scale-factor-mobile, 1));
+}
+
+/* Email Icon */
+.email-icon {
+  width: calc(32px * var(--scale-factor-mobile, 1));
+  height: calc(32px * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  margin-right: calc(30px * var(--scale-factor-mobile, 1));
+}
+
+.email-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+  margin: auto;
+}
+
+/* Subscribe Input */
+.subscribe-input {
+  width: 100%;
+  height: 100%;
+  padding-left: 0;
+  padding-right: calc(20px * var(--scale-factor-mobile, 1));
+  background: transparent;
+  border: none;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  transition: none;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+  font-size: calc(var(--input-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--input-line-height) * var(--scale-factor-mobile, 1));
+  color: #000000;
+  letter-spacing: normal;
+}
+
+.subscribe-input::placeholder {
+  color: rgba(0, 0, 0, 0.5);
+  font-family: 'Kanit', sans-serif;
+  font-weight: 300;
+}
+
+.subscribe-input:focus,
+.subscribe-input:focus-visible {
+  outline: none;
+  box-shadow: none;
+  transform: none;
+}
+
+/* Remove autofill background */
+.subscribe-input:-webkit-autofill {
+  -webkit-box-shadow: 0 0 0 1000px white inset;
+  box-shadow: 0 0 0 1000px white inset;
+}
+
+/* Subscribe Button */
+.subscribe-button {
+  margin-top: calc(var(--button-margin-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--button-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--button-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--button-bg);
+  border: none;
+  border-radius: calc(var(--button-border-radius) * var(--scale-factor-mobile, 1));
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--button-font-size) * var(--scale-factor-mobile, 1));
+  line-height: calc(var(--button-line-height) * var(--scale-factor-mobile, 1));
+  color: #ffffff;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.3s ease;
+  padding: 0;
+}
+
+.subscribe-button:hover {
+  opacity: 0.9;
+}
+
+.subscribe-button:active {
+  opacity: 0.8;
+}
+
+/* Subscribe Message */
+.subscribe-message {
+  margin-top: calc(var(--message-margin-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--input-wrapper-width) * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  gap: calc(10px * var(--scale-factor-mobile, 1));
+  font-family: 'Kanit', sans-serif;
+  font-weight: 400;
+  font-size: calc(var(--message-font-size) * var(--scale-factor-mobile, 1));
+  line-height: 1.4;
+  padding: calc(12px * var(--scale-factor-mobile, 1)) calc(20px * var(--scale-factor-mobile, 1));
+  border-radius: calc(4px * var(--scale-factor-mobile, 1));
+}
+
+/* Error Message */
+.subscribe-error {
+  background-color: rgba(255, 0, 0, 0.1);
+  color: #d32f2f;
+}
+
+.error-icon {
+  flex-shrink: 0;
+  width: calc(20px * var(--scale-factor-mobile, 1));
+  height: calc(20px * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.error-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: #d32f2f;
+}
+
+/* Success Message */
+.subscribe-success {
+  background-color: rgba(76, 175, 80, 0.1);
+  color: #388e3c;
+}
+
+.success-icon {
+  flex-shrink: 0;
+  width: calc(20px * var(--scale-factor-mobile, 1));
+  height: calc(20px * var(--scale-factor-mobile, 1));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.success-icon svg {
+  width: 100%;
+  height: 100%;
+  fill: #388e3c;
+}
+
+/* Tablet: 750px - 990px (not inclusive) */
+@media (min-width: 750px) and (max-width: 989px) {
+  /* Tablet scaling rules can be added here if needed */
+}
+
+/* Desktop: 990px+ */
+@media (min-width: 990px) {
+  .meraki-subscribe.design-scale {
+    /* Desktop tokens */
+    --section-width-desktop: 1920px;
+    --section-height-desktop: 600px;
+    
+    /* Header */
+    --header-margin-top-desktop: 100px;
+    --header-margin-bottom-desktop: 84px;
+    
+    /* Title */
+    --title-font-size-desktop: 54px;
+    --title-line-height-desktop: 50px;
+    
+    /* Feature Text */
+    --feature-text-font-size-desktop: 24px;
+    --feature-text-line-height-desktop: 28px;
+    
+    /* Button */
+    --button-width-desktop: 240px;
+    --button-height-desktop: 68px;
+    --button-margin-top-desktop: 36px;
+    
+    /* Container gap */
+    --container-gap-desktop: 98px;
+    
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+    justify-content: center; /* 垂直居中 */
+  }
+
+  /* Subscribe Container - Desktop: Flex layout */
+  .subscribe-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--container-gap-desktop) * var(--scale-factor-desktop, 1));
+    width: 100%;
+    max-width: calc(var(--section-width-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+  }
+
+  /* Subscribe Content - Left Column */
+  .subscribe-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 0 0 auto;
+    width: calc(625px * var(--scale-factor-desktop, 1));
+  }
+
+  /* Subscribe Header - Desktop */
+  .subscribe-header {
+    margin-top: 0;
+    margin-bottom: calc(var(--header-margin-bottom-desktop) * var(--scale-factor-desktop, 1));
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  /* Section Title - Desktop */
+  .meraki-subscribe .section-title {
+    font-size: calc(var(--title-font-size-desktop) * var(--scale-factor-desktop, 1));
+    line-height: calc(var(--title-line-height-desktop) * var(--scale-factor-desktop, 1));
+    text-align: left;
+  }
+
+  /* Subscribe Features - Desktop */
+  .subscribe-features {
+    width: 100%;
+    max-width: none;
+    margin: 0;
+    padding-left: 0;
+    gap: calc(40px * var(--scale-factor-desktop, 1));
+  }
+
+  .feature-item {
+    padding-left: 0;
+  }
+
+  /* Feature Text - Desktop */
+  .feature-text {
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
+    line-height: calc(var(--feature-text-line-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Subscribe Form Wrapper - Desktop */
+  .subscribe-form-wrapper {
+    align-items: flex-start; /* 子元素左对齐 */
+    width: calc(625px * var(--scale-factor-desktop, 1));
+  }
+
+  /* Subscribe Form - Desktop */
+  .subscribe-form {
+    align-items: flex-start; /* 表单内容左对齐 */
+  }
+
+  .subscribe-input-wrapper {
+    width: calc(560px * var(--scale-factor-desktop, 1));
+    height: calc(80px * var(--scale-factor-desktop, 1));
+    border-radius: calc(6px * var(--scale-factor-desktop, 1));
+  }
+
+  /* Subscribe Button - Desktop */
+  .subscribe-input {
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
+    line-height: calc(28px * var(--scale-factor-desktop, 1));
+  }
+
+  .subscribe-button {
+    margin-top: calc(var(--button-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    width: calc(var(--button-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--button-height-desktop) * var(--scale-factor-desktop, 1));
+    font-size: max(20px, calc(var(--feature-text-font-size-desktop) * var(--scale-factor-desktop, 1)));
+    line-height: calc(64px * var(--scale-factor-desktop, 1));
+  }
+}
+
+/* Ultra-wide / 4K - 由 JS 控制 */
+

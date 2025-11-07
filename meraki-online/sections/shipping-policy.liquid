@@ -1,0 +1,38 @@
+<div class="shipping-policy" style="background-color: {{ section.settings.background_color }};">
+  <div class="shipping-policy__container container-default">
+    <h1 class="shipping-policy__title">{{ page.title }}</h1>
+    <div class="shipping-policy__content">
+      {{ page.content }}
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Shipping Policy",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Shipping Policy"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content",
+      "default": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "#FCFBF7"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shipping Policy"
+    }
+  ]
+}
+{% endschema %}

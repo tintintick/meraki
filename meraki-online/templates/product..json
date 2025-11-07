@@ -1,0 +1,842 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "vendor": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.vendor }}",
+            "text_style": "uppercase"
+          }
+        },
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "caption": {
+          "type": "text",
+          "settings": {
+            "text": "{{ product.metafields.descriptors.subtitle.value }}",
+            "text_style": "subtitle"
+          }
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "picker_type": "button",
+            "swatch_shape": "circle"
+          }
+        },
+        "quantity_selector": {
+          "type": "quantity_selector",
+          "settings": {}
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true,
+            "show_gift_card_recipient": true
+          }
+        },
+        "collapsible-row-0": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Materials",
+            "icon": "leather",
+            "content": "",
+            "page": ""
+          }
+        },
+        "collapsible-row-1": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Shipping & Returns",
+            "icon": "truck",
+            "content": "",
+            "page": ""
+          }
+        },
+        "collapsible-row-2": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Dimensions",
+            "icon": "ruler",
+            "content": "",
+            "page": ""
+          }
+        },
+        "collapsible-row-3": {
+          "type": "collapsible_tab",
+          "settings": {
+            "heading": "Care Instructions",
+            "icon": "heart",
+            "content": "",
+            "page": ""
+          }
+        },
+        "share": {
+          "type": "share",
+          "settings": {
+            "share_label": "Share"
+          }
+        }
+      },
+      "block_order": [
+        "vendor",
+        "title",
+        "description",
+        "caption",
+        "price",
+        "variant_picker",
+        "quantity_selector",
+        "buy_buttons",
+        "collapsible-row-0",
+        "collapsible-row-1",
+        "collapsible-row-2",
+        "collapsible-row-3",
+        "share"
+      ],
+      "settings": {
+        "enable_sticky_info": true,
+        "color_scheme": "scheme-c3e136d1-2891-484b-91fb-9b6e6e4f7dea",
+        "media_size": "large",
+        "constrain_to_viewport": true,
+        "media_fit": "contain",
+        "gallery_layout": "stacked",
+        "mobile_thumbnails": "hide",
+        "media_position": "left",
+        "image_zoom": "lightbox",
+        "hide_variants": true,
+        "enable_video_looping": false,
+        "padding_top": 36,
+        "padding_bottom": 12
+      }
+    },
+    "related-products": {
+      "type": "related-products",
+      "disabled": true,
+      "settings": {
+        "heading": "You may also like",
+        "heading_size": "h2",
+        "products_to_show": 4,
+        "columns_desktop": 4,
+        "columns_mobile": "2",
+        "color_scheme": "scheme-1",
+        "image_ratio": "square",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "padding_top": 36,
+        "padding_bottom": 28
+      }
+    },
+    "recommended_by_EMfLGG": {
+      "type": "recommended-by",
+      "blocks": {
+        "recommended_by_video_P8fW6V": {
+          "type": "recommended_by_video",
+          "settings": {
+            "media": "shopify://files/videos/post-merakitechglobal-apr-16-2025.mp4"
+          }
+        },
+        "recommended_by_video_83GweN": {
+          "type": "recommended_by_video",
+          "settings": {
+            "media": "shopify://files/videos/post-merakitechglobal-may-02-2025.mp4"
+          }
+        },
+        "recommended_by_video_twgYNH": {
+          "type": "recommended_by_video",
+          "settings": {
+            "media": "shopify://files/videos/dirty(1)0719.mp4"
+          }
+        },
+        "recommended_by_video_dRcbqd": {
+          "type": "recommended_by_video",
+          "settings": {
+            "media": "shopify://files/videos/Affogato(1)0719.mp4"
+          }
+        },
+        "recommended_by_video_dUze8q": {
+          "type": "recommended_by_video",
+          "settings": {
+            "media": "shopify://files/videos/post-merakitechglobal-may-09-2025.mp4"
+          }
+        }
+      },
+      "block_order": [
+        "recommended_by_video_P8fW6V",
+        "recommended_by_video_83GweN",
+        "recommended_by_video_twgYNH",
+        "recommended_by_video_dRcbqd",
+        "recommended_by_video_dUze8q"
+      ],
+      "settings": {
+        "main_heading": "Meraki: The First Pro Machine for Your Coffee Journey",
+        "subtitle": "",
+        "scroll_interval": 3,
+        "background_color": "#FCFBF7",
+        "text_color": "#525252"
+      }
+    },
+    "function_bundle_eJcCBT": {
+      "type": "function-bundle",
+      "blocks": {
+        "multiple_feature_block_mrXgwP": {
+          "type": "multiple_feature_block",
+          "settings": {
+            "function_description": "",
+            "video_position": "left",
+            "video_title": "Start with the Exceptional Grind",
+            "video_subtitle": "",
+            "desk_video": "shopify://files/videos/自动研磨_e0cc6429-ed6b-4128-951c-6dc54c60d212.mp4",
+            "image_1": "shopify://shop_images/timemore_grinder.png",
+            "text_1": "TIMEMORE® \nCo-engineered Grinder",
+            "image_2": "shopify://shop_images/ion_bean.png",
+            "text_2": "Ion Beam \nStatic-Free Grinding",
+            "image_3": "shopify://shop_images/espresso-specific.png",
+            "text_3": "Espresso-Tailored \nGrinder Calibration",
+            "function_1_icon": "shopify://shop_images/Frame_755.png",
+            "function_1_text": "Short Path,\nLess Retention",
+            "function_2_icon": "shopify://shop_images/icon_01.png",
+            "function_2_text": "Thermally\nIsolated Grinder",
+            "function_3_icon": "shopify://shop_images/icon_03.png",
+            "function_3_text": "30-Step\nAdjustability"
+          }
+        },
+        "multiple_feature_block_ddbJXg": {
+          "type": "multiple_feature_block",
+          "settings": {
+            "function_description": "",
+            "video_position": "right",
+            "video_title": "Craft with Precision Brewing",
+            "video_subtitle": "",
+            "desk_video": "shopify://files/videos/萃取.mp4",
+            "image_1": "shopify://shop_images/pump_1.png",
+            "text_1": "Rotary Pump \nfor Silent Stability",
+            "image_2": "shopify://shop_images/pid_brewing.png",
+            "text_2": "PID-Controlled \nBrewing Boiler",
+            "image_3": "shopify://shop_images/thermo-stable.png",
+            "text_3": "Thermo-Stable \nBrew Head",
+            "function_1_icon": "shopify://shop_images/icon_4.png",
+            "function_1_text": "9-Bar Consistent Pressure",
+            "function_2_icon": "shopify://shop_images/icon_5.png",
+            "function_2_text": "Adjustable Temp: 85-96°C",
+            "function_3_icon": "shopify://shop_images/icon_5_1.png",
+            "function_3_text": "18g Portafilter Basket"
+          }
+        },
+        "multiple_feature_block_nCrdg6": {
+          "type": "multiple_feature_block",
+          "settings": {
+            "function_description": "",
+            "video_position": "left",
+            "video_title": "Finish with Flawless Froth",
+            "video_subtitle": "",
+            "desk_video": "shopify://files/videos/蒸汽.mp4",
+            "image_1": "shopify://shop_images/temp_sensor.png",
+            "text_1": "Milk Temp\nSensor",
+            "image_2": "shopify://shop_images/pid_steam.png",
+            "text_2": "PID-Controlled\nSteam Boiler",
+            "image_3": "shopify://shop_images/360.png",
+            "text_3": "360° Flexible\nSteam Wand",
+            "function_1_icon": "shopify://shop_images/icon_5_2.png",
+            "function_1_text": "High-Powered \nDry Steam",
+            "function_2_icon": "shopify://shop_images/icon_6.png",
+            "function_2_text": "One-Touch \nAuto Steam",
+            "function_3_icon": "shopify://shop_images/icon_5_3.png",
+            "function_3_text": "4-Level \nSteam Power"
+          }
+        },
+        "single_feature_block_7YXtDm": {
+          "type": "single_feature_block",
+          "disabled": true,
+          "settings": {
+            "function_description": "Loved by Baristas, Designed for Beginners.",
+            "video_title": "video title",
+            "video_subtitle": "video subtitle",
+            "function_1_text": "text",
+            "function_2_text": "text",
+            "function_3_text": "text"
+          }
+        }
+      },
+      "block_order": [
+        "multiple_feature_block_mrXgwP",
+        "multiple_feature_block_ddbJXg",
+        "multiple_feature_block_nCrdg6",
+        "single_feature_block_7YXtDm"
+      ],
+      "settings": {
+        "main_heading": "From Bean to Cup,\n Perfected in One Machine.",
+        "main_subtitle": "<p>Grind, dose, extract, and steam—Meraki handles every step with precision and ease. From intelligent grinding to automatic milk frothing, our all-in-one system blends advanced coffee tech with intuitive operation, making it effortless for anyone to craft barista-level espresso at home.</p>"
+      }
+    },
+    "function_bundle_kF8nBg": {
+      "type": "function-bundle",
+      "blocks": {
+        "single_feature_block_at9tpq": {
+          "type": "single_feature_block",
+          "settings": {
+            "function_description": "Dual Scales for Ultimate Precision",
+            "video_title": "",
+            "video_subtitle": "Dual Scales for Ultimate Precision\nIntegrated grinding and extraction scales ensure precise measurements for every step, delivering consistently exceptional coffee that elevates your daily ritual.",
+            "function_1_text": "text",
+            "function_2_text": "text",
+            "function_3_text": "text"
+          }
+        },
+        "single_feature_block_FBb6XD": {
+          "type": "single_feature_block",
+          "settings": {
+            "function_description": "CoffeeSense™ Redefines Effortless Brewing",
+            "video_title": "",
+            "video_subtitle": "Experience barista-level coffee without the learning curve. Powered by CoffeeSense™ Technology—developed with professional baristas and roasters—Meraki intelligently calibrates grind size, extraction weight, and temperature for every cup. Just scan the NFC chip on our curated coffee bags, and your machine loads the exact settings needed. From precise dosing to automatic milk frothing, Auto Mode handles the complex steps, while you stay in control of the key variables. With Meraki, expert coffee becomes effortless, even on your first try.",
+            "desk_video": "shopify://files/videos/coffee sense.mp4",
+            "function_1_text": "text",
+            "function_2_text": "text",
+            "function_3_text": "text"
+          }
+        }
+      },
+      "block_order": [
+        "single_feature_block_at9tpq",
+        "single_feature_block_FBb6XD"
+      ],
+      "settings": {
+        "main_heading": "Smart Yet Customizable",
+        "main_subtitle": ""
+      }
+    },
+    "touchscreen_carousel_XKJTeB": {
+      "type": "touchscreen-carousel",
+      "blocks": {
+        "carousel_item_VF77Me": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/1_6d659d50-ded1-476f-bb2a-097b3f4bc804.png",
+            "title": "Manual Grinding",
+            "description": "Embrace a hands-on and personalized grinding \nexperience with our manual grind setting."
+          }
+        },
+        "carousel_item_aW3BUQ": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/2_b0d94049-2bd8-4f8b-9e28-e19ba87a8e31.png",
+            "title": "Customized Quick Menu",
+            "description": "Navigate effortlessly through coffee making, settings adjustments,or cleaning cycles with our quick menu"
+          }
+        },
+        "carousel_item_ctKEPq": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/3_3a92be80-c632-461d-bac6-33512746a7d8.png",
+            "title": "Pre-heat timer",
+            "description": "Prepare your machine to suit your schedule, \nensuring it's ready when you need it."
+          }
+        },
+        "carousel_item_deeHz9": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/4.webp",
+            "title": "Auto Back-Flushing Clean",
+            "description": "Initiate a thorough cleaning cycle with the \"Self-Clean\" function, ensuring internal parts are pristine without any residue."
+          }
+        },
+        "carousel_item_iiHybY": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/5_fd8ee0aa-cac4-47e1-8428-24d93a7ace46.png",
+            "title": "Steam Level",
+            "description": "Experience the pleasure of different milk foam textures \nby adjusting our three-level steam intensity."
+          }
+        },
+        "carousel_item_YzfwLp": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/6_75110b19-11a5-4e3a-890e-a854d897198e.png",
+            "title": "Real-Time Weight Display",
+            "description": "Observe the weight of coffee grounds and liquid in real-time, \nwith a maximum detection capacity of 1,ooo grams."
+          }
+        },
+        "carousel_item_LExXHV": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/7_acd3a893-70b3-4ce6-b362-c13529b697db.png",
+            "title": "Hot Water",
+            "description": "Enjoy added convenience and versatility with our hot water feature, perfect for preheating cups, cleaning maintenance, \nand preparing various hot beverages."
+          }
+        },
+        "carousel_item_3WXeD7": {
+          "type": "carousel_item",
+          "settings": {
+            "circle_image": "shopify://shop_images/8_5559d341-d2e0-4df2-9bf1-340536904be4.png",
+            "title": "Over-the-Air Updates",
+            "description": "Stay updated with the latest features and improvements \nvia automatic firmware updates."
+          }
+        }
+      },
+      "block_order": [
+        "carousel_item_VF77Me",
+        "carousel_item_aW3BUQ",
+        "carousel_item_ctKEPq",
+        "carousel_item_deeHz9",
+        "carousel_item_iiHybY",
+        "carousel_item_YzfwLp",
+        "carousel_item_LExXHV",
+        "carousel_item_3WXeD7"
+      ],
+      "settings": {
+        "main_heading": "Intuitive user interface Touch Screen with Smart Features",
+        "subtitle": "",
+        "scroll_interval": 4,
+        "autoplay": true,
+        "show_navigation_arrows": true
+      }
+    },
+    "function_bundle_PXVfwH": {
+      "type": "function-bundle",
+      "blocks": {
+        "single_feature_block_EXJc8R": {
+          "type": "single_feature_block",
+          "settings": {
+            "function_description": "CoffeeSense™ Redefines Effortless Brewing",
+            "video_title": "",
+            "video_subtitle": "",
+            "desk_video": "shopify://files/videos/Best Brew Made Easy.mp4",
+            "function_1_text": "text",
+            "function_2_text": "text",
+            "function_3_text": "text"
+          }
+        }
+      },
+      "block_order": [
+        "single_feature_block_EXJc8R"
+      ],
+      "disabled": true,
+      "settings": {
+        "main_heading": "Dual Scales for Ultimate Precision",
+        "main_subtitle": ""
+      }
+    },
+    "vertical_media_slideshow_hCqpX7": {
+      "type": "vertical-media-slideshow",
+      "blocks": {
+        "image_w6ieXz": {
+          "type": "image",
+          "settings": {
+            "media": "shopify://shop_images/DSC4507.png"
+          }
+        },
+        "image_CQV3Aa": {
+          "type": "image",
+          "settings": {
+            "media": "shopify://shop_images/DSC4603.png"
+          }
+        },
+        "image_NFQdGr": {
+          "type": "image",
+          "settings": {
+            "media": "shopify://shop_images/DSC4639.png"
+          }
+        },
+        "image_8tttHk": {
+          "type": "image",
+          "settings": {
+            "media": "shopify://shop_images/475978112_631044115995241_141125125591824553_n.png"
+          }
+        },
+        "image_jE6XE9": {
+          "type": "image",
+          "settings": {
+            "media": "shopify://shop_images/20241022-_DSC3671.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_w6ieXz",
+        "image_CQV3Aa",
+        "image_NFQdGr",
+        "image_8tttHk",
+        "image_jE6XE9"
+      ],
+      "name": "Vertical Media Slideshow",
+      "settings": {
+        "main_heading": "A Chic Element That<br>Complements Your Lifestyle",
+        "subtitle": "",
+        "text_gap": 64,
+        "scroll_interval": 3,
+        "background_color": "linear-gradient(180deg, rgba(36, 36, 36, 1), rgba(19, 19, 19, 1) 100%)",
+        "heading_color": "#b5b5b5",
+        "subtitle_color": "#838383"
+      }
+    },
+    "landscaple_feature_media_slideshow_EFLy3T": {
+      "type": "landscaple-feature-media-slideshow",
+      "blocks": {
+        "video_8MLxrc": {
+          "type": "video",
+          "settings": {}
+        },
+        "video_czVfrQ": {
+          "type": "video",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "video_8MLxrc",
+        "video_czVfrQ"
+      ],
+      "name": "Landscaple Feature Media Slideshow",
+      "settings": {
+        "main_heading": "Trusted by Those Who Know Coffee Best",
+        "subtitle": "",
+        "text_gap": 64,
+        "scroll_interval": 3,
+        "background_color": "linear-gradient(180deg, rgba(36, 36, 36, 1), rgba(19, 19, 19, 1) 100%)",
+        "heading_color": "#b5b5b5",
+        "subtitle_color": "#838383",
+        "button_text_color": "#b5b5b5",
+        "block_in_view": 1
+      }
+    },
+    "landscaple_feature_media_slideshow_hggJDy": {
+      "type": "landscaple-feature-media-slideshow",
+      "blocks": {
+        "image_xm47EU": {
+          "type": "image",
+          "settings": {
+            "desktop_image": "shopify://shop_images/A0012011.png",
+            "mobile_image": "shopify://shop_images/A0012011-1.png"
+          }
+        },
+        "image_WPExWA": {
+          "type": "image",
+          "settings": {
+            "desktop_image": "shopify://shop_images/A0012529.png",
+            "mobile_image": "shopify://shop_images/A0012529_0f5ec90e-5aec-48d3-bd94-b5c4b94e9fc6.png"
+          }
+        },
+        "image_dmGmWz": {
+          "type": "image",
+          "settings": {
+            "desktop_image": "shopify://shop_images/A0012495.png",
+            "mobile_image": "shopify://shop_images/A0012495_a26e73d8-4d68-4190-83df-53a8f12cfcaf.png"
+          }
+        }
+      },
+      "block_order": [
+        "image_xm47EU",
+        "image_WPExWA",
+        "image_dmGmWz"
+      ],
+      "name": "Landscaple Feature Media Slideshow",
+      "settings": {
+        "main_heading": "Timeless Beauty in Every Detail",
+        "subtitle": "",
+        "text_gap": 64,
+        "scroll_interval": 3,
+        "background_color": "linear-gradient(180deg, rgba(36, 36, 36, 1), rgba(19, 19, 19, 1) 100%)",
+        "heading_color": "#B5B5B5",
+        "subtitle_color": "#838383",
+        "button_text_color": "#B5B5B5",
+        "block_in_view": 1
+      }
+    },
+    "featured_collection_CHcatY": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "accessories",
+        "products_to_show": 8,
+        "title": "Accessories",
+        "heading_size": "h1",
+        "heading_alignment": "left",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": false,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "standard",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "background_color": "#FFFFFF",
+        "heading_color": "#525252",
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
+    "meraki_in_box_YgieYL": {
+      "type": "meraki-in-box",
+      "name": "Meraki In Box",
+      "settings": {}
+    },
+    "product_specification_etrCYr": {
+      "type": "product-specification",
+      "blocks": {
+        "specification_jjCq3F": {
+          "type": "specification",
+          "settings": {
+            "name": "Dimensions",
+            "detail": "<p>370*370*414mm<\/p>"
+          }
+        },
+        "specification_964CLe": {
+          "type": "specification",
+          "settings": {
+            "name": "Weight",
+            "detail": "<p>14.3kg<\/p>"
+          }
+        },
+        "specification_ePjFU9": {
+          "type": "specification",
+          "settings": {
+            "name": "Voltage(Ships according to destination region):",
+            "detail": "<p>100-120V 50/60Hz(default for US,  CA) \n220-240V 50/60Hz(default for EU, UK , AU)<\/p>"
+          }
+        },
+        "specification_EmtENp": {
+          "type": "specification",
+          "settings": {
+            "name": "Grind scale",
+            "detail": "<p>1KG Max capacity ±0.2g Scale accuracy<\/p>"
+          }
+        },
+        "specification_xYMjR7": {
+          "type": "specification",
+          "settings": {
+            "name": "Rated power",
+            "detail": "<p>1600W (100-120V 50/60Hz) \n1800W (220-240V 50/60Hz)<\/p>"
+          }
+        },
+        "specification_aWpQpx": {
+          "type": "specification",
+          "settings": {
+            "name": "Pump type",
+            "detail": "<p>Rotary pump<\/p>"
+          }
+        },
+        "specification_wgbWze": {
+          "type": "specification",
+          "settings": {
+            "name": "Line pressure",
+            "detail": "<p>9 bar<\/p>"
+          }
+        },
+        "specification_E4Bxi8": {
+          "type": "specification",
+          "settings": {
+            "name": "Water tank capacity",
+            "detail": "<p>2000ml<\/p>"
+          }
+        },
+        "specification_TpG6eW": {
+          "type": "specification",
+          "settings": {
+            "name": "Drip tray capacity",
+            "detail": "<p>650ml<\/p>"
+          }
+        },
+        "specification_ELCMyX": {
+          "type": "specification",
+          "settings": {
+            "name": "Brew scale",
+            "detail": "<p>1KG Max capacity ±0.2g Scale accuracy<\/p>"
+          }
+        },
+        "specification_fVMEHA": {
+          "type": "specification",
+          "settings": {
+            "name": "Brew boiler capacity",
+            "detail": "<p>350ml<\/p>"
+          }
+        },
+        "specification_bfpqma": {
+          "type": "specification",
+          "settings": {
+            "name": "Steam boiler capacity",
+            "detail": "<p>550ml<\/p>"
+          }
+        },
+        "specification_Ta3RnC": {
+          "type": "specification",
+          "settings": {
+            "name": "Meraki Espresso Machine Product Beginner Guide",
+            "detail": "<p>PDF<\/p>"
+          }
+        },
+        "specification_dpWjTY": {
+          "type": "specification",
+          "settings": {
+            "name": "Meraki Espresso Machine Product Manual",
+            "detail": "<p>PDF<\/p>"
+          }
+        }
+      },
+      "block_order": [
+        "specification_jjCq3F",
+        "specification_964CLe",
+        "specification_ePjFU9",
+        "specification_EmtENp",
+        "specification_xYMjR7",
+        "specification_aWpQpx",
+        "specification_wgbWze",
+        "specification_E4Bxi8",
+        "specification_TpG6eW",
+        "specification_ELCMyX",
+        "specification_fVMEHA",
+        "specification_bfpqma",
+        "specification_Ta3RnC",
+        "specification_dpWjTY"
+      ],
+      "name": "Product Specification",
+      "settings": {
+        "main_heading": "SPECS",
+        "background_color": "#fff"
+      }
+    },
+    "faq_ifFLyE": {
+      "type": "faq",
+      "blocks": {
+        "item_HLktyt": {
+          "type": "item",
+          "settings": {
+            "question": "What's in the box?",
+            "answer": "<p>Here's a description of the pictured items from left to right, top to bottom:</p><ol><li><strong>Tamper Station: </strong>Organizes and stores smaller espresso accessories.</li><li><strong>Tamper:</strong> Compresses ground coffee in the portafilter for optimal extraction.</li><li><strong>Coffee Distributor:</strong> Ensures even coffee distribution for consistent brewing.</li><li><strong>58mm Portafilter with basket:</strong> Holds ground coffee and attaches to the espresso machine's group head.</li><li><strong>Blind Portafilter Basket:</strong> Used for flushing and cleaning the group head. </li><li><strong>Double-spout: </strong>Enhances the speed and convenience of espresso extraction</li><li><strong>Cleaning Brush: </strong>Cleans the portafilter, group head, and other machine parts.</li><li><strong>Milk Frothing Pitcher: </strong>Steams and froths milk for various coffee drinks.  </li><li><strong>Dosing Cup: </strong>Measures out precise amounts of ground coffee.</li><li><strong>Cleaning Cloth: </strong>Wipes down and dries the espresso machine.</li><li><strong>Meraki Product Beginner Guides:</strong> Provides helpful instructions for new users.</li><li><strong>Meraki Product Manual:</strong> Contains comprehensive information and troubleshooting tips.</li></ol>"
+          }
+        },
+        "item_8QhKTn": {
+          "type": "item",
+          "settings": {
+            "question": "What size is the package I’ll receive, and how can I open the box correctly?",
+            "answer": "<p>The package dimensions are 500 mm(L) x 500 mm(W) x 470 mm(H), and it weighs 20 KG. To ensure a smooth unboxing experience, we’ve created a helpful unboxing guide for you. Please watch the following link for detailed instructions: <a href=\"https://youtu.be/u1keBqq-V74\" target=\"_blank\">Unboxin</a><a href=\"https://youtu.be/u1keBqq-V74?si=F8NyiEZ1C5edStmO\" target=\"_blank\">g Guide</a>. </p>"
+          }
+        },
+        "item_YtNWWa": {
+          "type": "item",
+          "settings": {
+            "question": "What kind of water should I use?",
+            "answer": "<p>To ensure optimal performance and extend the life of your Meraki, we advise using filtered water with hardness below 60 PPM or TDS below 200. While tap water meeting these specifications is usable, untreated tap water can introduce microorganisms, causing odors and making cleaning difficult. For long-term health and convenience, bottled or a reliable home filtration system is preferred.</p>"
+          }
+        },
+        "item_QCkdix": {
+          "type": "item",
+          "settings": {
+            "question": "Can I put the machine accessories into the dishwasher?",
+            "answer": "<p>Most of Meraki's accessories are not dishwasher-safe, especially the drip tray, dosing cup, and portafilter. However, the milk pitcher can be safely used inside the dishwasher.</p>"
+          }
+        },
+        "item_yJtnDY": {
+          "type": "item",
+          "settings": {
+            "question": "How do I use CoffeeSense™?",
+            "answer": "<p>To use the CoffeeSense™ feature, simply swipe the Meraki coffee bean bag, which is equipped with an NFC chip, on the NFC area of the Meraki machine. The machine will automatically recognize the coffee beans and provide the corresponding suggested grinding and extraction parameters. On the touchscreen, tap the buttons to start the grind and extraction process. Combined with two built-in scales for grinding and extracting, the machine will automatically stop the grinding and extraction process once the desired quantity is reached.</p>"
+          }
+        },
+        "item_yRwQqq": {
+          "type": "item",
+          "settings": {
+            "question": "Does Meraki use a PID algorithm to control the extraction of water temperature?",
+            "answer": "<p>Yes, the Meraki espresso machine uses advanced PID technology for precise temperature control, ensuring consistent, flavorful espresso. The PID system, combined with a dedicated group head heater, maintains optimal brewing temperature at the portafilter, giving you professional-level results with every shot.</p>"
+          }
+        },
+        "item_wmjeWK": {
+          "type": "item",
+          "settings": {
+            "question": "What is the boiler capacity?",
+            "answer": "<p>The Meraki espresso machine is equipped with dual boilers. The capacity of the extraction boiler is 350ml, while the capacity of the steam boiler is 550ml. Both boilers are made of stainless steel.</p>"
+          }
+        },
+        "item_exHYQP": {
+          "type": "item",
+          "settings": {
+            "question": "What is the maximum weight capacity of the scale?",
+            "answer": "<p>The Meraki espresso machine features dual scales, with each scale having a maximum capacity of 1kg.</p>"
+          }
+        },
+        "item_WxB9fF": {
+          "type": "item",
+          "settings": {
+            "question": "How long does it take to heat up?",
+            "answer": "<p>The heat-up time is around 3 minutes for the 220-240V version and around 4 minutes for the 100-120V version.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "item_HLktyt",
+        "item_8QhKTn",
+        "item_YtNWWa",
+        "item_QCkdix",
+        "item_yJtnDY",
+        "item_yRwQqq",
+        "item_wmjeWK",
+        "item_exHYQP",
+        "item_WxB9fF"
+      ],
+      "settings": {
+        "heading": "FAQ",
+        "text_color": "#121212",
+        "background_color": "#ffffff"
+      }
+    },
+    "175005988192bb4a4a": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_rFWxXe": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_rFWxXe"
+      ],
+      "settings": {
+        "include_margins": true
+      }
+    }
+  },
+  "order": [
+    "main",
+    "related-products",
+    "recommended_by_EMfLGG",
+    "function_bundle_eJcCBT",
+    "function_bundle_kF8nBg",
+    "touchscreen_carousel_XKJTeB",
+    "function_bundle_PXVfwH",
+    "vertical_media_slideshow_hCqpX7",
+    "landscaple_feature_media_slideshow_EFLy3T",
+    "landscaple_feature_media_slideshow_hggJDy",
+    "featured_collection_CHcatY",
+    "meraki_in_box_YgieYL",
+    "product_specification_etrCYr",
+    "faq_ifFLyE",
+    "175005988192bb4a4a"
+  ]
+}

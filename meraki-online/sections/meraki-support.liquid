@@ -1,0 +1,130 @@
+﻿{{ 'meraki-support.css' | asset_url | stylesheet_tag }}
+
+<div class="meraki-support design-scale" data-section-id="{{ section.id }}">
+  <!-- Section Title -->
+  <div class="support-header">
+    <h2 class="section-title">{{ section.settings.title | default: 'After-Sales Support' }}</h2>
+  </div>
+
+  <!-- Support Cards -->
+  <div class="support-cards">
+    {%- for block in section.blocks -%}
+      <div class="support-card" {{ block.shopify_attributes }}>
+        <div class="support-icon" style="--icon-size: {{ block.settings.icon_size }}px;">
+          {%- if block.settings.icon != blank -%}
+            <img 
+              src="{{ 'support-' | append: block.settings.icon | asset_url }}" 
+              alt="{{ block.settings.title | escape }}" 
+              width="{{ block.settings.icon_size }}" 
+              height="{{ block.settings.icon_size }}" 
+              loading="lazy"
+            >
+          {%- endif -%}
+        </div>
+        <div class="support-content">
+          <h3 class="support-title">{{ block.settings.title }}</h3>
+          <div class="support-description">
+            {{ block.settings.description }}
+          </div>
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meraki Support",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Title",
+      "default": "After-Sales Support"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "support_card",
+      "name": "Support Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "1. Quick Request"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Click \"Service Request\" on our website and fill out the form to initiate your service request.</p>"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "label": "Icon filename",
+          "info": "Enter filename from assets/support/ (e.g., support 1.svg)",
+          "default": "support 1.svg"
+        },
+        {
+          "type": "range",
+          "id": "icon_size",
+          "label": "Icon size",
+          "min": 60,
+          "max": 100,
+          "step": 2,
+          "unit": "px",
+          "default": 76
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki Support",
+      "blocks": [
+        {
+          "type": "support_card",
+          "settings": {
+            "title": "1. Quick Request",
+            "description": "<p>Click \"<strong>Service Request</strong>\" on our website and fill out the form to initiate your service request.</p>",
+            "icon": "support 1.svg",
+            "icon_size": 76
+          }
+        },
+        {
+          "type": "support_card",
+          "settings": {
+            "title": "2. Timely Response",
+            "description": "<p>Our customer service team will contact you within 48 business hours on working days (GMT+8, 10:00–18:00) to confirm your request and guide you through the next steps.</p>",
+            "icon": "support 2.svg",
+            "icon_size": 68
+          }
+        },
+        {
+          "type": "support_card",
+          "settings": {
+            "title": "3. Flexible Solutions",
+            "description": "<p>You can choose:<br>— Spare parts delivery for easy DIY repair;<br>— Return & repair<br>Once your machine arrives, we will promptly handle the repair within 7–10 business days. We will stay in touch to ensure it is returned to you</p>",
+            "icon": "support 3.svg",
+            "icon_size": 80
+          }
+        },
+        {
+          "type": "support_card",
+          "settings": {
+            "title": "4. Ongoing Support",
+            "description": "<p>If you have any questions or feedback after the service, please don't hesitate to reach out. We're always here to support you and continuously improve your experience.</p>",
+            "icon": "support 4.svg",
+            "icon_size": 76
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

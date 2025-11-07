@@ -1,0 +1,397 @@
+﻿{{ 'meraki-sell-points.css' | asset_url | stylesheet_tag }}
+
+<div class="meraki-sell-points design-scale">
+  <div class="sell-points-header">
+    {%- if section.settings.section_title != blank -%}
+      <h2 class="sell-points-title">{{ section.settings.section_title }}</h2>
+    {%- endif -%}
+    <div class="sell-points-switch">
+      <button class="sell-point-nav-button sell-point-nav-prev" data-direction="prev" aria-label="Previous">
+        <img src="{{ 'icon-previous.svg' | asset_url }}" alt="Previous" class="sell-point-nav-icon sell-point-nav-icon-active" width="60" height="60">
+        <img src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="Previous (Disabled)" class="sell-point-nav-icon sell-point-nav-icon-disable" width="60" height="60">
+      </button>
+      <button class="sell-point-nav-button sell-point-nav-next" data-direction="next" aria-label="Next">
+        <img src="{{ 'icon-next.svg' | asset_url }}" alt="Next" class="sell-point-nav-icon sell-point-nav-icon-active" width="60" height="60">
+        <img src="{{ 'icon-next-disable.svg' | asset_url }}" alt="Next (Disabled)" class="sell-point-nav-icon sell-point-nav-icon-disable" width="60" height="60">
+      </button>
+    </div>
+  </div>
+
+  <div class="sell-points-container">
+    <div class="sell-points-track">
+      <div class="sell-point-item sell-point-spacer">&nbsp;</div>
+      <!-- Sell Point 1: Dual-Boiler System -->
+    <div class="sell-point-item" data-card="1">
+      <video
+        class="sell-point-video sell-point-video-mobile"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp1-mb-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point1_video_mobile | default: 'sell_points-sp1-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp1-pc-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point1_video_desktop | default: 'sell_points-sp1-pc.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point1_title | default: "Dual-Boiler System:
+Barista Heat Control" }}</div>
+        <p class="sell-point-description">{{ section.settings.point1_description | default: "Brew and steam at the same time and enjoy café-quality drinks in minutes." }}</p>
+      </div>
+    </div>
+
+    <!-- Sell Point 2: Built-In Scales -->
+    <div class="sell-point-item" data-card="2">
+      <video
+        class="sell-point-video sell-point-video-mobile"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp2-mb-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point2_video_mobile | default: 'sell_points-sp2-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp2-pc-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point2_video_desktop | default: 'sell_points-sp2-pc.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point2_title | default: "Built-In Scales:
+Precise Ratios" }}</div>
+        <p class="sell-point-description">{{ section.settings.point2_description | default: "Dual built-in scales powered by Espresso OS, no scooping and no guessing." }}</p>
+      </div>
+    </div>
+
+    <!-- Sell Point 3: CoffeeSense -->
+    <div class="sell-point-item" data-card="3">
+      <video
+        class="sell-point-video sell-point-video-mobile"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp3-mb-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point3_video_mobile | default: 'sell_points-sp3-mb.mp4' | asset_url }}" type="video/mp4">
+      </video>
+      <video
+        class="sell-point-video sell-point-video-desktop"
+        loop
+        muted
+        playsinline
+        preload="none"
+        data-lazy-video
+        poster="{{ 'sell_points-sp3-pc-poster.jpg' | asset_url }}"
+      >
+        <source data-src="{{ section.settings.point3_video_desktop | default: 'sell_points-sp3-pc.mp4' | asset_url }}" type="video/mp4">
+      </video>
+
+      <!-- Gradient overlay for third card -->
+      <div class="sell-point-gradient"></div>
+
+      <div class="sell-point-content">
+        <div class="sell-point-title">{{ section.settings.point3_title | default: "CoffeeSense™:
+Perfect First Shot" }}</div>
+        <p class="sell-point-description">{{ section.settings.point3_description | default: "Takes the guesswork out of new beans and delivers the right grind and brew instantly." }}</p>
+      </div>
+    </div>
+    <div class="sell-point-item sell-point-spacer">&nbsp;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const section = document.querySelector('.meraki-sell-points');
+  if (!section) return;
+
+  // ========== 视频懒加载功能 ==========
+  function initLazyVideos() {
+    const lazyVideos = section.querySelectorAll('video[data-lazy-video]');
+
+    if ('IntersectionObserver' in window) {
+      const videoObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const video = entry.target;
+            const sources = video.querySelectorAll('source[data-src]');
+
+            // 加载视频源
+            sources.forEach(source => {
+              source.src = source.dataset.src;
+              source.removeAttribute('data-src');
+            });
+
+            // 加载视频
+            video.load();
+
+            // 视频加载后自动播放
+            video.addEventListener('loadeddata', () => {
+              video.play().catch(e => console.log('Video autoplay prevented:', e));
+            }, { once: true });
+
+            // 移除懒加载标记并停止观察
+            video.removeAttribute('data-lazy-video');
+            videoObserver.unobserve(video);
+          }
+        });
+      }, {
+        root: null,
+        rootMargin: '50px', // 提前50px开始加载
+        threshold: 0.1
+      });
+
+      lazyVideos.forEach(video => {
+        videoObserver.observe(video);
+      });
+    } else {
+      // 不支持 IntersectionObserver 的降级方案：立即加载所有视频
+      lazyVideos.forEach(video => {
+        const sources = video.querySelectorAll('source[data-src]');
+        sources.forEach(source => {
+          source.src = source.dataset.src;
+        });
+        video.load();
+        video.play().catch(e => console.log('Video autoplay prevented:', e));
+      });
+    }
+  }
+
+  // 初始化懒加载
+  initLazyVideos();
+  // ========== 视频懒加载功能结束 ==========
+
+  const track = section.querySelector('.sell-points-track');
+  const prevButton = section.querySelector('.sell-point-nav-prev');
+  const nextButton = section.querySelector('.sell-point-nav-next');
+  const items = section.querySelectorAll('.sell-point-item:not(.sell-point-spacer)');
+  
+  if (!track || !prevButton || !nextButton || items.length === 0) return;
+
+  let currentIndex = 0;
+  const totalItems = items.length;
+
+  function getScaleFactor() {
+    if (window.innerWidth >= 990) {
+      const scale = Math.min(window.innerWidth / 1920, 1);
+      return scale;
+    }
+    return 1;
+  }
+
+  function getItemWidth() {
+    const scaleFactor = getScaleFactor();
+    if (window.innerWidth >= 990) {
+      // 桌面端: item宽度1068px + gap 60px
+      return (1068 + 60) * scaleFactor;
+    }
+    return 0;
+  }
+
+  function updateButtons() {
+    if (window.innerWidth < 990) {
+      return; // 移动端不需要更新按钮
+    }
+
+    // 桌面端逻辑
+    prevButton.disabled = currentIndex <= 0;
+    nextButton.disabled = currentIndex >= totalItems - 1;
+
+    if (prevButton.disabled) {
+      prevButton.classList.add('disabled');
+    } else {
+      prevButton.classList.remove('disabled');
+    }
+
+    if (nextButton.disabled) {
+      nextButton.classList.add('disabled');
+    } else {
+      nextButton.classList.remove('disabled');
+    }
+  }
+
+  function goToIndex(index, animate = true) {
+    if (window.innerWidth < 990) return;
+
+    currentIndex = Math.max(0, Math.min(index, totalItems - 1));
+    
+    const itemWidth = getItemWidth();
+    const scaleFactor = getScaleFactor();
+    const initialOffset = -702 * scaleFactor; // 初始偏移 (1068 - 366)
+    const offset = initialOffset - (currentIndex * itemWidth);
+
+    if (!animate) {
+      track.style.transition = 'none';
+    } else {
+      track.style.transition = 'transform 0.45s ease';
+    }
+
+    track.style.transform = `translateX(${offset}px)`;
+
+    if (!animate) {
+      requestAnimationFrame(() => {
+        track.style.transition = '';
+      });
+    }
+
+    updateButtons();
+  }
+
+  function jumpToIndex(index) {
+    goToIndex(index, false);
+  }
+
+  prevButton.addEventListener('click', () => {
+    if (currentIndex > 0) {
+      goToIndex(currentIndex - 1);
+    }
+  });
+
+  nextButton.addEventListener('click', () => {
+    if (currentIndex < totalItems - 1) {
+      goToIndex(currentIndex + 1);
+    }
+  });
+
+  // 初始化
+  function initialize() {
+    if (window.innerWidth >= 990) {
+      jumpToIndex(0);
+    } else {
+      track.style.transform = '';
+      track.style.transition = '';
+    }
+  }
+
+  // 窗口大小改变时重新初始化
+  let resizeTimer;
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      initialize();
+    }, 100);
+  });
+
+  initialize();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meraki Sell Points",
+  "settings": [
+    {
+      "type": "text",
+      "id": "section_title",
+      "label": "Section Title",
+      "default": "Precision Brewing, Every Cup"
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 1 - Dual-Boiler System"
+    },
+    {
+      "type": "url",
+      "id": "point1_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point1_video_desktop",
+      "label": "Video URL (Desktop)"
+    },
+    {
+      "type": "textarea",
+      "id": "point1_title",
+      "label": "Title",
+      "default": "Dual-Boiler System:\nBarista Heat Control"
+    },
+    {
+      "type": "textarea",
+      "id": "point1_description",
+      "label": "Description",
+      "default": "Brew and steam at the same time and enjoy café-quality drinks in minutes."
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 2 - Built-In Scales"
+    },
+    {
+      "type": "url",
+      "id": "point2_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point2_video_desktop",
+      "label": "Video URL (Desktop)"
+    },
+    {
+      "type": "textarea",
+      "id": "point2_title",
+      "label": "Title",
+      "default": "Built-In Scales: \nPrecise Ratios"
+    },
+    {
+      "type": "textarea",
+      "id": "point2_description",
+      "label": "Description",
+      "default": "Dual built-in scales powered by Espresso OS, no scooping and no guessing."
+    },
+    {
+      "type": "header",
+      "content": "Sell Point 3 - CoffeeSense™"
+    },
+    {
+      "type": "url",
+      "id": "point3_video_mobile",
+      "label": "Video URL (Mobile)"
+    },
+    {
+      "type": "url",
+      "id": "point3_video_desktop",
+      "label": "Video URL (Desktop)"
+    },
+    {
+      "type": "textarea",
+      "id": "point3_title",
+      "label": "Title",
+      "default": "CoffeeSense™: \nPerfect First Shot"
+    },
+    {
+      "type": "textarea",
+      "id": "point3_description",
+      "label": "Description",
+      "default": "Takes the guesswork out of new beans and delivers the right grind and brew instantly."
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki Sell Points"
+    }
+  ]
+}
+{% endschema %}

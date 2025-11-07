@@ -1,0 +1,125 @@
+﻿{{ 'meraki-exhibition-cards.css' | asset_url | stylesheet_tag }}
+
+<div class="meraki-exhibition-cards design-scale" data-section-id="{{ section.id }}">
+  <div class="exhibition-container">
+    <div class="exhibition-grid">
+      <!-- Exhibition Item 1 -->
+      <div class="exhibition-item exhibition-item-1">
+        <picture>
+          <!-- Desktop: ex1-pc.png -->
+          <source media="(min-width: 990px)" srcset="{%- if section.settings.exhibition_image_1 != blank -%}{{ section.settings.exhibition_image_1 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex1-pc.png' | asset_url }}{%- endif -%}">
+          <!-- Mobile: ex1.png -->
+          <img
+            src="{%- if section.settings.exhibition_image_1 != blank -%}{{ section.settings.exhibition_image_1 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex1.png' | asset_url }}{%- endif -%}"
+            alt="Exhibition Image 1"
+            width="325"
+            height="554"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+
+      <!-- Exhibition Item 2 -->
+      <div class="exhibition-item exhibition-item-2">
+        <picture>
+          <!-- Desktop: ex2-pc.png -->
+          <source media="(min-width: 990px)" srcset="{%- if section.settings.exhibition_image_2 != blank -%}{{ section.settings.exhibition_image_2 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex2-pc.png' | asset_url }}{%- endif -%}">
+          <!-- Mobile: ex2.png -->
+          <img
+            src="{%- if section.settings.exhibition_image_2 != blank -%}{{ section.settings.exhibition_image_2 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex2.png' | asset_url }}{%- endif -%}"
+            alt="Exhibition Image 2"
+            width="325"
+            height="204"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+
+      <!-- Exhibition Item 3 -->
+      <div class="exhibition-item exhibition-item-3">
+        <picture>
+          <!-- Desktop: ex3-pc.png -->
+          <source media="(min-width: 990px)" srcset="{%- if section.settings.exhibition_image_3 != blank -%}{{ section.settings.exhibition_image_3 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex3-pc.png' | asset_url }}{%- endif -%}">
+          <!-- Mobile: ex3.png -->
+          <img
+            src="{%- if section.settings.exhibition_image_3 != blank -%}{{ section.settings.exhibition_image_3 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex3.png' | asset_url }}{%- endif -%}"
+            alt="Exhibition Image 3"
+            width="325"
+            height="330"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+
+      <!-- Exhibition Item 4 -->
+      <div class="exhibition-item exhibition-item-4">
+        <picture>
+          <!-- Desktop: ex4-pc.png -->
+          <source media="(min-width: 990px)" srcset="{%- if section.settings.exhibition_image_4 != blank -%}{{ section.settings.exhibition_image_4 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex4-pc.png' | asset_url }}{%- endif -%}">
+          <!-- Mobile: ex4.png -->
+          <img
+            src="{%- if section.settings.exhibition_image_4 != blank -%}{{ section.settings.exhibition_image_4 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex4.png' | asset_url }}{%- endif -%}"
+            alt="Exhibition Image 4"
+            width="670"
+            height="264"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+
+      <!-- Exhibition Item 5 -->
+      <div class="exhibition-item exhibition-item-5">
+        <picture>
+          <!-- Desktop: ex5-pc.png -->
+          <source media="(min-width: 990px)" srcset="{%- if section.settings.exhibition_image_5 != blank -%}{{ section.settings.exhibition_image_5 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex5-pc.png' | asset_url }}{%- endif -%}">
+          <!-- Mobile: hidden, no image needed -->
+          <img
+            src="{%- if section.settings.exhibition_image_5 != blank -%}{{ section.settings.exhibition_image_5 | image_url: width: 680 }}{%- else -%}{{ 'exhibition-ex5-pc.png' | asset_url }}{%- endif -%}"
+            alt="Exhibition Image 5"
+            width="390"
+            height="230"
+            loading="lazy"
+          >
+        </picture>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Meraki Exhibition Cards",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_1",
+      "label": "Exhibition Image 1 (325x554)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_2",
+      "label": "Exhibition Image 2 (325x204)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_3",
+      "label": "Exhibition Image 3 (325x330)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_4",
+      "label": "Exhibition Image 4 (670x264)"
+    },
+    {
+      "type": "image_picker",
+      "id": "exhibition_image_5",
+      "label": "Exhibition Image 5 (390x230)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki Exhibition Cards"
+    }
+  ]
+}
+{% endschema %}

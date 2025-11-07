@@ -1,0 +1,167 @@
+<feature-4-grid>
+  <div class="feature-4-grid" style="background-color: {{ section.settings.section_bg_color }};">
+    <div class="page-width">
+      <div class="feature-4-grid__header">
+        {% if section.settings.title != blank %}
+          <h2 class="index-section-header-h2" style="color: {{ section.settings.title_color }};">
+            {{ section.settings.title | escape | newline_to_br }}
+          </h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="index-section-subtitle-p" style="margin-top: {{ section.settings.title_subtitle_distance }}px;">
+            {{ section.settings.subtitle | escape | newline_to_br }}
+          </p>
+        {% endif %}
+      </div>
+
+      {% if section.blocks.size > 0 %}
+        <ul class="feature-4-grid__grid" role="list">
+          {% for block in section.blocks %}
+            <li class="feature-4-grid__item" {{ block.shopify_attributes }}>
+              <div class="feature-4-grid__item-image-wrapper">
+                {% if block.type == 'feature_image_item' and block.settings.image != blank %}
+                  {{
+                    block.settings.image
+                    | image_url: width: 1000
+                    | image_tag:
+                      loading: 'lazy',
+                      widths: '200, 300, 400, 500, 600, 700, 800, 900, 1000',
+                      class: 'feature-4-grid__image'
+                  }}
+                {% elsif block.type == 'feature_video_item' and block.settings.video_url != blank %}
+                  {{
+                    block.settings.video_url
+                    | video_tag:
+                      loading: 'lazy',
+                      loop: true,
+                      muted: true,
+                      autoplay: false,
+                      preload: 'metadata',
+                      playsinline: true,
+                      controls: false,
+                      image_size: '598x413',
+                      class: 'feature-4-grid__video'
+                  }}
+                {% else %}
+                  <div class="feature-4-grid__item-image-placeholder">
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                  </div>
+                {% endif %}
+              </div>
+              <div class="feature-4-grid__item-content">
+                {% if block.settings.title != blank %}
+                  <h3 class="feature-4-grid__item-title">{{ block.settings.title | escape }}</h3>
+                {% endif %}
+                {% if block.settings.description != blank %}
+                  <p class="feature-4-grid__item-description">{{ block.settings.description | escape }}</p>
+                {% endif %}
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+</feature-4-grid>
+
+{% schema %}
+{
+  "name": "Feature 4 Grid",
+  "tag": "section",
+  "class": "section",
+  "max_blocks": 6,
+  "settings": [
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#fff"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "Thoughtful Features for a Clean Brew"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#333333"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Unlock commercial espresso performance at home."
+    },
+    {
+      "type": "number",
+      "id": "title_subtitle_distance",
+      "label": "Title and subtitle distance",
+      "default": 32
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_image_item",
+      "name": "Feature Image Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Feature description"
+        }
+      ]
+    },
+    {
+      "type": "feature_video_item",
+      "name": "Feature Video Item",
+      "settings": [
+        {
+          "type": "video",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Video URL must be from YouTube or Vimeo."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Feature Title"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Feature description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature 4 Grid",
+      "blocks": [
+        { "type": "feature_image_item" },
+        { "type": "feature_video_item" },
+        { "type": "feature_image_item" },
+        { "type": "feature_video_item" }
+      ]
+    }
+  ]
+}
+{% endschema %}

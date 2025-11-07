@@ -1,0 +1,110 @@
+<div
+  class="after-service-card"
+  style="background-color: {{ section.settings.section_bg_color }};"
+>
+  <div class="container-default">
+    {% if section.settings.title != blank %}
+      <h2 class="index-section-header-h2" style="color: {{ section.settings.title_color }};">
+        {{ section.settings.title }}
+      </h2>
+    {% endif %}
+    <div class="after-service-card__cards">
+      {% for block in section.blocks %}
+        <div
+          class="after-service-card__card"
+          id="after-service-card-{{ block.id }}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="after-service-card__card-icon">
+            {% if block.settings.image != blank %}
+              <img
+                src="{{ block.settings.image | image_url }}"
+                alt="{{ block.settings.image.alt }}"
+                width="{{ block.settings.image.width }}"
+                height="{{ block.settings.image.height }}"
+              >
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'after-service-card-icon-placeholder' }}
+            {% endif %}
+          </div>
+          <h3 class="after-service-card__card-title">
+            <span class="after-service-card__card-title-index">O{{ forloop.index }}</span>
+            {{ block.settings.title }}
+          </h3>
+          <div class="after-service-card__card-description">
+            {{ block.settings.description }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% schema %}
+{
+  "name": "After Service Card",
+  "settings": [
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#F0EDE6"
+    },
+    {
+      "type": "textarea",
+      "id": "title",
+      "label": "Title",
+      "default": "After Service"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title color",
+      "default": "#525252"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "after_service_card",
+      "name": "After Service Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Icon"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description",
+          "default": "<p>Description</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "After Service Card",
+      "blocks": [
+        {
+          "type": "after_service_card"
+        },
+        {
+          "type": "after_service_card"
+        },
+        {
+          "type": "after_service_card"
+        },
+        {
+          "type": "after_service_card"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

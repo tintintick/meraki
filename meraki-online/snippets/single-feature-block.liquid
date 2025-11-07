@@ -1,0 +1,82 @@
+<div class="multiple-feature-block" id="multiple-feature-block-{{ block.id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.function_description != blank %}
+    <h3 class="multiple-feature-block__desc">
+      {{ block.settings.function_description }}
+    </h3>
+  {% endif %}
+  {% if block.settings.function_sub_description != blank %}
+    <p class="multiple-feature-block__sub-desc">
+      {{ block.settings.function_sub_description }}
+    </p>
+  {% endif %}
+  <div class="multiple-feature-block__main">
+    <div class="multiple-feature-block__video single-feature-block__video">
+      {% if block.settings.desk_video != blank %}
+        {{-
+          block.settings.desk_video
+          | video_tag:
+            playsinline: true,
+            muted: true,
+            loop: true,
+            controls: false,
+            preload: 'metadata',
+            autoplay: false,
+            loading: 'lazy',
+            class: 'desktop-video'
+        -}}
+      {% endif %}
+      {% if block.settings.mobile_video != blank %}
+        {{-
+          block.settings.mobile_video
+          | video_tag:
+            playsinline: true,
+            muted: true,
+            loop: true,
+            controls: false,
+            preload: 'metadata',
+            autoplay: false,
+            loading: 'lazy',
+            class: 'mobile-video'
+        -}}
+      {% endif %}
+      <div class="multiple-feature-block__video-text">
+        {% if block.settings.video_title != blank %}
+          <h4 class="multiple-feature-block__video-title">{{ block.settings.video_title }}</h4>
+        {% endif %}
+        {% if block.settings.video_subtitle != blank %}
+          <p class="multiple-feature-block__video-subtitle">{{ block.settings.video_subtitle | newline_to_br }}</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% if block.settings.function_1_icon != blank
+    or block.settings.function_2_icon != blank
+    or block.settings.function_3_icon != blank
+  %}
+    <div class="multiple-feature-block__icons">
+      {% for i in (1..3) %}
+        {% capture icon_key %}function_{{ i }}_icon{% endcapture %}
+        {% capture text_key %}function_{{ i }}_text{% endcapture %}
+        {% assign icon = block.settings[icon_key] %}
+        {% assign text = block.settings[text_key] | newline_to_br %}
+        {% if icon != blank %}
+          <div class="multiple-feature-block__icon-item">
+            {% if icon != blank %}
+              <img
+                src="{{ icon | img_url: 'master' }}"
+                alt="icon-{{ i }}"
+                class="multiple-feature-block__icon"
+                loading="lazy"
+                width="48"
+                height="48"
+              >
+            {% else %}
+              <div class="multiple-feature-block__icon-placeholder">icon</div>
+            {% endif %}
+            <div class="multiple-feature-block__icon-text">{{ text }}</div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+</div>

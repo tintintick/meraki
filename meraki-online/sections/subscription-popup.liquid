@@ -1,0 +1,314 @@
+{% style %}
+  #shopify-section-{{ section.id }} {
+    z-index: 999;
+  }
+{% endstyle %}
+{% comment %} 带 GTM 数据埋点的 Subscription Popup 组件 {% endcomment %}
+<div id="subscription-popup" class="subscription-popup hidden">
+  <div class="popup-image">
+    <picture>
+      {% if section.settings.image_mobile != blank %}
+        <source
+          srcset="{{ section.settings.image_pc | image_url }}"
+          media="(min-width: 700px)"
+          width="355"
+          height="299"
+        >
+      {% endif %}
+      {% if section.settings.image_mobile != blank %}
+        <img
+          src="{{ section.settings.image_mobile| image_url }}"
+          alt="{{ section.settings.image_alt | escape | default: section.settings.title | escape }}"
+          width="170"
+          height="212"
+        >
+      {% endif %}
+    </picture>
+  </div>
+  <button class="popup-close" aria-label="Close popup">
+    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.4519 6L6.4519 18" stroke="#393939" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+      <path d="M6.4519 6L18.4519 18" stroke="#393939" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    </svg>
+  </button>
+  <div class="popup-content">
+    <div>
+      <h2 class="popup-title">{{ section.settings.title | escape }}</h2>
+      <div class="popup-desc">{{ section.settings.desc }}</div>
+    </div>
+    <form id="subscription-popup-form" autocomplete="off">
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <input type="hidden" name="contact[accepts_marketing]" value="true">
+      <input type="hidden" name="utf8" value="✓">
+      <input type="hidden" name="form_type" value="customer">
+      <div class="popup-form-row">
+        <input
+          type="email"
+          name="contact[email]"
+          class="popup-input"
+          aria-required="true"
+          autocorrect="off"
+          autocapitalize="off"
+          autocomplete="email"
+          placeholder="Enter your email"
+          required
+        >
+        <button
+          type="submit"
+          class="popup-submit popup-submit--subscribe"
+        >
+          Subscribe now
+        </button>
+        <button type="button" class="popup-submit popup-submit--success hidden" tabindex="-1" aria-hidden="true">
+          <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M26.6667 8L12 22.6667L5.33334 16" stroke="white" stroke-width="3" stroke-linecap="square"/>
+          </svg>
+        </button>
+      </div>
+      <small class="popup-message popup-message--error hidden" id="PopupNewsletter-error--{{ section.id }}">
+        <span class="svg-wrapper">{{ 'icon-error.svg' | inline_asset_content }}</span>
+        <span class="error-text"></span>
+      </small>
+    </form>
+    <div class="popup-terms">
+      {{ section.settings.terms }}
+    </div>
+  </div>
+</div>
+
+<div id="subscription-popup-mini" class="subscription-popup-mini hidden">
+  <span class="subscription-popup-mini-content">{{ section.settings.mini_text | default: 'Enjoy 10% off' }}</span>
+  <button class="mini-close" aria-label="Close mini popup">
+    <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M18.4519 6L6.4519 18" stroke="#393939" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+      <path d="M6.4519 6L18.4519 18" stroke="#393939" stroke-width="2" stroke-linecap="square" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <span class="subscription-popup-mini-content-icon">{% render 'icon-bell' %}</span>
+</div>
+
+<script>
+  (function () {
+    {% if template == 'index' or template contains 'product' %}
+      var defaultClose = false;
+    {% else %}
+      var defaultClose = true;
+    {% endif %}
+    var popup = document.getElementById('subscription-popup');
+    var mini = document.getElementById('subscription-popup-mini');
+    var closeBtn = popup.querySelector('.popup-close');
+    var miniCloseBtn = mini.querySelector('.mini-close');
+    var miniContent = mini.querySelector('.subscription-popup-mini-content');
+    var miniContentIcon = mini.querySelector('.subscription-popup-mini-content-icon');
+    var popupForm = document.getElementById('subscription-popup-form');
+    var popupInput = popupForm.querySelector('.popup-input');
+    var popupSubmitSuccess = popupForm.querySelector('.popup-submit--success');
+    var popupSubmitSubscribe = popupForm.querySelector('.popup-submit--subscribe');
+    var errorMsg = popupForm.querySelector('.popup-message--error');
+    var errorText = errorMsg.querySelector('.error-text');
+    var popupSuccess = localStorage.getItem('subscription-popup-success') === 'true';
+    var popupClosed = sessionStorage.getItem('subscription-popup-closed') === 'true';
+
+    const openPopup = () => {
+      var stickyBar = document.getElementById("sticky-bar");
+      if(stickyBar) stickyBar.classList.add('subscription-popup-active');
+      popup.classList.remove('hidden');
+      mini.classList.add('hidden');
+    };
+
+    const closePopup = () => {
+      var stickyBar = document.getElementById("sticky-bar");
+      if(stickyBar) stickyBar.classList.remove('subscription-popup-active');
+      popup.classList.add('hidden');
+      mini.classList.remove('hidden');
+    };
+
+
+    // 滚动到第二个 section 才显示
+    document.addEventListener("DOMContentLoaded", () => {
+      closePopup();
+      const firstSection = document.querySelector("main section");
+      const secondSection = firstSection?.nextElementSibling;
+      let shown = false;
+      function onScroll() {
+        if(shown) return;
+        if (window.scrollY > secondSection?.offsetTop) {
+          if (popupClosed || popupSuccess || defaultClose) {
+          } else {
+            shown = true;
+            openPopup();
+          }
+        }
+      }
+      window.addEventListener("scroll", onScroll, { passive: true });
+    })
+
+
+    closeBtn.addEventListener('click', function () {
+      closePopup();
+      sessionStorage.setItem('subscription-popup-closed', 'true');
+    });
+
+    miniContent.addEventListener('click', function () {
+      openPopup();
+    });
+    miniContentIcon.addEventListener('click', function () {
+      openPopup();
+    });
+
+    miniCloseBtn.addEventListener('click', function () {
+      mini.classList.add('hidden');
+    });
+
+    // GTM: 输入框获得焦点事件
+    popupInput.addEventListener('focus', function () {
+      popupInput.placeholder = 'Enter your email';
+      popupInput.classList.remove('popup-input--success');
+      popupSubmitSuccess.classList.add('hidden');
+      popupSubmitSubscribe.classList.remove('hidden');
+      errorMsg.classList.add('hidden');
+      errorText.textContent = '';
+    });
+
+    // 异步表单提交
+    popupForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      errorMsg.classList.add('hidden');
+      errorText.textContent = '';
+      popupSubmitSubscribe.disabled = true;
+
+      var email = popupInput.value.trim();
+      if (!email) {
+        errorText.textContent = 'Please enter your email.';
+        errorMsg.classList.remove('hidden');
+        popupSubmitSubscribe.disabled = false;
+        return;
+      }
+
+      // 简单邮箱校验
+      var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        errorText.textContent = 'Please enter a valid email address.';
+        errorMsg.classList.remove('hidden');
+        popupSubmitSubscribe.disabled = false;
+        return;
+      }
+
+      // 构造表单数据
+      var formData = new FormData(popupForm);
+
+      fetch('/contact', {
+        method: 'POST',
+        body: formData,
+        headers: {
+          Accept: 'text/html',
+        },
+        redirect: 'manual',
+        credentials: 'same-origin',
+      })
+        .then(function (response) {
+          if (response.ok || response.status === 302) {
+            localStorage.setItem('subscription-popup-success', 'true');
+            sessionStorage.setItem('subscription-popup-closed', 'true');
+
+            // 成功（包括200-299和302重定向）
+            popupInput.value = '';
+            popupInput.placeholder = 'You are subscribed！';
+            popupInput.classList.add('popup-input--success');
+            popupSubmitSuccess.classList.remove('hidden');
+            popupSubmitSubscribe.classList.add('hidden');
+            popupSubmitSubscribe.disabled = false;
+
+            // GTM: 订阅成功事件 - 这是主要的 leads 事件
+            window.dataLayer.push({
+              event: 'subscription_success',
+              ecommerce: {
+                lead_source: 'subscription_popup',
+                popup_type: 'subscription',
+                value: email,
+              },
+            });
+          } else {
+            // 处理失败情况，但显示成功（根据原代码）
+            popupInput.value = '';
+            popupInput.placeholder = 'You are subscribed！';
+            popupInput.classList.add('popup-input--success');
+            popupSubmitSuccess.classList.remove('hidden');
+            popupSubmitSubscribe.classList.add('hidden');
+            popupSubmitSubscribe.disabled = false;
+
+            // GTM: 即使服务器返回错误，也按成功处理（根据原逻辑）
+            window.dataLayer.push({
+              event: 'subscription_success',
+              ecommerce: {
+                lead_source: 'subscription_popup',
+                popup_type: 'subscription',
+                value: email,
+              },
+            });
+          }
+        })
+        .catch(function (error) {
+          errorText.textContent = 'Network error. Please try again.';
+          errorMsg.classList.remove('hidden');
+          popupSubmitSubscribe.disabled = false;
+        });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Subscription Popup",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image_pc",
+      "label": "Popup Image (PC)",
+      "info": "Recommended size: 355x299px"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Popup Image (Mobile)",
+      "info": "Recommended size: 170x212px"
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "default": "Meraki Coffee Machine"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Popup Title",
+      "default": "Stay updated with Meraki"
+    },
+    {
+      "type": "text",
+      "id": "desc",
+      "label": "Popup Description",
+      "default": "Enjoy 10% off just for signing up."
+    },
+    {
+      "type": "richtext",
+      "id": "terms",
+      "label": "Terms of Service",
+      "default": "<p>By signing up, you agree to Meraki's <a href='/policies/terms-of-service' target='_blank'>Terms of Service</a> and <a href='/policies/privacy-policy' target='_blank'>Privacy Policy</a>.</p>"
+    },
+    {
+      "type": "text",
+      "id": "mini_text",
+      "label": "Mini Popup Text",
+      "default": "Enjoy 10% off"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Subscription Popup"
+    }
+  ]
+}
+{% endschema %}

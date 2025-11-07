@@ -1,0 +1,302 @@
+{
+  "layout": "theme.homepage",
+  "sections": {
+    "meraki_banner": {
+      "type": "meraki-banner",
+      "blocks": {
+        "slide_1": {
+          "type": "slide",
+          "settings": {
+            "heading": "Redefining Espresso\nat home",
+            "button_text": "Shop Now",
+            "button_link": "https://www.merakitech.com/products/meraki-espresso-machine"
+          }
+        },
+        "slide_2": {
+          "type": "slide",
+          "settings": {
+            "heading": "Slide 2 Test\nCarousel",
+            "button_text": "Learn More",
+            "button_link": "https://www.merakitech.com/collections/accessories"
+          }
+        }
+      },
+      "block_order": [
+        "slide_1",
+        "slide_2"
+      ],
+      "settings": {
+        "auto_rotate": true,
+        "rotation_speed": 5000
+      }
+    },
+    "meraki_sell_points": {
+      "type": "meraki-sell-points",
+      "settings": {
+        "section_title": "Precision Brewing, Every Cup",
+        "point1_title": "Dual-Boiler System:\nBarista Heat Control",
+        "point1_description": "Brew and steam at the same time and enjoy café-quality drinks in minutes.",
+        "point2_title": "Built-In Scales: \nPrecise Ratios",
+        "point2_description": "Dual built-in scales powered by Espresso OS, no scooping and no guessing.",
+        "point3_title": "CoffeeSense™: \nPerfect First Shot",
+        "point3_description": "Takes the guesswork out of new beans and delivers the right grind and brew instantly."
+      }
+    },
+    "meraki_move_effect": {
+      "type": "meraki-move-effect",
+      "settings": {
+        "title": "Streamlined Workflow\nOn Screen",
+        "description": "Start-to-finish coffee experience, with Meraki delivering a seamless workflow in every cup."
+      }
+    },
+    "meraki_feature": {
+      "type": "meraki-feature",
+      "settings": {
+        "title": "Café Performance, At Home",
+        "description": "Enjoy your daily coffee ritual elevated, with café-quality espresso and creamy milk made easy.",
+        "button1_text": "Get Yours Now",
+        "button1_link": "https://www.merakitech.com/products/meraki-espresso-machine",
+        "button2_text": "Discover Meraki",
+        "button2_link": "https://www.merakitech.com/pages/about-us"
+      }
+    },
+    "meraki_awards": {
+      "type": "meraki-awards",
+      "settings": {
+        "title": "Awards and Recognition"
+      }
+    },
+    "meraki_prs": {
+      "type": "meraki-prs",
+      "blocks": {
+        "pr_card_1": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This is a real game-changer! And to be honest, it completely blew our minds the first time we tried it, because the espresso was just so on point.\""
+          }
+        },
+        "pr_card_2": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"It rivaled the much more expensive machines I was used to working with at my coffee jobs, creating a nice layer of crema and extracting the floral notes of the coffee.\""
+          }
+        },
+        "pr_card_3": {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This linear approach optimizes and simplifies your coffee-making 'workflow' while still preserving the artistry and authenticity of barista-crafted espresso.\""
+          }
+        }
+      },
+      "block_order": [
+        "pr_card_1",
+        "pr_card_2",
+        "pr_card_3"
+      ],
+      "settings": {}
+    },
+    "meraki_exhibition_cards": {
+      "type": "meraki-exhibition-cards",
+      "settings": {}
+    },
+    "meraki_video": {
+      "type": "meraki-video",
+      "blocks": {
+        "video_1": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "kuuXcujgWJQ",
+            "title": "This Dual Boiler coffee machine is shocking! (in a good way)",
+            "creator_name": "Coffee Coach | Ryde Jeavons"
+          }
+        },
+        "video_2": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "rUyAnQ7JnGc",
+            "title": "Meraki Espresso Machine In-Depth Review | Making A Latte LIVE",
+            "creator_name": "Coffee with Jon & Zee"
+          }
+        },
+        "video_3": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "h87E8cYeIZE",
+            "title": "I Didn't Expect This from the Meraki Espresso Machine… (Review)",
+            "creator_name": "Luke Makes Coffee"
+          }
+        },
+        "video_4": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "v6cJn_eg2ZY",
+            "title": "This thing is awesome! Meraki home espresso machine review",
+            "creator_name": "Coffee Nerd Aaron"
+          }
+        },
+        "video_5": {
+          "type": "video_item",
+          "settings": {
+            "youtube_id": "6KTuA3kWTJU",
+            "title": "Meraki Espresso Machine Review & Walkthrough | Dual Boiler, Rotary Pump, Grind & Brew by Weight",
+            "creator_name": "Brew Coffee Home"
+          }
+        }
+      },
+      "block_order": [
+        "video_1",
+        "video_2",
+        "video_3",
+        "video_4",
+        "video_5"
+      ],
+      "settings": {}
+    },
+    "meraki_accessory": {
+      "type": "meraki-accessory",
+      "blocks": {
+        "accessory_1": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "58mm Portafilter",
+            "description": "Waterproof wooden handle for a natural grip and lasting quality.",
+            "link": "https://www.merakitech.com/products/bottomless-portafilter"
+          }
+        },
+        "accessory_2": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Bean Hopper",
+            "description": "Easy to clean and built to keep beans fresh.",
+            "link": "https://www.merakitech.com/products/bean-hopper"
+          }
+        },
+        "accessory_3": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Espresso Shot Mirror",
+            "description": "Magnetic aluminum design for effortless, precise extraction viewing.",
+            "link": "https://www.merakitech.com/products/espresso-shot-mirror"
+          }
+        },
+        "accessory_4": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "Detachable Spout",
+            "description": "Polished stainless steel for smooth, balanced dual shots.",
+            "link": "https://www.merakitech.com/products/detachable-spout"
+          }
+        },
+        "accessory_5": {
+          "type": "accessory_item",
+          "settings": {
+            "name": "18g Portafilter Basket",
+            "description": "Stainless steel basket adjustable for 16–20g espresso doses.",
+            "link": "https://www.merakitech.com/products/58mm-portaflter-basket"
+          }
+        }
+      },
+      "block_order": [
+        "accessory_1",
+        "accessory_2",
+        "accessory_3",
+        "accessory_4",
+        "accessory_5"
+      ],
+      "settings": {
+        "title": "Crafted Accessories\nBrew Elevated",
+        "description": "Every Meraki comes with premium accessories, crafted with water-resistant wooden handles for a natural touch and enduring quality.",
+        "view_all_link": "https://www.merakitech.com/collections/accessories"
+      }
+    },
+    "meraki_news": {
+      "type": "meraki-news",
+      "settings": {
+        "blog": "blog",
+        "heading": "Latest News",
+        "show_image": true,
+        "show_date": true,
+        "show_excerpt": true,
+        "show_view_all": true,
+        "view_all_link": "https://www.merakitech.com/blogs/newsroom"
+      }
+    },
+    "meraki_subscribe": {
+      "type": "meraki-subscribe",
+      "settings": {
+        "heading": "Stay Inspired with Meraki",
+        "feature1_text": "<p>Join Meraki and enjoy exclusive offers and promotions.</p>",
+        "feature2_text": "<p>Get VIP support from your dedicated concierge.</p>",
+        "feature3_text": "<p>Access personalized tutorials tailored to your coffee journey.</p>",
+        "placeholder": "Enter your email address",
+        "button_text": "Subscribe",
+        "customer_tag": "newsletter-subscribe",
+        "success_message": "Thank you for subscribing!"
+      }
+    },
+    "meraki_support": {
+      "type": "meraki-support",
+      "blocks": {
+        "support_card_1": {
+          "type": "support_card",
+          "settings": {
+            "title": "1. Quick Request",
+            "description": "<p>Click \"Service Request\" on our website and fill out the form to initiate your service request.</p>",
+            "icon": "support 1.svg",
+            "icon_size": 76
+          }
+        },
+        "support_card_2": {
+          "type": "support_card",
+          "settings": {
+            "title": "2. Timely Response",
+            "description": "<p>Our customer service team will contact you within 48 business hours on working days (GMT+8, 10:00–18:00) to confirm your request and guide you through the next steps.</p>",
+            "icon": "support 2.svg",
+            "icon_size": 68
+          }
+        },
+        "support_card_3": {
+          "type": "support_card",
+          "settings": {
+            "title": "3. Flexible Solutions",
+            "description": "<p>You can choose:<br>— Spare parts delivery for easy DIY repair;<br>— Return & repair<br>Once your machine arrives, we will promptly handle the repair within 7–10 business days. We will stay in touch to ensure it is returned to you</p>",
+            "icon": "support 3.svg",
+            "icon_size": 80
+          }
+        },
+        "support_card_4": {
+          "type": "support_card",
+          "settings": {
+            "title": "4. Ongoing Support",
+            "description": "<p>If you have any questions or feedback after the service, please don't hesitate to reach out. We're always here to support you and continuously improve your experience.</p>",
+            "icon": "support 4.svg",
+            "icon_size": 76
+          }
+        }
+      },
+      "block_order": [
+        "support_card_1",
+        "support_card_2",
+        "support_card_3",
+        "support_card_4"
+      ],
+      "settings": {
+        "title": "After-Sales Support"
+      }
+    }
+  },
+  "order": [
+    "meraki_banner",
+    "meraki_sell_points",
+    "meraki_move_effect",
+    "meraki_feature",
+    "meraki_awards",
+    "meraki_prs",
+    "meraki_exhibition_cards",
+    "meraki_video",
+    "meraki_accessory",
+    "meraki_news",
+    "meraki_subscribe",
+    "meraki_support"
+  ]
+}

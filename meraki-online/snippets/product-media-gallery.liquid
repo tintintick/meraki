@@ -1,0 +1,213 @@
+{% comment %}
+  Renders a product media gallery. Should be used with 'media-gallery.js'
+  Also see 'product-media-modal'
+
+  Accepts:
+  - product: {Object} Product liquid object
+  - variant_images: {Array} Product images associated with a variant
+  - limit: {Number} (optional) When passed, limits the number of media items to render
+
+  Usage:
+  {% render 'product-media-gallery' %}
+{% endcomment %}
+
+{%- liquid
+  if section.settings.hide_variants and variant_images.size == product.media.size
+    assign single_media_visible = true
+  endif
+
+  if limit == 1
+    assign single_media_visible = true
+  endif
+
+  assign media_count = product.media.size
+  if section.settings.hide_variants and media_count > 1 and variant_images.size > 0
+    assign media_count = media_count | minus: variant_images.size | plus: 1
+  endif
+
+  if media_count == 1 or single_media_visible
+    assign single_media_visible_mobile = true
+  endif
+
+  if media_count == 0 or single_media_visible_mobile
+    assign hide_mobile_slider = true
+  endif
+
+  if section.settings.media_size == 'large'
+    assign media_width = 0.65
+  elsif section.settings.media_size == 'medium'
+    assign media_width = 0.55
+  elsif section.settings.media_size == 'small'
+    assign media_width = 0.45
+  endif
+-%}
+<link rel="stylesheet" href="{{ 'product-media-gallery.css' | asset_url }}">
+<script src="{{ 'product-media-gallery.js' | asset_url }}" defer></script>
+
+<media-gallery
+  id="MediaGallery-{{ section.id }}"
+  role="region"
+  {% if section.settings.enable_sticky_info %}
+    class="product__column-sticky"
+  {% endif %}
+  aria-label="{{ 'products.product.media.gallery_viewer' | t }}"
+  data-desktop-layout="{{ section.settings.gallery_layout }}"
+  data-select-media-id="{{ product.selected_or_first_available_variant.featured_media.id }}"
+>
+  {%- if product.media.size > 1 -%}
+    <slider-controls
+      id="GalleryThumbnails-{{ section.id }}"
+      controls="GalleryViewer-{{ section.id }}"
+      class="product__media-nav"
+    >
+      <div class="product__thumbnail-scroll-shadow">
+        <div class="product__thumbnail-list hide-scrollbar">
+          <div class="product__thumbnail-list-inner">
+            {%- for media in product.media -%}
+              {%- assign alt = media.alt -%}
+              {%- assign is_media_filtered = false -%}
+              {%- assign media_id_as_string = media.id | append: '' -%}
+
+              {% if media.alt contains '#' %}
+                {%- assign alt = product.title -%}
+              {%- endif -%}
+
+              {%- if filtered_media_ids contains media_id_as_string and media.alt != product.title -%}
+                {%- assign is_media_filtered = true -%}
+              {%- endif -%}
+
+              <button
+                type="button"
+                tabindex="-1"
+                {% if settings.reveal_product_media and is_media_filtered == false %}
+                  reveal
+                {% endif %}
+                class="product__thumbnail-item {% if is_media_filtered %}is-filtered{% endif %}"
+                {% if selected_media.id == media.id %}
+                  aria-current="true"
+                {% endif %}
+                aria-controls="product-{{ section.id }}-{{ media.id }}"
+                data-action="select"
+              >
+                <div class="product__thumbnail" data-media-index="{{ forloop.index }}">
+                  {{
+                    media.preview_image
+                    | image_url: width: media.preview_image.width
+                    | image_tag:
+                      alt: alt,
+                      loading: 'lazy',
+                      sizes: '(max-width: 999px) 72px, 120px',
+                      widths: '60,72,120,144,180,216,240,288'
+                  }}
+
+                  {% comment %}
+                    {%- case media.media_type -%}
+                      {%- when 'model' -%}
+                        <span class="product__thumbnail-badge">
+                          {%- render 'icon' with 'package', width: 12, height: 12 -%}
+                        </span>
+
+                      {%- when 'video', 'external_video' -%}
+                        <span class="product__thumbnail-badge">
+                          {%- render 'icon' with 'play-fill', width: 12, height: 12 -%}
+                        </span>
+                    {%- endcase -%}
+                  {% endcomment %}
+                </div>
+              </button>
+            {%- endfor -%}
+          </div>
+        </div>
+      </div>
+    </slider-controls>
+  {%- endif -%}
+  <slider-component id="GalleryViewer-{{ section.id }}" class="slider-mobile-gutter">
+    <a class="skip-to-content-link button visually-hidden quick-add-hidden" href="#ProductInfo-{{ section.id }}">
+      {{ 'accessibility.skip_to_product_info' | t }}
+    </a>
+    <ul
+      id="Slider-Gallery-{{ section.id }}"
+      class="product__media-list contains-media grid grid--peek list-unstyled slider{% if  request.device_type == 'desktop' %} slider--desktop{% else %} slider--mobile{% endif %}"
+      role="list"
+    >
+      {%- for media in product.media -%}
+        <li
+          id="Slide-{{ section.id }}-{{ media.id }}"
+          class="product__media-item product__media-item--full grid__item slider__slide{% if single_media_visible %} product__media-item--single{% endif %}{% if product.selected_or_first_available_variant.featured_media == nil and forloop.index == 1 %} is-active{% endif %}{% if media.media_type != 'image' %} product__media-item--full{% endif %}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--fade-in{% endif %}"
+          data-media-id="{{ section.id }}-{{ media.id }}"
+          data-index="{{ forloop.index }}"
+        >
+          {%
+            render 'product-thumbnail',
+            media: media,
+            media_count: media_count,
+            position: media_position,
+            desktop_layout: section.settings.gallery_layout,
+            mobile_layout: section.settings.mobile_thumbnails,
+            loop: section.settings.enable_video_looping,
+            modal_id: section.id,
+            xr_button: true,
+            media_width: media_width,
+            media_fit: section.settings.media_fit,
+            constrain_to_viewport: section.settings.constrain_to_viewport,
+            lazy_load: media_position > 1
+          %}
+        </li>
+      {%- endfor -%}
+    </ul>
+    <div class="slider-buttons quick-add-hidden product__media-list-buttons">
+      <button
+        type="button"
+        class="slider-button slider-button--prev"
+        name="previous"
+        aria-label="{{ 'general.slider.previous_slide' | t }}"
+      >
+        <span class="svg-wrapper">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      </button>
+      <div class="slider-counter caption">
+        <span class="slider-counter--current">1</span>
+        <span aria-hidden="true"> / </span>
+        <span class="visually-hidden">{{ 'general.slider.of' | t }}</span>
+        <span class="slider-counter--total">{{ media_count }}</span>
+      </div>
+      <button
+        type="button"
+        class="slider-button slider-button--next"
+        name="next"
+        aria-label="{{ 'general.slider.next_slide' | t }}"
+      >
+        <span class="svg-wrapper">
+          {{- 'icon-caret.svg' | inline_asset_content -}}
+        </span>
+      </button>
+    </div>
+    <div class="slider-pagination">
+      {%- for media in product.media -%}
+        <button
+          type="button"
+          class="slider-pagination-bullet{% if forloop.index == 1 %} is-active{% endif %}"
+          aria-label=""
+          data-slide-index="{{ forloop.index }}"
+        ></button>
+      {%- endfor -%}
+    </div>
+  </slider-component>
+  {%- if first_3d_model -%}
+    <button
+      class="button button--full-width product__xr-button"
+      type="button"
+      aria-label="{{ 'products.product.xr_button_label' | t }}"
+      data-shopify-xr
+      data-shopify-model3d-id="{{ first_3d_model.id }}"
+      data-shopify-title="{{ product.title | escape }}"
+      data-shopify-xr-hidden
+    >
+      <span class="svg-wrapper">
+        {{- 'icon-3d-model.svg' | inline_asset_content -}}
+      </span>
+      {{ 'products.product.xr_button' | t }}
+    </button>
+  {%- endif -%}
+</media-gallery>

@@ -1,0 +1,262 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top | times: 0.75 | round: 0 }}px;
+    padding-bottom: {{ section.settings.padding_bottom | times: 0.75 | round: 0 }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+
+<div class="gradient">
+  <div class="contact-us-form container-default section-{{ section.id }}-padding">
+    {%- if section.settings.heading != blank -%}
+      <h2
+        style="color: {{ section.settings.title_color }}; text-align: {{ section.settings.heading_align }};"
+        class="contact-us-form__heading {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}"
+      >
+        {{ section.settings.heading }}
+      </h2>
+    {%- else -%}
+      <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
+    {%- endif -%}
+    {%- liquid
+      assign contact_form_class = 'isolate'
+      if settings.animations_reveal_on_scroll
+        assign contact_form_class = 'isolate scroll-trigger animate--slide-in'
+      endif
+    -%}
+
+    <div class="contact-us-form__container">
+      {% if section.settings.webhook_url == blank %}
+        {%- form 'contact', id: 'contact-us-form', class: contact_form_class -%}
+          {%- if form.posted_successfully? -%}
+            <div class="contact-us-form__success">
+              <p>Thank you! Your message has been sent successfully.</p>
+            </div>
+          {%- elsif form.errors -%}
+            <div class="contact-us-form__errors">
+              <p>There was an error sending your message. Please check the following:</p>
+              <ul>
+                {%- for field in form.errors -%}
+                  <li>
+                    {{ field | first | capitalize }}
+                    {{ field | last }}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="contact-us-form__fields">
+            <div class="contact-us-form__field">
+              <input
+                type="text"
+                autocomplete="name"
+                class="contact-us-form__input"
+                name="contact[{{ 'templates.contact.form.name' | t }}]"
+                id="ContactForm-name"
+                value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+                placeholder="Name"
+                required
+              >
+            </div>
+            <div class="contact-us-form__field">
+              <input
+                type="email"
+                autocomplete="email"
+                class="contact-us-form__input"
+                name="contact[email]"
+                id="ContactForm-email"
+                value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                placeholder="Email"
+                required
+                spellcheck="false"
+                autocapitalize="off"
+                aria-required="true"
+                {% if form.errors contains 'email' %}
+                  aria-invalid="true"
+                {% endif %}
+              >
+            </div>
+          </div>
+          <div class="contact-us-form__field">
+            <textarea
+              class="contact-us-form__input contact-us-form__textarea"
+              name="contact[{{ 'templates.contact.form.comment' | t }}]"
+              id="ContactForm-body"
+              placeholder="Message"
+              required
+            >{{ form.body }}</textarea>
+          </div>
+          <div class="contact-us-form__button">
+            <button class="button" type="submit">Submit</button>
+          </div>
+        {%- endform -%}
+      {% else %}
+        <form
+          method="POST"
+          action="{{ section.settings.webhook_url }}"
+          id="contact-us-form"
+        >
+          <div class="contact-us-form__fields">
+            <div class="contact-us-form__field">
+              <input
+                type="text"
+                autocomplete="name"
+                class="contact-us-form__input"
+                name="name"
+                placeholder="Name"
+                required
+              >
+            </div>
+            <div class="contact-us-form__field">
+              <input
+                type="email"
+                autocomplete="email"
+                class="contact-us-form__input"
+                name="email"
+                placeholder="Email"
+                required
+              >
+            </div>
+          </div>
+          <div class="contact-us-form__field">
+            <textarea
+              class="contact-us-form__input contact-us-form__textarea"
+              name="message"
+              placeholder="Message"
+              required
+            ></textarea>
+          </div>
+          <div class="contact-us-form__button">
+            <button class="button" type="submit">Submit</button>
+          </div>
+        </form>
+      {% endif %}
+
+      <ul class="contact-us-form__info scroll-trigger animate--slide-in">
+        <li class="contact-us-form__info-item">
+          <h3 class="contact-us-form__info-item-title">FAQ</h3>
+          <div class="contact-us-form__info-item-content">
+            Have more questions? Visit our <a href="/pages/faq" class="contact-us-form__info-item-faq">FAQs</a> for
+            immediate answers.
+          </div>
+        </li>
+        <li class="contact-us-form__info-item">
+          <h3 class="contact-us-form__info-item-title">After-sales Service</h3>
+          <div class="contact-us-form__info-item-content">
+            <div>
+              If you need assistance after your purchase, feel free to reach out to us. We're here to help! Click
+              <a
+                class="contact-us-form__info-item-faq"
+                target="_blank"
+                rel="noopener noreferrer"
+                href="https://zfrmz.com/Ws1No1OpNfv6rINn4ShU"
+                >here</a
+              >
+              to submit a service request.
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Contact Us Form",
+  "tag": "section",
+  "class": "section",
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "Contact Us",
+      "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_align",
+      "options": [
+        {
+          "value": "left",
+          "label": "Left"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "right",
+          "label": "Right"
+        }
+      ],
+      "default": "left",
+      "label": "Heading Align"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#838383"
+    },
+    {
+      "type": "header",
+      "content": "接口"
+    },
+    {
+      "type": "text",
+      "id": "webhook_url",
+      "label": "Webhook URL"
+    },
+    {
+      "type": "text",
+      "id": "api_token",
+      "label": "API Token"
+    },
+    {
+      "type": "text",
+      "id": "subdomain",
+      "label": "Subdomain"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 36
+    }
+  ],
+  "presets": [
+    {
+      "name": "Contact Us Form"
+    }
+  ]
+}
+{% endschema %}

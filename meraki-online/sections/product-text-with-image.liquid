@@ -1,0 +1,172 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.back_color }};
+  }
+  @media (max-width: 46.875rem) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+</style>
+<div
+  class="product-text-with-image-container "
+>
+  <div class="product-text-with-image-content container-default">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'title' %}
+          <h2
+            class="product-text-with-image-title index-section-header-h2"
+            id="{{ block.id }}"
+            {{ block.shopify_attributes }}
+            style="color: {{ section.settings.text_color }};"
+          >
+            {{ block.settings.title | newline_to_br }}
+          </h2>
+        {% when 'paragraph' %}
+          <div
+            class="product-text-with-image-paragraph"
+            id="{{ block.id }}"
+            {{ block.shopify_attributes }}
+            style="color: {{ section.settings.text_color }};"
+          >
+            {{ block.settings.paragraph }}
+          </div>
+        {% when 'image' %}
+          <div class="product-text-with-image-image" id="{{ block.id }}" {{ block.shopify_attributes }}>
+            {% if block.settings.image != blank %}
+              <style>
+                #{{ block.id }} {
+                  --aspect-ratio: {{ block.settings.image.aspect_ratio }};
+                }
+
+                {% if block.settings.image_mobile != blank %}
+                  @media (max-width: 46.875rem) {
+                    #{{ block.id }} {
+                      --aspect-ratio: {{ block.settings.image_mobile.aspect_ratio }};
+                    }
+                  }
+                {% endif %}
+              </style>
+
+              <picture>
+                {% if block.settings.image_mobile != blank %}
+                  <source
+                    alt="{{ block.settings.image_mobile.alt | escape }}"
+                    height="{{ block.settings.image_mobile.height }}"
+                    srcset="{{ block.settings.image_mobile | image_url }}"
+                    width="{{ block.settings.image_mobile.width }}"
+                    media="(max-width: 46.875rem)"
+                  >
+                {% endif %}
+
+                <img
+                  alt="{{ block.settings.image.alt | escape }}"
+                  height="{{ block.settings.image.height }}"
+                  src="{{ block.settings.image | image_url }}"
+                  width="{{ block.settings.image.width }}"
+                  loading="eager"
+                >
+              </picture>
+            {% else %}
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'product-text-with-image-image-placeholder' }}
+            {% endif %}
+          </div>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Product Text with Image",
+  "settings": [
+    {
+      "type": "color",
+      "id": "back_color",
+      "label": "Background Color",
+      "default": "#F0EDE6"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#525252"
+    },
+    {
+      "type": "number",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "default": 160
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "default": 160
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Padding Top Mobile",
+      "default": 120
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom Mobile",
+      "default": 120
+    }
+  ],
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Title",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Title",
+          "default": "Meraki: The First Pro Machine for Your Coffee Journey"
+        }
+      ]
+    },
+    {
+      "type": "paragraph",
+      "name": "paragraph",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "paragraph",
+          "label": "Paragraph",
+          "default": "<p>Winner of the prestigious <strong>2025 iF Design Gold Award</strong></p>"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image Mobile"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Text with Image",
+      "blocks": [{ "type": "title" }, { "type": "paragraph" }, { "type": "image" }]
+    }
+  ]
+}
+{% endschema %}

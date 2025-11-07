@@ -1,0 +1,155 @@
+<div class="touchscreen-carousel-section" id="touchscreen-carousel-{{ section.id }}">
+  <div class="touchscreen-carousel-header container-default">
+    <h2>
+      {{ section.settings.main_heading | newline_to_br }}
+    </h2>
+    {% if section.settings.subtitle != blank %}
+      <p class="touchscreen-carousel-subtitle">{{ section.settings.subtitle }}</p>
+    {% endif %}
+  </div>
+  {% if section.blocks.size > 0 %}
+    <touchscreen-carousel-container
+      section-id="{{ section.id }}"
+      autoplay="{{ section.settings.autoplay }}"
+      scroll-interval="{{ section.settings.scroll_interval }}"
+      show-navigation-arrows="{{ section.settings.show_navigation_arrows }}"
+      class="touchscreen-carousel-container"
+      id="embla-{{ section.id }}"
+      data-carousel
+      block-in-view="{{ section.settings.block_in_view }}"
+    >
+      <div class="touchscreen-carousel-container-inner" data-carousel-inner>
+        {% for block in section.blocks %}
+          <touchscreen-carousel-item
+            class="touchscreen-carousel-item"
+            slide-index="{{ forloop.index0 }}"
+            block-id="{{ block.id }}"
+            id="touchscreen-carousel-item-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="touchscreen-carousel-circle" id="{{ block.id }}">
+              {% if block.settings.circle_image != blank %}
+                <img
+                  src="{{ block.settings.circle_image | image_url: width: block.settings.circle_image.width }}"
+                  alt="{{ block.settings.circle_image.alt }}"
+                  width="{{ block.settings.circle_image.width }}"
+                  height="{{ block.settings.circle_image.height }}"
+                  loading="lazy"
+                >
+              {% else %}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'about-us-image-placeholder' }}
+              {% endif %}
+            </div>
+            <h3 class="touchscreen-carousel-title">{{ block.settings.title }}</h3>
+            <p class="touchscreen-carousel-desc">{{ block.settings.description | newline_to_br }}</p>
+          </touchscreen-carousel-item>
+        {% endfor %}
+      </div>
+      {% if section.settings.show_navigation_arrows %}
+        <touchscreen-carousel-arrow class="slide-container-arrow touchscreen-carousel-arrow container-default">
+          <button class="slide-container-arrow-left touchscreen-carousel-arrow-left">
+            {{ 'icon-arrow-left.svg' | inline_asset_content }}
+          </button>
+          <div class="touchscreen-carousel-dots"></div>
+          <button class="slide-container-arrow-right touchscreen-carousel-arrow-right">
+            {{ 'icon-arrow-right.svg' | inline_asset_content }}
+          </button>
+        </touchscreen-carousel-arrow>
+      {% endif %}
+    </touchscreen-carousel-container>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Touchscreen Carousel",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Intuitive user interface\nTouch Screen with Smart Features"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "range",
+      "id": "scroll_interval",
+      "label": "Auto Scroll Interval (seconds)",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "number",
+      "id": "block_in_view",
+      "label": "Witch Block In View",
+      "default": 1
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Enable Auto Scroll",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_navigation_arrows",
+      "label": "Show Navigation Arrows",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "carousel_item",
+      "name": "Carousel Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "circle_image",
+          "label": "Circle Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Pre-heat timer"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Preheating can improve espresso extraction quality and taste."
+        }
+      ]
+    }
+  ],
+  "max_blocks": 9,
+  "presets": [
+    {
+      "name": "Touchscreen Carousel",
+      "blocks": [
+        {
+          "type": "carousel_item"
+        },
+        {
+          "type": "carousel_item"
+        },
+        {
+          "type": "carousel_item"
+        },
+        {
+          "type": "carousel_item"
+        },
+        {
+          "type": "carousel_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

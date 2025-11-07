@@ -1,0 +1,412 @@
+﻿{{ 'meraki-video.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'lite-youtube.js' | asset_url }}" defer></script>
+
+<!-- Preconnect to YouTube -->
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="preconnect" href="https://i.ytimg.com">
+
+<div class="meraki-video design-scale" data-section-id="{{ section.id }}">
+  <div class="video-container">
+    <!-- Video Header -->
+    <div class="video-header">
+      <!-- Section Title -->
+      <h2 class="video-section-title">The Choice of Coffee Professionals</h2>
+
+      <!-- Navigation Buttons -->
+      <div class="video-switch">
+        <!-- Previous Button -->
+        <button class="nav-button nav-prev" data-direction="prev" aria-label="Previous Video">
+          <img src="{{ 'icon-previous.svg' | asset_url }}" alt="Previous" class="nav-icon nav-icon-active">
+          <img src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="Previous (Disabled)" class="nav-icon nav-icon-disable">
+        </button>
+
+        <!-- Next Button -->
+        <button class="nav-button nav-next" data-direction="next" aria-label="Next Video">
+          <img src="{{ 'icon-next.svg' | asset_url }}" alt="Next" class="nav-icon nav-icon-active">
+          <img src="{{ 'icon-next-disable.svg' | asset_url }}" alt="Next (Disabled)" class="nav-icon nav-icon-disable">
+        </button>
+      </div>
+    </div>
+
+    <!-- Video Player Container -->
+    <div class="video-player-container">
+      <div class="video-players-track">
+        <div class="video-player-item video-spacer">&nbsp;</div>
+        {% for block in section.blocks %}
+          <div class="video-player-item" data-video-wrapper data-youtube-id="{{ block.settings.youtube_id }}">
+            {%- if block.settings.youtube_id != blank -%}
+              <!-- YouTube Embed -->
+              <lite-youtube videoid="{{ block.settings.youtube_id }}" class="video-element"></lite-youtube>
+            {%- elsif block.settings.video != blank -%}
+              <!-- Fallback: Shopify Video Upload -->
+              {{
+                block.settings.video
+                | video_tag:
+                  image_size: '1340x',
+                  autoplay: false,
+                  loop: false,
+                  controls: false,
+                  muted: true,
+                  loading: 'lazy',
+                  class: 'video-element'
+              }}
+              <!-- Play Button -->
+              <button class="video-play-button" data-play-button>
+                <img src="{{ 'video-play.svg' | asset_url }}" alt="Play" />
+              </button>
+            {%- else -%}
+              <!-- Placeholder -->
+              <div class="video-placeholder video-element">
+                <p>No video configured</p>
+              </div>
+            {%- endif -%}
+
+            <!-- Gradient Mask (for non-YouTube videos) -->
+            {%- if block.settings.youtube_id == blank -%}
+              <div class="video-gradient-mask" data-video-mask>
+                <img src="{{ 'video-video-gradient-mask.png' | asset_url }}" alt="" />
+              </div>
+            {%- endif -%}
+
+            <!-- Video Info -->
+            <div class="video-info" data-video-info>
+              {%- if block.settings.creator_avatar != blank -%}
+                <img
+                  class="creator-avatar"
+                  src="{{ block.settings.creator_avatar | image_url: width: 160 }}"
+                  alt="{{ block.settings.creator_name | escape }}"
+                  width="80"
+                  height="80"
+                />
+              {%- else -%}
+                <img
+                  class="creator-avatar"
+                  src="{{ 'video-avatar' | append: forloop.index | append: '.png' | asset_url }}"
+                  alt="{{ block.settings.creator_name | escape }}"
+                  width="80"
+                  height="80"
+                />
+              {%- endif -%}
+              <div class="video-metadata">
+                <p class="creator-name">{{ block.settings.creator_name }}</p>
+                <p class="video-title">{{ block.settings.title }}</p>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+        <div class="video-player-item video-spacer">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  function initVideo() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      requestAnimationFrame(initVideo);
+      return;
+    }
+
+    const prevBtn = section.querySelector('.nav-prev');
+    const nextBtn = section.querySelector('.nav-next');
+    const playerContainer = section.querySelector('.video-player-container');
+    const videoWrappers = Array.from(section.querySelectorAll('[data-video-wrapper]'));
+    const totalVideos = videoWrappers.length;
+
+    if (!prevBtn || !nextBtn || !playerContainer || totalVideos === 0) {
+      return;
+    }
+
+    let currentIndex = 0;
+    let isTransitioning = false;
+    let touchStartX = 0;
+    let touchStartTime = 0;
+
+    // Get scale factor from CSS variable
+    function getScaleFactor() {
+      const isDesktop = window.innerWidth >= 990;
+      const varName = isDesktop ? '--scale-factor-desktop' : '--scale-factor-mobile';
+      const value = getComputedStyle(section).getPropertyValue(varName).trim();
+      return parseFloat(value) || 1;
+    }
+
+    // Get gap from CSS variable
+    function getGap() {
+      const isDesktop = window.innerWidth >= 990;
+      if (isDesktop) {
+        const gapValue = getComputedStyle(section).getPropertyValue('--player-track-gap-desktop').trim();
+        const scaleFactor = getScaleFactor();
+        return parseFloat(gapValue) * scaleFactor || 0;
+      }
+      return 0; // Mobile has no gap
+    }
+
+    // Get player width + gap for scrolling distance
+    function getPlayerWidth() {
+      const firstItem = playerContainer.querySelector('.video-player-item:not(.video-spacer)');
+      if (firstItem) {
+        const gap = getGap();
+        return firstItem.offsetWidth + gap;
+      }
+      
+      // Fallback: 使用 CSS 计算
+      const isDesktop = window.innerWidth >= 990;
+      const varName = isDesktop ? '--player-width-desktop' : '--player-width';
+      const playerWidth = parseFloat(getComputedStyle(section).getPropertyValue(varName).trim());
+      const scaleFactor = getScaleFactor();
+      const gap = getGap();
+      return playerWidth * scaleFactor + gap;
+    }
+
+    // Update button states
+    function updateButtons() {
+      prevBtn.classList.toggle('disabled', currentIndex === 0);
+      nextBtn.classList.toggle('disabled', currentIndex >= totalVideos - 1);
+    }
+
+    // Stop all videos (pause and reset to beginning)
+    function stopAllVideos() {
+      videoWrappers.forEach((wrapper, index) => {
+        if (index === currentIndex) return; // Skip current video
+
+        // Stop YouTube videos
+        const liteYouTube = wrapper.querySelector('lite-youtube');
+        if (liteYouTube) {
+          if (typeof liteYouTube.reset === 'function') {
+            liteYouTube.reset();
+          }
+          wrapper.classList.remove('is-playing');
+        }
+
+        // Stop regular video elements
+        const video = wrapper.querySelector('video');
+        if (video) {
+          video.pause();
+          video.currentTime = 0; // Reset to beginning
+          wrapper.classList.remove('is-playing');
+          video.removeAttribute('controls');
+        }
+      });
+    }
+
+    // Initialize controls for regular video elements (fallback)
+    videoWrappers.forEach((wrapper) => {
+      const video = wrapper.querySelector('video');
+      if (!video) return;
+
+      const playButton = wrapper.querySelector('[data-play-button]');
+      if (!playButton) return;
+
+      // Initially hide controls
+      video.removeAttribute('controls');
+
+      // Play button click
+      playButton.addEventListener('click', () => {
+        video.play();
+      });
+
+      // When video starts playing
+      video.addEventListener('play', () => {
+        video.setAttribute('controls', '');
+        wrapper.classList.add('is-playing');
+      });
+
+      // When video pauses
+      video.addEventListener('pause', () => {
+        video.removeAttribute('controls');
+        wrapper.classList.remove('is-playing');
+      });
+
+      // When video ends
+      video.addEventListener('ended', () => {
+        video.removeAttribute('controls');
+        wrapper.classList.remove('is-playing');
+      });
+    });
+
+    // Listen for YouTube activation
+    section.addEventListener('lyt-activated', (e) => {
+      // Add is-playing class to the activated wrapper for video-info hiding
+      const activatedElement = e.target;
+      if (activatedElement && activatedElement.tagName === 'LITE-YOUTUBE') {
+        const wrapper = activatedElement.closest('[data-video-wrapper]');
+        if (wrapper) {
+          wrapper.classList.add('is-playing');
+        }
+      }
+      // Note: Don't call stopAllVideos() here - it's already called in scrollToIndex()
+      // when user switches videos. Here we just play the current video.
+    });
+
+    // Scroll to index with smooth animation
+    function scrollToIndex(index) {
+      if (index < 0 || index >= totalVideos || isTransitioning) {
+        return;
+      }
+
+      const playerWidth = getPlayerWidth();
+      isTransitioning = true;
+
+      // Smooth scroll animation
+      playerContainer.scrollTo({
+        left: index * playerWidth,
+        behavior: 'smooth'
+      });
+
+      currentIndex = index;
+      updateButtons();
+      stopAllVideos();
+
+      // Wait for animation to complete (typically 300-500ms)
+      setTimeout(() => {
+        isTransitioning = false;
+      }, 500);
+    }
+
+    // ===== TOUCH SWIPE DISABLED =====
+    // Touch event handlers for swipe detection (disabled to avoid conflicts with YouTube iframe on mobile)
+    // Uncomment when ready to re-enable swipe navigation
+    /*
+    let touchEndX = 0;
+    const SWIPE_THRESHOLD = 50; // Minimum swipe distance in pixels
+
+    playerContainer.addEventListener('touchstart', (e) => {
+      touchStartX = e.touches[0].clientX;
+      touchStartTime = Date.now();
+    }, { passive: true });
+
+    // Prevent native scroll during touch move
+    playerContainer.addEventListener('touchmove', (e) => {
+      // Prevent native inertia scrolling
+      e.preventDefault();
+    }, { passive: false });
+
+    playerContainer.addEventListener('touchend', (e) => {
+      touchEndX = e.changedTouches[0].clientX;
+      const deltaX = touchEndX - touchStartX;
+      const deltaTime = Date.now() - touchStartTime;
+
+      // Only trigger if swipe is significant and not too slow
+      if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
+        if (deltaX > 0 && currentIndex > 0) {
+          // Swipe right - go to previous
+          scrollToIndex(currentIndex - 1);
+        } else if (deltaX < 0 && currentIndex < totalVideos - 1) {
+          // Swipe left - go to next
+          scrollToIndex(currentIndex + 1);
+        }
+      }
+    }, { passive: true });
+    */
+    // ===== END TOUCH SWIPE SECTION =====
+
+    // ===== WHEEL SCROLL DISABLED =====
+    // Wheel event handler disabled - only button navigation is allowed
+    // Uncomment when ready to re-enable wheel navigation
+    /*
+    let wheelTimeout;
+    playerContainer.addEventListener('wheel', (e) => {
+      e.preventDefault();
+
+      clearTimeout(wheelTimeout);
+      wheelTimeout = setTimeout(() => {
+        if (isTransitioning) return;
+
+        if (e.deltaX > 30 && currentIndex < totalVideos - 1) {
+          // Scroll right - go to next
+          scrollToIndex(currentIndex + 1);
+        } else if (e.deltaX < -30 && currentIndex > 0) {
+          // Scroll left - go to previous
+          scrollToIndex(currentIndex - 1);
+        } else if (e.deltaY > 30 && currentIndex < totalVideos - 1) {
+          // Scroll down - go to next (for vertical scroll wheels)
+          scrollToIndex(currentIndex + 1);
+        } else if (e.deltaY < -30 && currentIndex > 0) {
+          // Scroll up - go to previous
+          scrollToIndex(currentIndex - 1);
+        }
+      }, 50); // Debounce wheel events slightly
+    }, { passive: false });
+    */
+    // ===== END WHEEL SCROLL SECTION =====
+
+    // Initialize
+    updateButtons();
+
+    // Button click handlers
+    prevBtn.addEventListener('click', () => {
+      if (currentIndex > 0) {
+        scrollToIndex(currentIndex - 1);
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      if (currentIndex < totalVideos - 1) {
+        scrollToIndex(currentIndex + 1);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVideo);
+  } else {
+    initVideo();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meraki Video",
+  "blocks": [
+    {
+      "type": "video_item",
+      "name": "Video Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "youtube_id",
+          "label": "YouTube Video ID",
+          "info": "Enter the YouTube video ID (e.g., dQw4w9WgXcQ from https://www.youtube.com/watch?v=dQw4w9WgXcQ)"
+        },
+        {
+          "type": "textarea",
+          "id": "title",
+          "label": "Video Title"
+        },
+        {
+          "type": "text",
+          "id": "creator_name",
+          "label": "Creator Name"
+        },
+        {
+          "type": "image_picker",
+          "id": "creator_avatar",
+          "label": "Creator Avatar"
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Video (Shopify Upload - Fallback)",
+          "info": "Only used if YouTube ID is not provided"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki Video",
+      "blocks": [
+        {
+          "type": "video_item",
+          "settings": {
+            "title": "The Choice of Coffee Professionals"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,348 @@
+﻿{{ 'meraki-prs.css' | asset_url | stylesheet_tag }}
+
+<div class="meraki-prs design-scale" data-section-id="{{ section.id }}">
+  <div class="prs-wrapper">
+    <!-- PR Container -->
+    <div class="pr-container">
+      <div class="prs-track">
+        {% for block in section.blocks %}
+          <div class="pr-card" data-block-id="{{ block.id }}">
+            <!-- PR Icon -->
+            <div class="pr-icon">
+              {%- if block.settings.icon != blank -%}
+                <img
+                  src="{{ block.settings.icon | image_url: width: 150 }}"
+                  alt="PR Logo {{ forloop.index }}"
+                  loading="lazy"
+                >
+              {%- else -%}
+                <img
+                  src="{{ 'prs-pr' | append: forloop.index | append: '.png' | asset_url }}"
+                  alt="PR Logo {{ forloop.index }}"
+                  loading="lazy"
+                >
+              {%- endif -%}
+            </div>
+
+            <!-- PR Content -->
+            <div class="pr-content">
+              <p class="pr-text">{{ block.settings.text }}</p>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Navigation Icons -->
+    <div class="icon-group">
+      <!-- Previous Button -->
+      <button class="nav-button nav-prev" data-direction="prev" aria-label="Previous PR">
+        <img src="{{ 'icon-previous.svg' | asset_url }}" alt="Previous" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-previous-disable.svg' | asset_url }}" alt="Previous (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+
+      <!-- Next Button -->
+      <button class="nav-button nav-next" data-direction="next" aria-label="Next PR">
+        <img src="{{ 'icon-next.svg' | asset_url }}" alt="Next" class="nav-icon nav-icon-active">
+        <img src="{{ 'icon-next-disable.svg' | asset_url }}" alt="Next (Disabled)" class="nav-icon nav-icon-disable">
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const TRANSITION_VALUE = 'transform 0.45s ease, opacity 0.45s ease';
+
+  function applyState(card, state, immediate = false) {
+    if (!card) return;
+
+    if (immediate) {
+      card.style.transition = 'none';
+    }
+
+    card.classList.remove('is-active', 'is-left', 'is-right');
+
+    if (state) {
+      card.classList.add(state);
+    }
+
+    if (immediate) {
+      void card.offsetWidth;
+      card.style.transition = TRANSITION_VALUE;
+    } else {
+      card.style.transition = TRANSITION_VALUE;
+    }
+  }
+
+  function initPRs() {
+    const section = document.querySelector('[data-section-id="{{ section.id }}"]');
+    if (!section) {
+      requestAnimationFrame(initPRs);
+      return;
+    }
+
+    const prevBtn = section.querySelector('.nav-prev');
+    const nextBtn = section.querySelector('.nav-next');
+    const prContainer = section.querySelector('.pr-container');
+    const prsTrack = section.querySelector('.prs-track');
+    const cards = Array.from(section.querySelectorAll('.pr-card'));
+    const totalPRs = cards.length;
+
+    if (!prevBtn || !nextBtn || !prContainer || !prsTrack || totalPRs === 0) {
+      return;
+    }
+
+    let currentIndex = 0;
+    let isAnimating = false;
+
+    function isDesktop() {
+      return window.innerWidth >= 990;
+    }
+
+    function getScaleFactor() {
+      if (isDesktop()) {
+        return Math.min(window.innerWidth / 1920, 1);
+      }
+      return 1;
+    }
+
+    // Touch gesture variables
+    let touchStartX = 0;
+    let touchStartTime = 0;
+    const SWIPE_THRESHOLD = 80; // Minimum swipe distance in pixels
+
+    // 初始化
+    if (isDesktop()) {
+      // 桌面端：移除所有状态类，使用流式布局
+      cards.forEach(card => {
+        card.classList.remove('is-active', 'is-left', 'is-right');
+      });
+      prsTrack.style.transform = 'translateX(0)';
+    } else {
+      // 移动端：保持原有初始化逻辑
+      cards.forEach((card, index) => {
+        if (index === 0) {
+          applyState(card, 'is-active', true);
+        } else {
+          applyState(card, 'is-right', true);
+        }
+      });
+    }
+
+    updateButtons();
+
+    function updateButtons() {
+      if (isDesktop()) {
+        // 桌面端：显示3张，所以最多到 totalPRs - 3
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+        nextBtn.classList.toggle('disabled', currentIndex >= totalPRs - 3);
+      } else {
+        // 移动端：显示1张
+        prevBtn.classList.toggle('disabled', currentIndex === 0);
+        nextBtn.classList.toggle('disabled', currentIndex >= totalPRs - 1);
+      }
+    }
+
+    function finalizePositions() {
+      cards.forEach((card, index) => {
+        if (index < currentIndex) {
+          applyState(card, 'is-left', true);
+        } else if (index === currentIndex) {
+          applyState(card, 'is-active', true);
+        } else {
+          applyState(card, 'is-right', true);
+        }
+
+        card.style.zIndex = '';
+      });
+    }
+
+    function handleNav(direction) {
+      if (isAnimating) {
+        return;
+      }
+
+      const targetIndex = direction === 'next' ? currentIndex + 1 : currentIndex - 1;
+
+      if (isDesktop()) {
+        if (targetIndex < 0 || targetIndex >= totalPRs - 2) {
+          return;
+        }
+      } else {
+        if (targetIndex < 0 || targetIndex >= totalPRs) {
+          return;
+        }
+      }
+
+      isAnimating = true;
+
+      if (isDesktop()) {
+        handleDesktopNav(targetIndex);
+      } else {
+        handleMobileNav(direction, targetIndex);
+      }
+    }
+
+    function handleDesktopNav(targetIndex) {
+      const scaleFactor = getScaleFactor();
+      const moveDistance = (410 + 25) * scaleFactor; // card宽度 + gap
+      const offset = -targetIndex * moveDistance;
+
+      prsTrack.style.transform = `translateX(${offset}px)`;
+
+      setTimeout(() => {
+        currentIndex = targetIndex;
+        updateButtons();
+        isAnimating = false;
+      }, 450);
+    }
+
+    function handleMobileNav(direction, targetIndex) {
+      // 保持原有移动端逻辑
+      const outgoing = cards[currentIndex];
+      const incoming = cards[targetIndex];
+      const incomingStart = direction === 'next' ? 'is-right' : 'is-left';
+      const outgoingEnd = direction === 'next' ? 'is-left' : 'is-right';
+
+      applyState(incoming, incomingStart, true);
+      incoming.style.zIndex = 3;
+
+      requestAnimationFrame(() => {
+        let transitionsPending = 2;
+
+        function onDone(event) {
+          const property = (event.propertyName || '').toLowerCase();
+          if (!property.includes('transform')) {
+            return;
+          }
+
+          event.currentTarget.removeEventListener('transitionend', onDone);
+          transitionsPending -= 1;
+
+          if (transitionsPending === 0) {
+            currentIndex = targetIndex;
+            finalizePositions();
+            isAnimating = false;
+            updateButtons();
+          }
+        }
+
+        outgoing.addEventListener('transitionend', onDone);
+        incoming.addEventListener('transitionend', onDone);
+
+        applyState(outgoing, outgoingEnd);
+        applyState(incoming, 'is-active');
+      });
+    }
+
+    prevBtn.addEventListener('click', () => handleNav('prev'));
+    nextBtn.addEventListener('click', () => handleNav('next'));
+
+    // Touch gesture support (仅移动端)
+    if (!isDesktop()) {
+      prContainer.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartTime = Date.now();
+      }, { passive: true });
+
+      prContainer.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const deltaX = touchEndX - touchStartX;
+        const deltaTime = Date.now() - touchStartTime;
+
+        // Only trigger if swipe is significant and not too slow
+        if (Math.abs(deltaX) > SWIPE_THRESHOLD && deltaTime < 500) {
+          if (deltaX > 0) {
+            // Swipe right - go to previous
+            handleNav('prev');
+          } else {
+            // Swipe left - go to next
+            handleNav('next');
+          }
+        }
+      }, { passive: true });
+    }
+
+    // 窗口 resize 时重新初始化
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        currentIndex = 0;
+        if (isDesktop()) {
+          cards.forEach(card => {
+            card.classList.remove('is-active', 'is-left', 'is-right');
+          });
+          prsTrack.style.transform = 'translateX(0)';
+        } else {
+          cards.forEach((card, index) => {
+            if (index === 0) {
+              applyState(card, 'is-active', true);
+            } else {
+              applyState(card, 'is-right', true);
+            }
+          });
+        }
+        updateButtons();
+      }, 100);
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPRs);
+  } else {
+    initPRs();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Meraki PRs",
+  "blocks": [
+    {
+      "type": "pr_card",
+      "name": "PR Card",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "icon",
+          "label": "Icon"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "\"\""
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Meraki PRs",
+      "blocks": [
+        {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This is a real game-changer! And to be honest, it completely blew our minds the first time we tried it, because the espresso was just so on point.\""
+          }
+        },
+        {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"It rivaled the much more expensive machines I was used to working with at my coffee jobs, creating a nice layer of crema and extracting the floral notes of the coffee.\""
+          }
+        },
+        {
+          "type": "pr_card",
+          "settings": {
+            "text": "\"This linear approach optimizes and simplifies your coffee-making 'workflow' while still preserving the artistry and authenticity of barista-crafted espresso.\""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

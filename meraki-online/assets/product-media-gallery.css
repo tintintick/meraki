@@ -1,0 +1,120 @@
+.product__media-nav {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  display: flex;
+  flex-wrap: nowrap;
+  overflow: hidden;
+  overflow-y: auto;
+}
+.product__media-nav::-webkit-scrollbar {
+  display: none;
+}
+
+.product__thumbnail-scroll-shadow {
+  max-width: 100%;
+}
+
+.product__thumbnail-list {
+  position: relative;
+}
+
+.product__thumbnail-list-inner {
+  display: grid;
+  grid-auto-flow: row;
+  align-items: start;
+  gap: 8px;
+}
+
+.product__thumbnail-item {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.product__thumbnail {
+  position: relative;
+  width: 100px;
+  min-width: 100px;
+  padding: 4px;
+}
+
+.product__thumbnail,
+.product__thumbnail > img {
+  border-radius: min(var(--block-border-radius), 4px);
+}
+
+.product__thumbnail .placeholder-background {
+  display: block;
+}
+
+.product__thumbnail::after {
+  left: 0;
+}
+
+.product__thumbnail::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border: 2px solid #000;
+  border-radius: inherit;
+  opacity: 0;
+  transform: scale(0.9);
+  transition:
+    opacity 0.2s ease,
+    transform 0.2s ease;
+}
+
+.product__thumbnail-item[aria-current="true"] .product__thumbnail::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.product__thumbnail-badge {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 24px;
+  width: 24px;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 9999px;
+  background: rgba(var(--background), 0.7);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  color: rgb(var(--root-text-color));
+}
+
+media-gallery:has(.product__media-nav) {
+  display: flex;
+  gap: 16px;
+  padding-left: 110px;
+}
+slider-component {
+  flex: 1;
+}
+.product--thumbnail .product__media-list {
+  margin-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+  .product__media-nav {
+    height: auto;
+    position: relative;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  media-gallery:has(.product__media-nav) {
+    flex-direction: column-reverse;
+    padding-left: 0;
+  }
+  .product__thumbnail-list-inner {
+    grid-auto-flow: column;
+  }
+}

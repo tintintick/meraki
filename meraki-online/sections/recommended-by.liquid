@@ -1,0 +1,218 @@
+<div
+  class="recommended-by-container"
+  id="recommended-by-{{ section.id }}"
+  style="background: {{ section.settings.background_color }};"
+>
+  {% if section.settings.main_heading != blank %}
+    <h2 class="index-section-header-h2 container-default" style="color: {{ section.settings.text_color }};">
+      {{ section.settings.main_heading }}
+    </h2>
+  {% endif %}
+  {% if section.settings.subtitle != blank %}
+    <p class="index-section-subtitle-p container-default" style="color: {{ section.settings.text_color }};">
+      {{ section.settings.subtitle }}
+    </p>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+    <recommended-by-content-container
+      section-id="{{ section.id }}"
+      scroll-interval="{{ section.settings.scroll_interval }}"
+      class="recommended-by-content-container"
+      id="recommended-by-{{ section.id }}"
+      data-carousel
+      slide-length="{{ section.blocks.size }}"
+      block-in-view="{{ section.settings.block_in_view }}"
+    >
+      <div class="recommended-by-content-inner" data-carousel-inner>
+        {% for block in section.blocks %}
+          <recommended-by-content-item
+            class="recommended-by-content-item {% if block.type == 'recommended_by_video' %}recommended-by-content-item-only-video{% endif %}"
+            slide-index="{{ forloop.index0 }}"
+            block-id="{{ block.id }}"
+            block-type="{{ block.type }}"
+            id="recommended-by-item-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="recommended-by-content-item-video">
+              {% if block.settings.media != blank %}
+                {% assign poster = block.settings.media.preview_image %}
+                {{-
+                  block.settings.media
+                  | video_tag:
+                    playsinline: true,
+                    muted: true,
+                    loop: true,
+                    controls: false,
+                    preload: 'metadata',
+                    class: 'recommended-by-content-item-video-video',
+                    autoplay: false,
+                    loading: 'lazy'
+                -}}
+                {% if poster != null %}
+                  <img
+                    src="{{ poster | image_url }}"
+                    alt="{{ poster.alt }}"
+                    width="{{ poster.width }}"
+                    height="{{ poster.height }}"
+                    class="w-full h-full object-cover poster-image"
+                  >
+                {% endif %}
+              {% else %}
+                {{ 'hero-apparel-3' | placeholder_svg_tag: 'placeholder-svg placeholder' }}
+              {% endif %}
+              <div class="recommended-by-content-item-video-play">
+                {{ 'icon-video-play.svg' | inline_asset_content }}
+              </div>
+            </div>
+            {% if block.type == 'recommended_by_item' %}
+              <div class="recommended-by-content-item-info">
+                <div class="recommended-by-content-item-info-avatar">
+                  {% if block.settings.avatar != blank %}
+                    <img
+                      src="{{ block.settings.avatar | image_url }}"
+                      alt="{{ block.settings.avatar.alt }}"
+                      width="block.settings.avatar.width"
+                      height="block.settings.avatar.height"
+                      class="object-cover"
+                    >
+                  {% endif %}
+                </div>
+                <div class="flex flex-col gap-[0.8rem]">
+                  <div class="recommended-by-content-item-info-name">
+                    {{ block.settings.creator_name }}
+                  </div>
+                  <div class="recommended-by-content-item-info-rating">
+                    {% for i in (1..block.settings.rating) %}
+                      {{ 'icon-start.svg' | inline_asset_content }}
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            {% endif %}
+          </recommended-by-content-item>
+        {% endfor %}
+      </div>
+      <slide-container-arrow class="slide-container-arrow recommended-by-slide-container-arrow">
+        <button class="slide-container-arrow-left recommended-by-arrow-left">
+          {{ 'icon-arrow-left.svg' | inline_asset_content }}
+        </button>
+        <div class="recommended-by-slide-dots"></div>
+        <button class="slide-container-arrow-right recommended-by-arrow-right">
+          {{ 'icon-arrow-right.svg' | inline_asset_content }}
+        </button>
+      </slide-container-arrow>
+    </recommended-by-content-container>
+  {% endif %}
+</div>
+{% schema %}
+{
+  "name": "Recommended By",
+  "max_blocks": 15,
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Recommended By"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Sub Title"
+    },
+    {
+      "type": "range",
+      "id": "scroll_interval",
+      "label": "Scroll Interval",
+      "default": 3,
+      "min": 2,
+      "max": 10,
+      "step": 1
+    },
+    {
+      "type": "number",
+      "id": "block_in_view",
+      "label": "Witch Block In View",
+      "default": 1
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "linear-gradient(180deg, #242424 0%, #131313 100%)"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#B5B5B5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "recommended_by_item",
+      "name": "Recommended By Item",
+      "settings": [
+        {
+          "type": "video",
+          "id": "media",
+          "label": "Media"
+        },
+        {
+          "type": "image_picker",
+          "id": "avatar",
+          "label": "Avatar"
+        },
+        {
+          "type": "text",
+          "id": "creator_name",
+          "label": "Creator Name"
+        },
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Rating",
+          "default": 5,
+          "min": 1,
+          "max": 5,
+          "step": 1
+        }
+      ]
+    },
+    {
+      "type": "recommended_by_video",
+      "name": "Recommended By Video",
+      "settings": [
+        {
+          "type": "video",
+          "id": "media",
+          "label": "Media"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Recommended By",
+      "blocks": [
+        {
+          "type": "recommended_by_item"
+        },
+        {
+          "type": "recommended_by_item"
+        },
+        {
+          "type": "recommended_by_item"
+        },
+        {
+          "type": "recommended_by_item"
+        },
+        {
+          "type": "recommended_by_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

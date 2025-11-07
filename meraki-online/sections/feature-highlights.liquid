@@ -1,0 +1,134 @@
+<div
+  class="feature-highlights"
+  id="feature-highlights-{{ section.id }}"
+>
+  <div class="feature-highlights-container">
+    <h2 class="index-section-header-h2 container-default">{{ section.settings.main_heading }}</h2>
+    <p class="index-section-subtitle-p container-default">{{ section.settings.subtitle }}</p>
+    <feature-highlights-tabs class="feature-carousel-tabs container-default">
+      {% for block in section.blocks %}
+        <div
+          class="feature-carousel-item-tab {% if forloop.index0 == 0 %} active{% endif %}"
+          data-index="{{ forloop.index0 }}"
+        >
+          <h3 class="feature-carousel-title">{{ block.settings.block_title | newline_to_br }}</h3>
+          <p class="feature-carousel-subtitle">{{ block.settings.block_desc | newline_to_br }}</p>
+        </div>
+      {% endfor %}
+    </feature-highlights-tabs>
+    <feature-highlights-carousel class="feature-highlights-carousel" data-carousel id="embla-{{ section.id }}">
+      <div class="feature-highlights-carousel-inner" data-carousel-inner>
+        {% for block in section.blocks %}
+          <feature-highlights-carousel-slide
+            class="feature-highlights-carousel—slide"
+            slide-index="{{ forloop.index0 }}"
+            block-id="{{ block.id }}"
+            id="feature-carousel-item-{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            {% if block.settings.video_desktop != blank %}
+              {{-
+                block.settings.video_desktop
+                | video_tag:
+                  playsinline: true,
+                  muted: true,
+                  loop: false,
+                  controls: false,
+                  preload: 'metadata',
+                  autoplay: false,
+                  loading: 'lazy',
+                  class: 'desktop-video'
+              -}}
+            {% endif %}
+            {% if block.settings.video_mobile != blank %}
+              {{-
+                block.settings.video_mobile
+                | video_tag:
+                  playsinline: true,
+                  muted: true,
+                  loop: false,
+                  controls: false,
+                  preload: 'metadata',
+                  autoplay: false,
+                  loading: 'lazy',
+                  class: 'mobile-video'
+              -}}
+            {% endif %}
+          </feature-highlights-carousel-slide>
+        {% endfor %}
+      </div>
+    </feature-highlights-carousel>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Feature Highlights",
+  "tag": "section",
+  "class": "feature-highlights-section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Simple Path to Café-Quality Coffee"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle",
+      "default": "Perfect espresso, simplified for all."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "feature_block",
+      "name": "Feature Block",
+      "limit": 3,
+      "settings": [
+        {
+          "type": "text",
+          "id": "block_title",
+          "label": "Title",
+          "default": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "block_desc",
+          "label": "Subtitle",
+          "default": "Subtitle"
+        },
+        {
+          "type": "video",
+          "id": "video_desktop",
+          "label": "Video Desktop"
+        },
+        {
+          "type": "video",
+          "id": "video_mobile",
+          "label": "Video Mobile"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Feature Highlights",
+      "blocks": [
+        {
+          "type": "feature_block",
+          "settings": {}
+        },
+        {
+          "type": "feature_block",
+          "settings": {}
+        },
+        {
+          "type": "feature_block",
+          "settings": {}
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

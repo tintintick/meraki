@@ -1,0 +1,178 @@
+<style>
+  #shopify-section-{{ section.id }} {
+    padding-top: {{ section.settings.padding_top }}px;
+    padding-bottom: {{ section.settings.padding_bottom }}px;
+    background-color: {{ section.settings.section_bg_color }};
+  }
+  @media (max-width: 46.875rem) {
+    #shopify-section-{{ section.id }} {
+      padding-top: {{ section.settings.padding_top_mobile }}px;
+      padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+    }
+  }
+</style>
+<div class="brand-collection container-default">
+  <div class="brand-collection__title">
+    {{ section.settings.title }}
+  </div>
+  <div class="brand-collection__grid">
+    {% for block in section.blocks %}
+      <div class="brand-collection__item">
+        <div class="brand-collection__item-image">
+          {% if block.settings.image != blank %}
+            <img
+              src="{{ block.settings.image | image_url }}"
+              alt="{{ block.settings.image.alt }}"
+              width="{{ block.settings.image.width }}"
+              height="{{ block.settings.image.height }}"
+              class="brand-collection__item-image-default"
+            >
+          {% endif %}
+          {% if block.settings.image_hover != blank %}
+            <img
+              src="{{ block.settings.image_hover | image_url }}"
+              alt="{{ block.settings.image_hover.alt }}"
+              width="{{ block.settings.image_hover.width }}"
+              height="{{ block.settings.image_hover.height }}"
+              class="brand-collection__item-image-hover"
+            >
+          {% endif %}
+        </div>
+        <div class="brand-collection__item-content">
+          <div class="brand-collection__item-from">
+            <span class="brand-collection__item-label">Roaster</span>
+            <span class="brand-collection__item-value">{{ block.settings.roaster }}</span>
+          </div>
+          <div class="brand-collection__item-from">
+            <span class="brand-collection__item-label">From</span>
+            <span class="brand-collection__item-value form-value-gray">{{ block.settings.from }}</span>
+          </div>
+          <div class="brand-collection__item-shipping-regions">
+            <span class="brand-collection__item-region_label">Shipping regions</span>
+            <span class="brand-collection__item-region_value">{{ block.settings.shipping_regions }}</span>
+          </div>
+           {% comment %} <div>{{ block.settings.page_link.handle }}</div> {% endcomment %}
+          <a href="{{  pages[block.settings.page_link.handle].url }}" class="brand-collection__item-link">{{ block.settings.link_text }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Brand Collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Coffee Beans"
+    },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section background color",
+      "default": "#FCFBF7"
+    },
+    {
+      "type": "header",
+      "content": "spacing"
+    },
+    {
+      "type": "number",
+      "id": "padding_top",
+      "label": "Padding Top",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom",
+      "label": "Padding Bottom",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "padding_top_mobile",
+      "label": "Padding Top Mobile",
+      "default": 60
+    },
+    {
+      "type": "number",
+      "id": "padding_bottom_mobile",
+      "label": "Padding Bottom Mobile",
+      "default": 60
+    }
+  ],
+  "blocks": [
+    {
+      "type": "brand_collection",
+      "name": "Brand Collection",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_hover",
+          "label": "Image Hover"
+        },
+        {
+          "type": "text",
+          "id": "roaster",
+          "label": "Roaster",
+          "default": "Meraki × Dark Horse"
+        },
+        {
+          "type": "text",
+          "id": "from",
+          "label": "From",
+          "default": "Canada"
+        },
+        {
+          "type": "text",
+          "id": "shipping_regions",
+          "label": "Shipping regions",
+          "default": "Australia, Canada + more"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Explore"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        } ,
+         {
+          "type": "page",
+          "id": "page_link",
+          "label": "Link (Choose a page)"
+        },
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Collection",
+      "blocks": [
+        {
+          "type": "brand_collection"
+        },
+        {
+          "type": "brand_collection"
+        },
+        {
+          "type": "brand_collection"
+        },
+        {
+          "type": "brand_collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

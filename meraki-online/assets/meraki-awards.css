@@ -1,0 +1,217 @@
+/* Custom Awards (mobile-first) */
+
+.meraki-awards {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.meraki-awards.design-scale {
+  /* mobile tokens based on 750px mock */
+  --section-width: 750px;
+  --section-height: 600px;
+  --section-bg: #f0f0f0;
+
+  /* Title */
+  --title-top: 97px;
+  --title-font-size: 48px;
+  --title-color: #000000;
+
+  /* Awards Grid */
+  --grid-padding-top: 258px;
+
+  /* Award 1 - IDEA */
+  --award1-left: 131px;
+  --award1-top: 258px;
+  --award1-width: 139px;
+  --award1-height: 107px;
+
+  /* Award 2 - German Design */
+  --award2-left: 439px;
+  --award2-top: 258px;
+  --award2-width: 177px;
+  --award2-height: 107px;
+
+  /* Award 3 - iF Gold */
+  --award3-left: 105px;
+  --award3-top: 434px;
+  --award3-width: 192px;
+  --award3-height: 98px;
+
+  /* Award 4 - Red Dot */
+  --award4-left: 433px;
+  --award4-top: 416px;
+  --award4-width: 212px;
+  --award4-height: 134px;
+
+  width: 100%;
+  height: calc(var(--section-height) * var(--scale-factor-mobile, 1));
+  background-color: var(--section-bg);
+}
+
+/* Awards Container */
+.awards-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+
+/* Title */
+.awards-title {
+  position: absolute;
+  top: calc(var(--title-top) * var(--scale-factor-mobile, 1));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+  font-family: 'Kanit', sans-serif;
+  font-weight: 600;
+  font-size: calc(var(--title-font-size) * var(--scale-factor-mobile, 1));
+  line-height: 1.2;
+  color: var(--title-color);
+  text-align: center;
+  margin: 0;
+  white-space: nowrap;
+}
+
+
+/* Awards Grid */
+.awards-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Award Item Base */
+.award-item {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Award 1 */
+.award-1 {
+  left: calc(var(--award1-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--award1-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--award1-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--award1-height) * var(--scale-factor-mobile, 1));
+}
+
+/* Award 2 */
+.award-2 {
+  left: calc(var(--award2-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--award2-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--award2-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--award2-height) * var(--scale-factor-mobile, 1));
+}
+
+/* Award 3 */
+.award-3 {
+  left: calc(var(--award3-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--award3-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--award3-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--award3-height) * var(--scale-factor-mobile, 1));
+}
+
+/* Award 4 */
+.award-4 {
+  left: calc(var(--award4-left) * var(--scale-factor-mobile, 1));
+  top: calc(var(--award4-top) * var(--scale-factor-mobile, 1));
+  width: calc(var(--award4-width) * var(--scale-factor-mobile, 1));
+  height: calc(var(--award4-height) * var(--scale-factor-mobile, 1));
+}
+
+/* Award Image */
+.award-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  display: block;
+}
+
+/* Tablet: 750px mock applies at full scale */
+@media (min-width: 750px) {
+  /* Tablet scaling rules can be added here if needed */
+}
+
+/* Desktop overrides */
+@media (min-width: 990px) {
+  .meraki-awards.design-scale {
+    /* Desktop tokens */
+    --grid-width-desktop: 1280px;
+    --grid-height-desktop: 120px;
+    --grid-margin-top-desktop: 100px;
+    --section-height-desktop: 480px;
+    height: calc(var(--section-height-desktop) * var(--scale-factor-desktop, 1));
+  }
+
+  /* Awards Container - Desktop */
+  .awards-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+  }
+
+  /* Title - Desktop */
+  .awards-title {
+    position: relative;
+    top: auto;
+    left: auto;
+    transform: none;
+    width: auto;
+    margin-bottom: 0;
+  }
+
+  /* Awards Grid - Desktop: Flex layout */
+  .awards-grid {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: calc(var(--grid-width-desktop) * var(--scale-factor-desktop, 1));
+    height: calc(var(--grid-height-desktop) * var(--scale-factor-desktop, 1));
+    margin: 0 auto;
+    margin-top: calc(var(--grid-margin-top-desktop) * var(--scale-factor-desktop, 1));
+    padding: 0;
+  }
+
+  /* Award Item - Desktop: Flex item */
+  .award-item {
+    position: relative;
+    flex: 0 0 auto;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Reset absolute positioning for desktop */
+  .award-1,
+  .award-2,
+  .award-3,
+  .award-4 {
+    position: relative;
+    left: auto;
+    top: auto;
+    width: auto;
+    height: 100%;
+  }
+
+  /* Award Image - Desktop */
+  .award-image {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+  }
+}
+
+/* Ultra-wide / 4K - 由 JS 控制 */

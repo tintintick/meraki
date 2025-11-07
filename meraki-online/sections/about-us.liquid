@@ -1,0 +1,192 @@
+<div class="about-us-container">
+  <div class="container-default flex flex-col gap-[6.4rem] max-md:gap-[4.8rem]">
+    {% if section.settings.main_heading != blank %}
+      <h2 class="index-section-header-h2">{{ section.settings.main_heading }}</h2>
+    {% endif %}
+
+    {% if section.blocks.size > 0 %}
+      <div class="about-us-content">
+        {% for block in section.blocks %}
+          {% case block.type %}
+            {% when 'paragraph' %}
+              <p class="about-us-paragraph" id="{{ block.id }}" {{ block.shopify_attributes }}>
+                {{ block.settings.paragraph | newline_to_br }}
+              </p>
+
+            {% when 'highlight' %}
+              <div class="about-us-highlight" id="{{ block.id }}" {{ block.shopify_attributes }}>
+                {% if block.settings.highlight_1_number != blank or block.settings.highlight_1_text != blank %}
+                  <div class="about-us-highlight-item">
+                    <h3 class="about-us-highlight-item-number">{{ block.settings.highlight_1_number }}</h3>
+                    <p class="about-us-highlight-item-text">{{ block.settings.highlight_1_text }}</p>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.highlight_2_number != blank or block.settings.highlight_2_text != blank %}
+                  <div class="about-us-highlight-item">
+                    <h3 class="about-us-highlight-item-number">{{ block.settings.highlight_2_number }}</h3>
+                    <p class="about-us-highlight-item-text">{{ block.settings.highlight_2_text }}</p>
+                  </div>
+                {% endif %}
+
+                {% if block.settings.highlight_3_number != blank or block.settings.highlight_3_text != blank %}
+                  <div class="about-us-highlight-item">
+                    <h3 class="about-us-highlight-item-number">{{ block.settings.highlight_3_number }}</h3>
+                    <p class="about-us-highlight-item-text">{{ block.settings.highlight_3_text }}</p>
+                  </div>
+                {% endif %}
+              </div>
+
+            {% when 'image' %}
+              <div class="about-us-image" id="{{ block.id }}" {{ block.shopify_attributes }}>
+                {% if block.settings.image != blank %}
+                  <style>
+                    #{{ block.id }} {
+                      --aspect-ratio: {{ block.settings.image.aspect_ratio }};
+                    }
+
+                    {% if block.settings.image_mobile != blank %}
+                      @media (max-width: 46.875rem) {
+                        #{{ block.id }} {
+                          --aspect-ratio: {{ block.settings.image_mobile.aspect_ratio }};
+                        }
+                      }
+                    {% endif %}
+                  </style>
+
+                  <picture>
+                    {% if block.settings.image_mobile != blank %}
+                      <source
+                        alt="{{ block.settings.image_mobile.alt | escape }}"
+                        height="{{ block.settings.image_mobile.height }}"
+                        srcset="{{ block.settings.image_mobile | image_url }}"
+                        width="{{ block.settings.image_mobile.width }}"
+                        media="(max-width: 46.875rem)"
+                      >
+                    {% endif %}
+
+                    <img
+                      alt="{{ block.settings.image.alt | escape }}"
+                      height="{{ block.settings.image.height }}"
+                      src="{{ block.settings.image | image_url }}"
+                      width="{{ block.settings.image.width }}"
+                      loading="eager"
+                    >
+                  </picture>
+                {% else %}
+                  {{ 'lifestyle-1' | placeholder_svg_tag: 'about-us-image-placeholder' }}
+                {% endif %}
+              </div>
+          {% endcase %}
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "About Us",
+  "tag": "section",
+  "class": "about-us",
+  "settings": [
+    {
+      "type": "text",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "About Us"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "paragraph",
+      "name": "paragraph",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "paragraph",
+          "label": "Paragraph",
+          "default": "Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store."
+        }
+      ]
+    },
+    {
+      "type": "highlight",
+      "name": "highlight",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "highlight_1_number",
+          "label": "Highlight 1 Number",
+          "default": "3000+"
+        },
+        {
+          "type": "text",
+          "id": "highlight_1_text",
+          "label": "Highlight 1 Text",
+          "default": "backers on crowdfunding"
+        },
+        {
+          "type": "text",
+          "id": "highlight_2_number",
+          "label": "Highlight 2 Number",
+          "default": "97.5%"
+        },
+        {
+          "type": "text",
+          "id": "highlight_2_text",
+          "label": "Highlight 2 Text",
+          "default": "Satisfed customers and five-star reviews"
+        },
+        {
+          "type": "text",
+          "id": "highlight_3_number",
+          "label": "Highlight 3 Number",
+          "default": "50+"
+        },
+        {
+          "type": "text",
+          "id": "highlight_3_text",
+          "label": "Highlight 3 Text",
+          "default": "Recommended by 50+ Coffee lovers"
+        }
+      ]
+    },
+    {
+      "type": "image",
+      "name": "image",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Image Mobile"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us",
+      "blocks": [
+        {
+          "type": "paragraph"
+        },
+        {
+          "type": "highlight"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,192 @@
+<style>
+  {% if section.blocks.size <= 4 %}
+    .media-voice-content-item {
+      margin-right: 0;
+    }
+    .media-voice-content-inner {
+      gap: 1.2rem;
+    }
+    .media-voice-content-inner {
+      margin-right: calc(50% - 60.6rem);
+    }
+  @media screen and (max-width: 46.875rem ) {
+    .media-voice-content-item {
+      margin-right: 1.2rem;
+    }
+    .media-voice-content-inner {
+      gap: 0;
+    }
+  }
+
+  {% endif %}
+</style>
+
+<div class="media-voice-container" style="background: {{ section.settings.background_color }};">
+  {% if section.settings.main_heading != blank %}
+    <h2 class="index-section-header-h2 container-default" style="color: {{ section.settings.title_color }};">
+      {{ section.settings.main_heading }}
+    </h2>
+  {% endif %}
+  {% if section.settings.subtitle != blank %}
+    <p class="index-section-subtitle-p container-default" style="color: {{ section.settings.title_color }};">
+      {{ section.settings.subtitle }}
+    </p>
+  {% endif %}
+  {% if section.blocks.size > 0 %}
+    <media-voice-content-container
+      class="media-voice-content"
+      id="media-voice-{{ section.id }}"
+      scroll-interval="{{ section.settings.scroll_interval }}"
+      data-carousel
+      block-in-view="{{ section.settings.block_in_view }}"
+    >
+      <div class="media-voice-content-inner" data-carousel-inner>
+        {% for block in section.blocks %}
+          <media-voice-content-item
+            class="media-voice-content-item{% if forloop.first %} active{% endif %}"
+            {{ block.shopify_attributes }}
+            id="media-voice-item-{{ block.id }}"
+            data-index="{{ forloop.index0 }}"
+            slide-index="{{ forloop.index0 }}"
+            block-id="{{ block.id }}"
+            {{ block.shopify_attributes }}
+          >
+            <div class="media-voice-content-item-quote">
+              <p class="quote-text">{{ block.settings.quote_body | newline_to_br }}</p>
+              <div class="media-voice-content-item-quote-footer">
+                <div class="media-voice-content-item-quote-footer-logo">
+                  {% if block.settings.logo != blank %}
+                    <img
+                      src="{{ block.settings.logo | image_url: width: 100 }}"
+                      alt="{{ block.settings.logo.alt }}"
+                      width="100"
+                      height="100"
+                    >
+                  {% endif %}
+                </div>
+                <p class="media-voice-content-item-media-name">{{ block.settings.media_name }}</p>
+              </div>
+            </div>
+            <a
+              href="{{ block.settings.review_link | default: '#' }}"
+              class="media-voice-content-item-review-link"
+              target="_blank"
+              >Watch the review</a
+            >
+          </media-voice-content-item>
+        {% endfor %}
+      </div>
+      <media-voice-slide-container-arrow class="slide-container-arrow media-voice-slide-container-arrow">
+        <button class="slide-container-arrow-left media-voice-arrow-left">
+          {{ 'icon-arrow-left.svg' | inline_asset_content }}
+        </button>
+        <div class="media-voice-slide-dots"></div>
+        <button class="slide-container-arrow-right media-voice-arrow-right">
+          {{ 'icon-arrow-right.svg' | inline_asset_content }}
+        </button>
+      </media-voice-slide-container-arrow>
+    </media-voice-content-container>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Media Voice",
+  "tag": "section",
+  "class": "media-voice-section",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "main_heading",
+      "label": "Main Heading",
+      "default": "Media Voice"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "range",
+      "id": "scroll_interval",
+      "label": "Scroll Interval",
+      "min": 2,
+      "max": 10,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "number",
+      "id": "block_in_view",
+      "label": "Witch Block In View",
+      "default": 1
+    },
+    {
+      "type": "color_background",
+      "id": "background_color",
+      "label": "Background Color",
+      "default": "linear-gradient(180deg, #242424 0%, #131313 100%)"
+    },
+    {
+      "type": "color",
+      "id": "title_color",
+      "label": "Title Color",
+      "default": "#B5B5B5"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "media_voice",
+      "name": "Media Voice",
+      "limit": 15,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "quote_body",
+          "label": "Quote Body",
+          "default": "Quote Body",
+          "info": "limit to 4 lines, if it exceeds it will be truncated"
+        },
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo"
+        },
+        {
+          "type": "text",
+          "id": "media_name",
+          "label": "Media Name",
+          "default": "Media Name"
+        },
+        {
+          "type": "url",
+          "id": "review_link",
+          "label": "Review Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Media Voice",
+      "blocks": [
+        {
+          "type": "media_voice"
+        },
+        {
+          "type": "media_voice"
+        },
+        {
+          "type": "media_voice"
+        },
+        {
+          "type": "media_voice"
+        },
+        {
+          "type": "media_voice"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
