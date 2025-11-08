@@ -28,6 +28,7 @@ build/
 # Custom directories
 other/
 .other/
+meraki-online/
 docs/
 .claude/
 .codex/
